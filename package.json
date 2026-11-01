@@ -24,6 +24,8 @@
     "assets",
     "_config.yml",
     "README.md",
+    "README.en.md",
+    "README.ja.md",
     "LICENSE"
   ],
   "repository": {

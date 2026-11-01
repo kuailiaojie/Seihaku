@@ -10,6 +10,12 @@
 </p>
 
 <p align="center">
+  <a href="README.md"><b>简体中文</b></a> •
+  <a href="README.en.md">English</a> •
+  <a href="README.ja.md">日本語</a>
+</p>
+
+<p align="center">
   <a href="https://github.com/kuailiaojie/Seihaku/releases/tag/v0.1.0"><img src="https://img.shields.io/badge/Release-v0.1.0-emerald.svg?style=flat-square" alt="Release v0.1.0"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-amber.svg?style=flat-square" alt="License: MIT"></a>
   <a href="https://hexo.io/"><img src="https://img.shields.io/badge/Hexo-%E2%89%A5%207.0.0-blue.svg?style=flat-square" alt="Hexo Version"></a>
