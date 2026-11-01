@@ -1,0 +1,199 @@
+/* ==============================================================================
+   🍃 栖白 (Theme Seihaku) - 视觉变量与设计系统规范 (Apple HIG & 留白哲学)
+   ============================================================================== */
+
+:root, :root[data-theme="dark"] {
+  /* ----------------------------------------------------------------------------
+     1. 暗色模式基调 (墨夜暖炭底色)
+     ---------------------------------------------------------------------------- */
+  --bg-base: #151413;             /* 温暖茶炭墨底 */
+  --bg-primary: #151413;          /* 主底色别名 */
+  --bg-surface: #1c1b19;          /* 略微抬升的暖石板暗色卡片 */
+  --bg-surface-elevated: #242220; /* 浮层抬升表面 */
+  --bg-surface-elevated-rgb: 36, 34, 32;
+  --bg-card: #242220;
+  --bg-glass: rgba(21, 20, 19, 0.85); /* 液体玻璃基底 */
+  --bg-glass-card: rgba(28, 27, 25, 0.75);
+
+  --text-primary: #ede8e3;        /* 暖月白正文 */
+  --text-secondary: #a8a29a;      /* 暮云暖灰次要文本 */
+  --text-tertiary: #6b6660;       /* 弱化暗灰 */
+  --text-muted: #57524c;
+
+  /* 核心强调色与现代动态派生变量 (自适应自定义与色板预设) */
+  --color-accent: #dd996e;
+  --color-accent-rgb: 221, 153, 110;
+  --accent: #dd996e;
+  --accent-hover: #e8ab82;
+  --accent-soft: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  --accent-subtle: color-mix(in srgb, var(--color-accent) 12%, transparent);
+  --accent-glow: color-mix(in srgb, var(--color-accent) 28%, transparent);
+  --accent-gradient: linear-gradient(135deg, var(--color-accent) 0%, var(--cherry-accent, #e88b9a) 100%);
+  --cherry-accent: #e88b9a;
+  --cherry-soft: color-mix(in srgb, var(--cherry-accent, #e88b9a) 12%, transparent);
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-focus: color-mix(in srgb, var(--color-accent) 45%, transparent);
+
+  --code-bg: #1c1b19;
+  --code-header-bg: #181715;
+  --code-text: #e6e0d8;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 24px rgba(221, 153, 110, 0.18);
+  --avatar-glow: 0 0 0 1px rgba(255,255,255,0.1), 0 0 32px rgba(180, 200, 255, 0.15);
+
+  /* 字体族 */
+  --font-serif: "LXGW WenKai", "Source Han Serif SC", "Noto Serif CJK SC", "Songti SC", serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", "Segoe UI", Roboto, sans-serif;
+  --font-mono: "Space Mono", "JetBrains Mono", "SF Mono", monospace;
+
+  /* 苹果 HIG 平滑连续微圆角系统 */
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+  --radius-xl: 22px;
+  --radius-2xl: 26px;
+  --radius-pill: 9999px;
+  --radius-full: 9999px;
+
+  /* 物理弹簧动效贝塞尔曲线 */
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-apple: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --duration-fast: 0.22s;
+  --duration-normal: 0.35s;
+
+  --container-max-width: 1200px;
+  --container-width: 1200px;
+  --reading-max-width: 740px;
+  --threads-opacity: 0.04;
+  --grain-opacity: 0.035;
+}
+
+/* ------------------------------------------------------------------------------
+   2. 浅色模式基调 (暖宣米白底色)
+   ------------------------------------------------------------------------------ */
+:root[data-theme="light"] {
+  --bg-base: #fefdfa;             /* 暖宣米白 */
+  --bg-primary: #fefdfa;          /* 主底色别名 */
+  --bg-surface: #ffffff;          /* 纯净白卡片 */
+  --bg-surface-elevated: #ffffff;
+  --bg-surface-elevated-rgb: 255, 255, 255;
+  --bg-card: #ffffff;
+  --bg-glass: rgba(254, 253, 250, 0.88);
+  --bg-glass-card: rgba(255, 255, 255, 0.85);
+
+  --text-primary: #1c1917;        /* 焦炭深黑正文 */
+  --text-secondary: #78716c;      /* 暮灰次要文本 */
+  --text-tertiary: #a8a29e;       /* 浅石灰 */
+  --text-muted: #d6d3d1;
+
+  --color-accent: #aa5e26;        /* 沉着琥珀暖棕 */
+  --color-accent-rgb: 170, 94, 38;
+  --accent: #aa5e26;
+  --accent-hover: #914d1c;
+  --accent-soft: rgba(170, 94, 38, 0.08);
+  --accent-subtle: rgba(170, 94, 38, 0.08);
+  --accent-glow: rgba(170, 94, 38, 0.22);
+  --accent-gradient: linear-gradient(135deg, #aa5e26 0%, #c4763e 100%);
+  --cherry-accent: #c46274;
+  --cherry-soft: rgba(196, 98, 116, 0.08);
+
+  --border-subtle: rgba(28, 25, 23, 0.07);
+  --border-glass: rgba(255, 255, 255, 0.85);
+  --border-focus: rgba(170, 94, 38, 0.4);
+
+  --code-bg: #f7f5f0;
+  --code-header-bg: #ece8e0;
+  --code-text: #292524;
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+  --shadow-glow: 0 0 24px rgba(170, 94, 38, 0.12);
+  --avatar-glow: 0 0 0 1px rgba(0,0,0,0.06), 0 0 28px rgba(255, 240, 210, 0.25);
+
+  --threads-opacity: 0.03;
+}
+
+/* ------------------------------------------------------------------------------
+   3. 核心关键帧动画
+   ------------------------------------------------------------------------------ */
+@keyframes aiShimmerLoop {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes aiTwinkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.9) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.15) rotate(180deg); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes petalPop {
+  0% { transform: scale(0.6) translateY(0); opacity: 1; }
+  100% { transform: scale(1.3) translateY(-40px); opacity: 0; }
+}
+
+/* ------------------------------------------------------------------------------
+   4. 四套和风东方色预设 (Oriental Aesthetic Presets)
+   ------------------------------------------------------------------------------ */
+/* 🌸 绯樱 (Sakura) - 暖杏落樱 */
+html[data-preset="sakura"], :root {
+  --color-accent: #dd996e;
+  --accent: #dd996e;
+  --accent-hover: #e8ab82;
+  --cherry-accent: #e88b9a;
+}
+html[data-theme="light"][data-preset="sakura"] {
+  --color-accent: #aa5e26;
+  --accent: #aa5e26;
+  --accent-hover: #914d1c;
+}
+
+/* 🎋 青竹 (Bamboo) - 翠竹若草 */
+html[data-preset="bamboo"] {
+  --color-accent: #10b981;
+  --accent: #10b981;
+  --accent-hover: #34d399;
+  --cherry-accent: #6ee7b7;
+}
+html[data-theme="light"][data-preset="bamboo"] {
+  --color-accent: #059669;
+  --accent: #059669;
+  --accent-hover: #047857;
+}
+
+/* 🌊 黛蓝 (Indigo) - 霁蓝水墨 */
+html[data-preset="indigo"] {
+  --color-accent: #3b82f6;
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --cherry-accent: #93c5fd;
+}
+html[data-theme="light"][data-preset="indigo"] {
+  --color-accent: #1d4ed8;
+  --accent: #1d4ed8;
+  --accent-hover: #1e40af;
+}
+
+/* 📜 玄炭 (Charcoal) - 苍黑素纸 */
+html[data-preset="charcoal"] {
+  --color-accent: #a1a1aa;
+  --accent: #a1a1aa;
+  --accent-hover: #d4d4d8;
+  --cherry-accent: #e4e4e7;
+}
+html[data-theme="light"][data-preset="charcoal"] {
+  --color-accent: #4b5563;
+  --accent: #4b5563;
+  --accent-hover: #374151;
+}

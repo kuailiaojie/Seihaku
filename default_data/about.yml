@@ -1,0 +1,117 @@
+# ==============================================================================
+# 🍃 栖白 (Theme Seihaku) - 关于页面个人空间与资产配置
+# 用户可自由修改本文件，完全数据驱动，无需修改 EJS 模板！
+# ==============================================================================
+
+identity:
+  name: "栖白"
+  role: "独立思考者 · 创作者"
+  avatar: "/images/avatar.svg"
+  tagline: "于方寸留白处，栖息万物微光。专注现代人机界面、克制美学与智能体系统。"
+  status_pill: "In Flow & Building"
+  status_indicator: "心怀澄澈，静谧构建"
+  email: "hello@example.com"
+
+# 空间脉动统计设置
+metrics:
+  enable: true
+
+# 栖所哲学与留白四律
+philosophy:
+  enable: true
+  quote: "天地大美而无言，四时有明法而不议。至素至纯，方见万象之生。"
+  quote_source: "《庄子 · 知北游》"
+  pillars:
+    - icon: "🍃"
+      title: "浮生偷闲"
+      desc: "在忙碌与熵增的日常中，保有一方属于自己的精神角落。放缓脚步，倾听内心的低语与思想的流淌。"
+    - icon: "⚪"
+      title: "以白为度"
+      desc: "不作无谓的堆砌。留白并非空无一物，而是让风穿过文字的间隙，容纳所有未决可能的最高敏锐度。"
+    - icon: "🌸"
+      title: "落樱成诗"
+      desc: "浪漫不仅存在于诗词字句，亦融化在每一行代码的落笔起伏、每一次物理弹簧阻尼与流体反馈之间。"
+    - icon: "✨"
+      title: "微澜生辉"
+      desc: "平淡水面泛起的每一次涟漪，都是生命对世界的真诚共振。于方寸微光之中，见证万象澄澈之生。"
+
+# 兵器谱与技艺栈
+craft:
+  enable: true
+  categories:
+    - icon: "fas fa-layer-group"
+      title: "交互与人机界面 (Interface & Physics)"
+      sub: "追求 60FPS 物理弹簧阻尼、液体玻璃材质与无感响应"
+      tags:
+        - "TypeScript"
+        - "React / Next.js"
+        - "Tailwind CSS"
+        - "Apple HIG"
+        - "Spring Physics"
+        - "Three.js / WebGL"
+    - icon: "fas fa-robot"
+      title: "智能体与系统 (AI Agents & Systems)"
+      sub: "长周期自主执行、上下文流转与智能体工具调用生态"
+      tags:
+        - "MCP Protocol"
+        - "Gemini API"
+        - "Claude"
+        - "Python & FastAPI"
+        - "Docker"
+        - "Hexo Core"
+    - icon: "fas fa-feather-alt"
+      title: "排印与美学准则 (Typography & Aesthetics)"
+      sub: "墨韵浸润、字距呼吸、消除冰冷生硬感与过度设计"
+      tags:
+        - "霞鹜文楷"
+        - "原研哉白哲学"
+        - "连续平滑圆角"
+        - "Figma"
+        - "阴翳礼赞"
+        - "东方水墨微韵"
+
+# 案头工坊与硬件装备
+gear:
+  enable: true
+  items:
+    - icon: "fas fa-laptop"
+      category: "生产力中枢"
+      name: "MacBook Pro 16\""
+      spec: "M3 Max · 64GB 统一内存 · 移动推理工坊"
+    - icon: "fas fa-desktop"
+      category: "视网膜画布"
+      name: "Apple Studio Display 27\""
+      spec: "5K 视网膜超清 · 原彩显示 · 真实字阶与柔和墨色"
+    - icon: "fas fa-keyboard"
+      category: "指尖触键"
+      name: "HHKB Professional Hybrid Type-S"
+      spec: "静电容无刻墨黑 · 指尖思绪的静谧延伸"
+    - icon: "fas fa-headphones"
+      category: "降噪声场"
+      name: "Sony WH-1000XM5"
+      spec: "双芯降噪算法 · 构筑专注与沉浸心流场域"
+
+# 文墨书单与精神给养
+inspirations:
+  enable: true
+  books:
+    - badge: "DESIGN"
+      title: "《设计中的设计》"
+      author: "原研哉 著"
+      quote: "白不是一种颜色，而是一种可以容纳一切可能性的敏感度。"
+    - badge: "AESTHETICS"
+      title: "《阴翳礼赞》"
+      author: "谷崎润一郎 著"
+      quote: "美，不存在于物体本身，而存在于物与物产生的阴翳波纹和明暗交织之中。"
+    - badge: "SYSTEM"
+      title: "《失控》"
+      author: "凯文 · 凯利 著"
+      quote: "蜂群、神经网络与自组织演化系统，为智能体工程提供了永恒的启示录。"
+
+# 联络与交汇
+contact:
+  enable: true
+  title: "与博主建立连接"
+  desc: "若你也在探索现代人机界面、克制留白美学、独立开发或智能体系统，欢迎随时来信交流。每一次思维的触碰，都是这浩瀚网络里的微光共振。"
+  email: "hello@example.com"
+  rss_url: "/atom.xml"

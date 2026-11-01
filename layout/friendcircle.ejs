@@ -1,0 +1,88 @@
+<%
+  // 数据优先级：
+  // 1. 优先读取从友邻 RSS 订阅源实时抓取聚合的 friendcircle_rss.json
+  // 2. 其次读取本地手动配置的 source/_data/friendcircle.yml
+  // 3. 再次读取主题配置文件中的 theme.friendcircle.list 或 theme.friendcircle.sources
+  var fcList = [];
+  if (site.data && site.data.friendcircle_rss && site.data.friendcircle_rss.length > 0) {
+    fcList = site.data.friendcircle_rss;
+  } else if (site.data && site.data.friendcircle && site.data.friendcircle.length > 0) {
+    fcList = site.data.friendcircle;
+  } else if (theme.friendcircle && Array.isArray(theme.friendcircle.list) && theme.friendcircle.list.length > 0) {
+    fcList = theme.friendcircle.list;
+  }
+
+  var fcCfg = theme.friendcircle || {};
+  var sourceCount = (fcCfg.sources && fcCfg.sources.length) || 0;
+%>
+
+<div class="seihaku-page-container">
+  
+  <div class="page-header-block">
+    <span class="page-eyebrow font-mono">FEED / <%= __('nav.friendcircle') %></span>
+    <h1 class="page-title font-serif"><%= __('pages.friendcircle_title') %></h1>
+    <p class="page-subtitle"><%= __('pages.friendcircle_sub') %></p>
+
+    <!-- 友邻 RSS 实时聚合状态标识 -->
+    <div class="friendcircle-status-pill-bar" style="margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap;">
+      <span class="bangumi-bili-badge" style="font-size: 0.78rem; padding: 4px 12px; border-radius: 999px; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); color: var(--text-secondary); display: inline-flex; align-items: center; gap: 6px;">
+        <i class="fas fa-rss" style="color: #f97316;"></i>
+        <span><%= __('pages.friendcircle_sync_badge', '友邻 RSS 实时动态聚合') %></span>
+        <% if (fcList && fcList.length > 0) { %>
+          <span style="background: var(--color-accent-subtle); color: var(--color-accent); padding: 1px 7px; border-radius: 10px; font-weight: 600; font-family: var(--font-mono); font-size: 0.72rem;"><%= fcList.length %> 篇</span>
+        <% } %>
+      </span>
+      <% if (fcCfg.sources && fcCfg.sources.length > 0) { %>
+        <span style="font-size: 0.75rem; color: var(--text-tertiary); font-family: var(--font-mono);">
+          已订阅 <%= fcCfg.sources.length %> 个友邻源
+        </span>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="friendcircle-feed" id="friendcircle-feed">
+    <% if (fcList && fcList.length > 0) { %>
+      <% fcList.forEach(function(item) { %>
+        <article class="friendcircle-item">
+          <div class="fc-author-bar">
+            <img src="<%- item.avatar || '/images/avatar.svg' %>" alt="<%= item.author || item.site_name %>" class="fc-author-avatar" onerror="this.src='/images/avatar.svg'">
+            <span class="fc-author-name"><%= item.author || item.site_name %></span>
+            <% if (item.site_name && item.site_name !== item.author) { %>
+              <span style="font-size: 0.78rem; color: var(--text-tertiary);">· <%= item.site_name %></span>
+            <% } %>
+            <time class="fc-post-time"><%= item.time %></time>
+          </div>
+
+          <h3 class="fc-article-title">
+            <a href="<%- item.url %>" target="_blank" rel="noopener noreferrer">
+              <%= item.title %>
+            </a>
+          </h3>
+
+          <% if (item.snippet) { %>
+            <p class="fc-article-snippet">
+              <%= item.snippet %>
+            </p>
+          <% } %>
+        </article>
+      <% }); %>
+    <% } else { %>
+      <div style="text-align: center; padding: 56px 24px; color: var(--text-tertiary); background: var(--bg-surface-elevated); border: 1px dashed var(--border-subtle); border-radius: var(--radius-xl); max-width: 680px; margin: 0 auto;">
+        <i class="fas fa-rss" style="font-size: 2.4rem; color: var(--color-accent); margin-bottom: 14px; opacity: 0.65; display: inline-block;"></i>
+        <h4 style="margin: 0 0 8px 0; font-size: 1.05rem; color: var(--text-primary); font-weight: 500;"><%= __('pages.friendcircle_empty') %></h4>
+        <p style="margin: 0; font-size: 0.86rem; line-height: 1.6; color: var(--text-secondary);">
+          只需在博客配置文件 <code>_config.seihaku.yml</code> 的 <code>friendcircle.sources</code> 中配置友邻的 RSS / Atom 订阅地址，或者在友链配置中添加 <code>rss</code> 字段，构建时系统将自动实时抓取友邻最新文章。
+        </p>
+      </div>
+    <% } %>
+  </div>
+
+  <% if (page.content) { %>
+    <div class="post-article-card" style="margin-top: 48px;">
+      <div class="markdown-body font-serif">
+        <%- page.content %>
+      </div>
+    </div>
+  <% } %>
+
+</div>

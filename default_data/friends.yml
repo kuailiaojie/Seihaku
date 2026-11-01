@@ -1,0 +1,12 @@
+# ==============================================================================
+# 🍃 友邻聚落列表数据 (Friends Data)
+# 提示：可在 _config.seihaku.yml 的 friends.list 中直接配置，或在此维护。
+# 默认无内容，配置示例：
+# - name: "余白居"
+#   link: "https://example.com/yohaku"
+#   avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+#   desc: "于空灵处见精神，写意代码与诗篇。"
+#   tag: "设计 / 诗意"
+#   rss: "https://example.com/yohaku/atom.xml"
+# ==============================================================================
+[]

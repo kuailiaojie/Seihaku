@@ -1,0 +1,303 @@
+<%
+  var authorCfg = theme.author || {};
+  var heroCfg = theme.hero || {};
+  var socialList = heroCfg.social || [];
+
+  // 优先从 source/_data/about.yml 获取，保证高度解耦与自由定制
+  var aboutData = (site.data && site.data.about) ? site.data.about : {};
+  var idCfg = aboutData.identity || {};
+
+  var authorName = page.author || config.author || idCfg.name || authorCfg.name || '栖白';
+  var authorRole = page.role || idCfg.role || authorCfg.title || '独立思考者 · 创作者';
+  var authorAvatar = idCfg.avatar || authorCfg.avatar || '/images/avatar.svg';
+  var authorTagline = page.description || idCfg.tagline || authorCfg.description || '于方寸留白处，栖息万物微光。专注现代人机界面、克制美学与智能体系统。';
+  var authorEmail = idCfg.email || authorCfg.email || config.email || 'hello@example.com';
+  var statusPill = idCfg.status_pill || 'In Flow & Building';
+  var statusIndicator = idCfg.status_indicator || '心怀澄澈，静谧构建';
+
+  var siteStats = typeof seihaku_site_stats === 'function' ? seihaku_site_stats() : { postCount: site.posts.length, wordsInWan: '0.0', diffDays: 1 };
+  var wordsInWan = siteStats.wordsInWan;
+  var diffDays = siteStats.diffDays;
+
+  var secIdx = 1;
+  function getSecNum() {
+    var s = secIdx < 10 ? '0' + secIdx : String(secIdx);
+    secIdx++;
+    return s;
+  }
+%>
+
+<div class="seihaku-page-container about-page-wrapper">
+
+  <!-- 1. 顶层沉浸式个人 Header 名片 (Profile Hero Showcase) -->
+  <section class="about-hero-section">
+    <div class="about-hero-ambient" aria-hidden="true"></div>
+
+    <div class="about-avatar-wrapper">
+      <img src="<%- url_for(authorAvatar) %>" alt="<%= authorName %>" class="about-avatar-img" onerror="this.src='/images/avatar.svg'">
+      <span class="about-status-indicator" title="<%= statusIndicator %>">
+        <span class="status-pulse-dot"></span>
+        <span class="status-pulse-ring"></span>
+      </span>
+    </div>
+
+    <div class="about-identity-block">
+      <div class="about-eyebrow font-mono">
+        <span class="eyebrow-dot">✦</span>
+        <span>SEIHAKU · ABOUT ME</span>
+        <span class="about-status-pill">
+          <span class="status-dot"></span>
+          <span><%= statusPill %></span>
+        </span>
+      </div>
+
+      <h1 class="about-name font-serif"><%= authorName %></h1>
+      <p class="about-role font-mono"><%= authorRole %></p>
+      
+      <p class="about-summary font-serif">
+        <%= authorTagline %>
+      </p>
+
+      <!-- 快捷社交触达胶囊 -->
+      <div class="about-social-cluster">
+        <% if (socialList && socialList.length > 0) { %>
+          <% socialList.forEach(function(item) { %>
+            <a href="<%- item.link %>" class="about-social-pill" target="_blank" rel="noopener noreferrer" title="<%= item.name %>">
+              <i class="<%= item.icon %>"></i>
+              <span><%= item.name %></span>
+            </a>
+          <% }); %>
+        <% } %>
+        <%
+          var copyEmailText = __('about.copy_email');
+          if (!copyEmailText || copyEmailText === 'about.copy_email') copyEmailText = '复制邮箱';
+        %>
+        <button type="button" class="about-social-pill copy-email-btn" id="about-copy-email-btn" data-email="<%= authorEmail %>" title="<%= copyEmailText %>">
+          <i class="far fa-copy"></i>
+          <span><%= copyEmailText %></span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. 全站空间脉动数据卡 (Space Pulse Metrics) -->
+  <% if (!aboutData.metrics || aboutData.metrics.enable !== false) { %>
+  <section class="about-section about-stats-section">
+    <div class="about-section-header">
+      <span class="section-num font-mono"><%= getSecNum() %></span>
+      <h2 class="section-title font-serif">空间脉动 · Space Metrics</h2>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="about-metrics-grid">
+      <div class="metric-card">
+        <div class="metric-icon-box"><i class="far fa-edit"></i></div>
+        <div class="metric-content">
+          <div class="metric-number font-mono"><%= site.posts.length %></div>
+          <div class="metric-label">笔墨篇数</div>
+        </div>
+        <div class="metric-decor font-mono">POSTS</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-box"><i class="far fa-file-alt"></i></div>
+        <div class="metric-content">
+          <div class="metric-number font-mono"><%= wordsInWan %><span class="metric-unit">w</span></div>
+          <div class="metric-label">全站字数</div>
+        </div>
+        <div class="metric-decor font-mono">WORDS</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-box"><i class="far fa-clock"></i></div>
+        <div class="metric-content">
+          <div class="metric-number font-mono"><%= diffDays %><span class="metric-unit">天</span></div>
+          <div class="metric-label">静谧运行</div>
+        </div>
+        <div class="metric-decor font-mono">DAYS</div>
+      </div>
+
+      <div class="metric-card">
+        <div class="metric-icon-box"><i class="far fa-folder"></i></div>
+        <div class="metric-content">
+          <div class="metric-number font-mono"><%= site.categories.length %></div>
+          <div class="metric-label">专栏分类</div>
+        </div>
+        <div class="metric-decor font-mono">TOPICS</div>
+      </div>
+    </div>
+  </section>
+  <% } %>
+
+  <!-- 3. 栖所哲学与留白四律 (Philosophy Pillars) -->
+  <% var philoCfg = aboutData.philosophy || {}; %>
+  <% if (philoCfg.enable !== false && philoCfg.pillars && philoCfg.pillars.length > 0) { %>
+  <section class="about-section">
+    <div class="about-section-header">
+      <span class="section-num font-mono"><%= getSecNum() %></span>
+      <h2 class="section-title font-serif">栖所哲学 · Philosophy Pillars</h2>
+      <span class="section-line"></span>
+    </div>
+
+    <% if (philoCfg.quote) { %>
+      <div class="about-quote-banner font-serif">
+        <div class="quote-mark left">“</div>
+        <p class="quote-text"><%= philoCfg.quote %></p>
+        <div class="quote-mark right">”</div>
+        <% if (philoCfg.quote_source) { %>
+          <span class="quote-author font-mono">——<%= philoCfg.quote_source %></span>
+        <% } %>
+      </div>
+    <% } %>
+
+    <div class="about-philosophy-grid">
+      <% philoCfg.pillars.forEach(function(p) { %>
+        <div class="philosophy-card">
+          <div class="philosophy-icon"><%= p.icon || '🍃' %></div>
+          <h3 class="philosophy-title font-serif"><%= p.title %></h3>
+          <p class="philosophy-desc"><%= p.desc %></p>
+        </div>
+      <% }); %>
+    </div>
+  </section>
+  <% } %>
+
+  <!-- 4. 兵器谱与技艺栈 (Tech Stack & Craft) -->
+  <% var craftCfg = aboutData.craft || {}; %>
+  <% if (craftCfg.enable !== false && craftCfg.categories && craftCfg.categories.length > 0) { %>
+  <section class="about-section">
+    <div class="about-section-header">
+      <span class="section-num font-mono"><%= getSecNum() %></span>
+      <h2 class="section-title font-serif">兵器谱与技艺栈 · Tech & Craft</h2>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="about-craft-grid">
+      <% craftCfg.categories.forEach(function(cat) { %>
+        <div class="craft-category-card">
+          <div class="craft-cat-header">
+            <div class="craft-cat-icon"><i class="<%= cat.icon || 'fas fa-layer-group' %>"></i></div>
+            <h3 class="craft-cat-title font-serif"><%= cat.title %></h3>
+          </div>
+          <% if (cat.sub) { %>
+            <p class="craft-cat-sub"><%= cat.sub %></p>
+          <% } %>
+          <% if (cat.tags && cat.tags.length > 0) { %>
+            <div class="craft-tags">
+              <% cat.tags.forEach(function(t) { %>
+                <span class="craft-tag"><%= t %></span>
+              <% }); %>
+            </div>
+          <% } %>
+        </div>
+      <% }); %>
+    </div>
+  </section>
+  <% } %>
+
+  <!-- 5. 案头工坊与硬件装备 (Workspace & Arsenal) -->
+  <% var gearCfg = aboutData.gear || {}; %>
+  <% if (gearCfg.enable !== false && gearCfg.items && gearCfg.items.length > 0) { %>
+  <section class="about-section">
+    <div class="about-section-header">
+      <span class="section-num font-mono"><%= getSecNum() %></span>
+      <h2 class="section-title font-serif">案头工坊与装备 · Workspace & Gear</h2>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="about-gear-grid">
+      <% gearCfg.items.forEach(function(item) { %>
+        <div class="gear-item-card">
+          <div class="gear-icon"><i class="<%= item.icon || 'fas fa-laptop' %>"></i></div>
+          <div class="gear-info">
+            <% if (item.category) { %>
+              <div class="gear-category font-mono"><%= item.category %></div>
+            <% } %>
+            <div class="gear-name"><%= item.name %></div>
+            <% if (item.spec) { %>
+              <div class="gear-spec"><%= item.spec %></div>
+            <% } %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </section>
+  <% } %>
+
+  <!-- 6. 文墨书单与精神给养 (Reading & Inspirations) -->
+  <% var inspCfg = aboutData.inspirations || {}; %>
+  <% if (inspCfg.enable !== false && inspCfg.books && inspCfg.books.length > 0) { %>
+  <section class="about-section">
+    <div class="about-section-header">
+      <span class="section-num font-mono"><%= getSecNum() %></span>
+      <h2 class="section-title font-serif">文墨书单与精神给养 · Inspirations</h2>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="about-books-grid">
+      <% inspCfg.books.forEach(function(b) { %>
+        <div class="book-card">
+          <% if (b.badge) { %>
+            <div class="book-badge font-mono"><%= b.badge %></div>
+          <% } %>
+          <h3 class="book-title font-serif"><%= b.title %></h3>
+          <% if (b.author) { %>
+            <p class="book-author"><%= b.author %></p>
+          <% } %>
+          <% if (b.quote) { %>
+            <blockquote class="book-quote font-serif">
+              “<%= b.quote %>”
+            </blockquote>
+          <% } %>
+        </div>
+      <% }); %>
+    </div>
+  </section>
+  <% } %>
+
+  <!-- 7. 联络与交汇卡片 (Get in Touch) -->
+  <% var contactCfg = aboutData.contact || {}; %>
+  <% if (contactCfg.enable !== false) { %>
+  <section class="about-section">
+    <div class="about-section-header">
+      <span class="section-num font-mono"><%= getSecNum() %></span>
+      <h2 class="section-title font-serif"><%= contactCfg.section_title || '联络与交汇 · Get in Touch' %></h2>
+      <span class="section-line"></span>
+    </div>
+
+    <div class="about-contact-card">
+      <div class="contact-card-content">
+        <h3 class="contact-card-title font-serif"><%= contactCfg.title || ('与 ' + authorName + ' 建立连接') %></h3>
+        <p class="contact-card-desc">
+          <%= contactCfg.desc || '若你也在探索现代人机界面、克制留白美学、独立开发或智能体系统，欢迎随时来信交流。每一次思维的触碰，都是这浩瀚网络里的微光共振。' %>
+        </p>
+        <div class="contact-actions">
+          <a href="mailto:<%= authorEmail %>" class="contact-btn primary font-mono">
+            <i class="fas fa-paper-plane"></i>
+            <span>发送信函</span>
+          </a>
+          <a href="<%- url_for(contactCfg.rss_url || '/atom.xml') %>" class="contact-btn secondary font-mono" target="_blank">
+            <i class="fas fa-rss"></i>
+            <span>订阅 RSS</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <% } %>
+
+  <!-- 8. Markdown 补充正文 (如果 source/about/index.md 含有补充叙述) -->
+  <% if (page.content && page.content.trim().length > 0) { %>
+    <section class="about-section about-markdown-section">
+      <div class="about-section-header">
+        <span class="section-num font-mono">✦</span>
+        <h2 class="section-title font-serif">文墨余韵 · Extended Notes</h2>
+        <span class="section-line"></span>
+      </div>
+      <div class="about-markdown-prose markdown-body font-serif">
+        <%- page.content %>
+      </div>
+    </section>
+  <% } %>
+
+</div>

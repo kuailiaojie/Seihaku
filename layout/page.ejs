@@ -1,0 +1,29 @@
+<%
+  var isFriends = page.layout === 'friends' || page.title === '友邻' || page.title === 'Friends' || is_current('friends');
+  var isNotes = page.layout === 'notes' || page.title === '手记' || page.title === 'Notes' || is_current('notes');
+  var isAbout = page.layout === 'about' || page.title === '关于' || page.title === '关于栖白' || is_current('about');
+%>
+
+<% if (isFriends) { %>
+  <%- partial('friends') %>
+<% } else if (isNotes) { %>
+  <%- partial('notes') %>
+<% } else if (isAbout) { %>
+  <%- partial('about') %>
+<% } else { %>
+  <div class="seihaku-page-container">
+    <div class="page-header-block">
+      <span class="page-eyebrow font-mono">PAGE / 页面</span>
+      <h1 class="page-title font-serif"><%= page.title %></h1>
+      <% if (page.description) { %>
+        <p class="page-subtitle"><%= page.description %></p>
+      <% } %>
+    </div>
+
+    <article class="post-article-card" style="max-width: 860px; margin: 0 auto;">
+      <div class="markdown-body">
+        <%- page.content %>
+      </div>
+    </article>
+  </div>
+<% } %>

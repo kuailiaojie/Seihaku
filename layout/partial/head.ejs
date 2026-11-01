@@ -1,0 +1,134 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<title><% if (page.title) { %><%= page.title %> · <% } %><%= config.title %><% if (theme.slogan && theme.slogan.primary && is_home()) { %> · <%= theme.slogan.primary %><% } %></title>
+
+<meta name="description" content="<%= strip_html(page.description || page.excerpt || config.description || (theme.slogan && theme.slogan.primary) || '').substring(0, 160) %>">
+<meta name="keywords" content="<%= page.keywords || ((page.tags && page.tags.length) ? page.tags.data.map(function(t){return t.name;}).join(',') : (config.keywords || '')) %>">
+<meta name="author" content="<%= config.author || (theme.author && theme.author.name) || '栖白' %>">
+<link rel="icon" type="image/svg+xml" href="<%- url_for((theme.author && theme.author.avatar) || '/images/avatar.svg') %>">
+<% if (typeof full_url_for === 'function') { %>
+  <link rel="canonical" href="<%- full_url_for(page.path) %>">
+<% } %>
+<link rel="alternate" type="application/atom+xml" title="<%= config.title %>" href="<%- url_for('/atom.xml') %>">
+<% if (typeof open_graph === 'function') { %>
+  <%- open_graph({ twitter_card: 'summary_large_image' }) %>
+<% } %>
+
+<!-- JSON-LD 现代结构化元数据 (优化 Google, Bing 及 AI 搜索收录) -->
+<script type="application/ld+json">
+<%- JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": is_post() ? "BlogPosting" : "WebSite",
+  "headline": page.title || config.title,
+  "name": config.title,
+  "description": strip_html(page.description || page.excerpt || config.description || ''),
+  "url": typeof full_url_for === 'function' ? full_url_for(page.path) : config.url,
+  "author": {
+    "@type": "Person",
+    "name": config.author || (theme.author && theme.author.name) || "栖白"
+  },
+  "datePublished": page.date ? new Date(page.date).toISOString() : undefined,
+  "dateModified": page.updated ? new Date(page.updated).toISOString() : (page.date ? new Date(page.date).toISOString() : undefined)
+}) %>
+</script>
+
+<!-- Anti-flash theme initialization (支持 URL 参数与 localStorage 缓存) -->
+<script>
+  (function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const themeParam = urlParams.get('theme');
+    const saved = themeParam || localStorage.getItem('seihaku_theme_preference');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = saved || (systemDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', theme);
+    document.documentElement.setAttribute('data-preset', '<%= (theme.style && theme.style.preset) || "sakura" %>');
+  })();
+</script>
+
+<!-- Google & CJK Web Fonts (支持多镜像 CDN 与国内加速容灾) -->
+<%
+  var cdnCfg = theme.cdn || {};
+  var fontsDomain = cdnCfg.fonts_mirror === 'loli' ? 'fonts.loli.net' : 'fonts.googleapis.com';
+  var gstaticDomain = cdnCfg.fonts_mirror === 'loli' ? 'gstatic.loli.net' : 'fonts.gstatic.com';
+  var lxgwUrl = cdnCfg.lxgw_wenkai_cdn || 'https://npm.elemecdn.com/lxgw-wenkai-screen-webfont@1.7.0/style.css';
+%>
+<% if (theme.features && theme.features.lxgw_wenkai && (theme.features.lxgw_wenkai === true || theme.features.lxgw_wenkai.enable !== false)) { %>
+  <link rel="stylesheet" href="<%- lxgwUrl %>" media="print" onload="this.media='all'">
+<% } %>
+<link rel="preconnect" href="https://<%= fontsDomain %>">
+<link rel="preconnect" href="https://<%= gstaticDomain %>" crossorigin>
+<link href="https://<%= fontsDomain %>/css2?family=Inter:wght@400;500;600&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+<!-- Web 统计与分析服务 (Umami / Google Analytics 4 / 百度统计) -->
+<% var ana = theme.analytics || {}; %>
+<% if (ana.umami && ana.umami.enable && ana.umami.website_id) { %>
+  <script defer src="<%- ana.umami.src || 'https://cloud.umami.is/script.js' %>" data-website-id="<%= ana.umami.website_id %>"></script>
+<% } %>
+<% if (ana.google && ana.google.enable && ana.google.measurement_id) { %>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=<%= ana.google.measurement_id %>"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '<%= ana.google.measurement_id %>');
+  </script>
+<% } %>
+<% if (ana.baidu && ana.baidu.enable && ana.baidu.token) { %>
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?<%= ana.baidu.token %>";
+      var s = document.getElementsByTagName("script")[0]; 
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+<% } %>
+
+<!-- Font Awesome 6 Icons for Social & UI Elements (通过统一 CDN 映射管理) -->
+<link rel="stylesheet" href="<%- seihaku_cdn('fontawesome_css') %>" />
+
+<!-- LaTeX Math KaTeX 样式 (按需按内容智能探测，统一 CDN 管理) -->
+<%
+  var postContent = (page && page.content) ? page.content : '';
+  var isMathPage = theme.features && theme.features.math && theme.features.math.enable && (page.math === true || postContent.includes('$') || postContent.includes('\\('));
+%>
+<% if (isMathPage) { %>
+  <link rel="stylesheet" href="<%- seihaku_cdn('katex_css') %>" crossorigin="anonymous">
+<% } %>
+
+<!-- Theme Stylesheets (并行模块化加载，消除 @import 瀑布流与重复请求) -->
+<%- css([
+  'css/variables.css',
+  'css/base.css',
+  'css/header.css',
+  'css/hero.css',
+  'css/hitokoto.css',
+  'css/stream.css',
+  'css/post.css',
+  'css/markdown.css',
+  'css/footer.css',
+  'css/preloader.css',
+  'css/mobile.css',
+  'css/pages.css',
+  'css/notes.css'
+]) %>
+
+<% if (theme.features && theme.features.silk_threads) { %>
+<style>
+  :root { --threads-opacity: <%= theme.features.silk_threads.opacity_dark || 0.04 %>; }
+  :root[data-theme="light"] { --threads-opacity: <%= theme.features.silk_threads.opacity_light || 0.03 %>; }
+</style>
+<% } %>
+
+<!-- 自定义主强调色覆写 (Design Token Override) -->
+<% if (theme.style && theme.style.accent_color) { %>
+<style>
+  :root {
+    --color-accent: <%= theme.style.accent_color %> !important;
+    --accent: <%= theme.style.accent_color %> !important;
+  }
+</style>
+<% } %>

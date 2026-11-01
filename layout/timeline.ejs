@@ -1,0 +1,100 @@
+<%
+  // 汇总所有文稿 (Posts)、手记 (Notes) 与瞬间 (Moments)，按日期降序排列
+  var timelineItems = [];
+
+  // 1. 抓取文稿 (Posts)
+  site.posts.forEach(function(post) {
+    var catName = (post.categories && post.categories.length) ? post.categories.data[0].name : __('nav.writing');
+    timelineItems.push({
+      type: "post",
+      date: new Date(post.date),
+      title: post.title,
+      path: url_for(post.path),
+      tag: catName + " · " + __('nav.writing')
+    });
+  });
+
+  // 2. 抓取手记 (Notes)
+  var notesList = (site.data && site.data.notes) ? site.data.notes : [];
+  notesList.forEach(function(note, idx) {
+    var noteDate = note.date ? new Date(note.date) : (note.time && !isNaN(new Date(note.time).getTime()) ? new Date(note.time) : new Date(Date.now() - idx * 86400000 * 3));
+    if (isNaN(noteDate.getTime())) {
+      noteDate = new Date(Date.now() - idx * 86400000 * 3);
+    }
+    var noteTag = note.tag || __('nav.notes');
+    timelineItems.push({
+      type: "note",
+      date: noteDate,
+      title: note.title || (note.content.length > 40 ? note.content.substring(0, 40) + "..." : note.content),
+      path: url_for('/notes'),
+      tag: noteTag.includes("·") ? noteTag : (noteTag + " · " + __('nav.notes'))
+    });
+  });
+
+  // 按时间降序全局排序
+  timelineItems.sort(function(a, b) {
+    return b.date - a.date;
+  });
+
+  // 按年月分组
+  var grouped = {};
+  timelineItems.forEach(function(item) {
+    var year = item.date.getFullYear();
+    var month = item.date.getMonth() + 1;
+    var key = year + "-" + month;
+    if (!grouped[key]) {
+      grouped[key] = {
+        year: year,
+        month: month,
+        label: year + "." + (month < 10 ? '0' + month : month),
+        items: []
+      };
+    }
+    grouped[key].items.push(item);
+  });
+%>
+
+<div class="seihaku-page-container">
+  
+  <div class="page-header-block">
+    <span class="page-eyebrow font-mono">TIMELINE / <%= __('nav.timeline') %></span>
+    <h1 class="page-title font-serif"><%= __('pages.timeline_title') %></h1>
+    <p class="page-subtitle"><%= __('pages.timeline_sub') %></p>
+  </div>
+
+  <div class="timeline-stream-container">
+    <% for (var key in grouped) { %>
+      <% var group = grouped[key]; %>
+      <div class="timeline-year-group">
+        <div class="timeline-month-label font-mono">
+          <%= group.label %>
+        </div>
+
+        <div class="timeline-items-group">
+          <% group.items.forEach(function(item) { %>
+            <%
+              var day = item.date.getDate();
+              var dayStr = day < 10 ? '0' + day : day;
+            %>
+            <div class="timeline-item-row">
+              <span class="timeline-day-num font-mono"><%= dayStr %></span>
+              <a href="<%- item.path %>" class="timeline-item-title font-serif">
+                <%= item.title %>
+              </a>
+              <span class="timeline-item-tag font-mono"><%= item.tag %></span>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <% if (page.content) { %>
+    <div class="post-article-card" style="margin-top: 48px;">
+      <div class="markdown-body font-serif">
+        <%- page.content %>
+      </div>
+    </div>
+  <% } %>
+
+</div>

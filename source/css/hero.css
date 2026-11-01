@@ -1,0 +1,382 @@
+/* ==============================================================================
+   🍃 栖白 (Theme Seihaku) - 首页核心首屏 (Hero Showcase)
+   准则：全视口舒朗留白 · 居中排印 · 呼吸微光 · 独立于下层双流
+   ============================================================================== */
+
+.seihaku-hero-section {
+  position: relative;
+  min-height: calc(100vh - 86px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 24px 24px 60px 24px;
+  box-sizing: border-box;
+}
+
+/* 居中柔光氛围光晕 */
+.seihaku-hero-backdrop-glow {
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(600px, 90vw);
+  height: min(420px, 70vh);
+  background: radial-gradient(ellipse at center, var(--accent-glow) 0%, rgba(212, 163, 115, 0.04) 45%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(48px);
+}
+
+/* 居中圆环头像与悬浮光环 */
+.seihaku-avatar-center-wrapper {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+
+.seihaku-avatar-center {
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-subtle);
+  box-shadow: 0 12px 32px var(--shadow-sm);
+  transition: transform var(--duration-normal) var(--ease-spring), border-color var(--duration-fast);
+  background: var(--bg-surface);
+}
+
+.seihaku-avatar-center-wrapper:hover .seihaku-avatar-center {
+  transform: scale(1.08) rotate(3deg);
+  border-color: var(--color-accent);
+}
+
+/* 首页核心标语主区域 */
+.seihaku-hero-header {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 20px;
+}
+
+/* 问候语第一行：轻盈舒适、亲切自然 */
+.hero-greeting-line {
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.hero-greeting-text {
+  color: var(--text-secondary);
+}
+
+.hero-author-highlight {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.hero-wave-hand {
+  display: inline-block;
+  margin-left: 4px;
+  animation: waveEmoji 2.2s infinite ease-in-out;
+  transform-origin: 70% 70%;
+}
+
+@keyframes waveEmoji {
+  0%, 100% { transform: rotate(0deg); }
+  20%, 60% { transform: rotate(14deg); }
+  40%, 80% { transform: rotate(-10deg); }
+}
+
+/* 核心标语第二行：现代精致字号与字重，消除压迫感与过度加粗 */
+.hero-statement-main {
+  font-size: clamp(1.45rem, 2.7vw, 2.25rem);
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text-primary);
+  margin: 0;
+  letter-spacing: -0.015em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hero-statement-lead {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-orchestrate-text {
+  font-weight: 550;
+  color: var(--text-primary);
+}
+
+.hero-ideas-italic {
+  font-style: italic;
+  font-family: var(--font-serif);
+  color: var(--color-accent);
+  font-weight: 400;
+  margin: 0 0.32em;
+}
+
+.hero-statement-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 4px 12px;
+  font-size: 0.65em;
+  font-family: var(--font-mono);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  vertical-align: middle;
+  transform: translateY(-1px);
+}
+
+.hero-twinkle-sparkle {
+  color: var(--color-accent);
+  font-size: 0.9em;
+}
+
+.seihaku-ai-badge {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.hero-cursor-blink {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background-color: var(--color-accent);
+  border-radius: 1px;
+  margin-left: 2px;
+  animation: cursorBlink 1s infinite;
+}
+
+@keyframes cursorBlink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* 大写等宽副标语 */
+.seihaku-hero-subtitle {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: clamp(0.72rem, 1.05vw, 0.8rem);
+  letter-spacing: 0.09em;
+  color: var(--text-tertiary);
+  max-width: 680px;
+  margin: 0 auto 24px auto;
+  line-height: 1.6;
+}
+
+/* 首页站长自身理念金句与统计 */
+.seihaku-hero-quote-stats {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.seihaku-hero-own-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(0.95rem, 1.6vw, 1.12rem);
+  color: var(--text-secondary);
+  line-height: 1.8;
+  max-width: 640px;
+  letter-spacing: 0.04em;
+}
+
+.seihaku-hero-stats-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text-tertiary);
+  background: var(--bg-surface-elevated);
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--border-subtle);
+}
+
+/* 极简圆形线框社交图标列表 */
+.seihaku-social-icons-row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.seihaku-icon-circle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.95rem;
+  transition: all var(--duration-fast) var(--ease-spring);
+  box-shadow: var(--shadow-sm);
+}
+
+.seihaku-icon-circle:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: translateY(-3px) scale(1.08);
+  box-shadow: 0 6px 18px var(--accent-glow);
+}
+
+/* 底部轻柔向下滚动指示器 */
+.hero-scroll-cue {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--text-tertiary);
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+  cursor: pointer;
+  transition: opacity var(--duration-fast);
+  z-index: 2;
+  text-decoration: none;
+}
+
+.hero-scroll-cue:hover {
+  opacity: 1;
+  color: var(--color-accent);
+}
+
+.hero-scroll-cue-arrow {
+  animation: bounceArrow 2s infinite ease-in-out;
+}
+
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ==============================================================================
+   移动端首屏流式排版优化 (Mobile Hero Optimization)
+   ============================================================================== */
+@media (max-width: 768px) {
+  .seihaku-hero-section {
+    min-height: calc(100vh - 72px);
+    padding: 20px 16px 36px 16px;
+    box-sizing: border-box;
+  }
+
+  .seihaku-avatar-center-wrapper {
+    margin-bottom: 16px;
+  }
+
+  .seihaku-avatar-center {
+    width: 74px;
+    height: 74px;
+  }
+
+  .hero-greeting-line {
+    font-size: 1.15rem;
+    margin-bottom: 6px;
+  }
+
+  .hero-statement-main {
+    font-size: clamp(1.22rem, 5.2vw, 1.68rem);
+    line-height: 1.38;
+    gap: 6px;
+    justify-content: center;
+    max-width: 100%;
+    margin-bottom: 4px;
+  }
+
+  .hero-statement-lead {
+    gap: 2px;
+  }
+
+  .hero-ideas-italic {
+    margin: 0 0.18em;
+  }
+
+  .hero-statement-badge {
+    padding: 3px 8px;
+    font-size: 0.62em;
+    transform: translateY(0);
+  }
+
+  .seihaku-hero-subtitle {
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    line-height: 1.6;
+    padding: 0 6px;
+    margin: 0 auto 18px auto;
+  }
+
+  .seihaku-hero-quote-stats {
+    gap: 10px;
+    margin-bottom: 22px;
+    width: 100%;
+    padding: 0 4px;
+    box-sizing: border-box;
+  }
+
+  .seihaku-hero-own-quote {
+    font-size: 0.92rem;
+    line-height: 1.75;
+    padding: 0 6px;
+    letter-spacing: 0.02em;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .seihaku-hero-stats-line {
+    font-size: 0.74rem;
+    padding: 3px 12px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .seihaku-social-icons-row {
+    gap: 8px;
+    max-width: 100%;
+  }
+
+  .seihaku-icon-circle {
+    width: 36px;
+    height: 36px;
+    font-size: 0.88rem;
+  }
+
+  .hero-scroll-cue {
+    bottom: 12px;
+    font-size: 0.68rem;
+  }
+}

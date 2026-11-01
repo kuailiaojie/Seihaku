@@ -1,0 +1,733 @@
+/* ==============================================================================
+   🍃 栖白 (Theme Seihaku) - Yohaku 跨端手记阅读视界 (Notes Master-Detail Reader)
+   核心：三栏沉浸留白 · 杂志级手记名录 · 外部 AI 智析摘要 · 100% 对齐文章级随动目录
+   ============================================================================== */
+
+.yohaku-notes-viewport {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 36px 24px 80px;
+  display: grid;
+  grid-template-columns: 260px minmax(0, 760px) 220px;
+  gap: 36px;
+  align-items: start;
+  justify-content: center;
+  position: relative;
+}
+
+/* ==============================================================================
+   1. 左栏：高级手记名录导航 (Redesigned Elegant Notes Sidebar)
+   ============================================================================== */
+.yohaku-notes-nav {
+  position: sticky;
+  top: 96px;
+  height: calc(100vh - 130px);
+  max-height: 820px;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+  user-select: none;
+  overflow: hidden;
+  transition: border-color var(--duration-fast);
+}
+
+.yohaku-notes-nav:hover {
+  border-color: var(--border-focus);
+}
+
+/* 顶部专栏筛选与控制台 */
+.notes-sidebar-header {
+  padding: 16px 14px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  position: relative;
+  background: var(--bg-surface-elevated);
+  z-index: 20;
+}
+
+.notes-sidebar-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.notes-sidebar-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.notes-topic-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  font-family: var(--font-serif);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.notes-topic-filter-btn:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  background: var(--accent-subtle);
+}
+
+.topic-chevron-icon {
+  transition: transform var(--duration-fast);
+}
+
+.notes-topic-filter-btn.open .topic-chevron-icon {
+  transform: rotate(180deg);
+}
+
+/* 搜索过滤框 */
+.notes-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.notes-search-icon {
+  position: absolute;
+  left: 10px;
+  font-size: 0.76rem;
+  color: var(--text-tertiary);
+  pointer-events: none;
+}
+
+.notes-search-input {
+  width: 100%;
+  padding: 6px 26px 6px 28px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  outline: none;
+  transition: all var(--duration-fast);
+}
+
+.notes-search-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px var(--accent-subtle);
+}
+
+.notes-search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.notes-search-clear {
+  position: absolute;
+  right: 8px;
+  background: transparent;
+  border: none;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+/* 专栏下拉选择浮层 */
+.yohaku-topic-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 12px;
+  right: 12px;
+  background: var(--bg-surface-elevated);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
+  padding: 6px;
+  z-index: 60;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.yohaku-topic-dropdown.show {
+  display: flex;
+}
+
+.yohaku-topic-option {
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  transition: all var(--duration-fast);
+}
+
+.yohaku-topic-option:hover {
+  background: var(--accent-subtle);
+  color: var(--color-accent);
+}
+
+.yohaku-topic-option.active {
+  color: var(--color-accent);
+  font-weight: 600;
+  background: var(--accent-subtle);
+}
+
+/* 列表滚动区 */
+.yohaku-nav-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 8px 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.yohaku-nav-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.yohaku-nav-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* 杂志感手记条目卡片 */
+.yohaku-nav-item {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  padding: 9px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-spring);
+  overflow: hidden;
+}
+
+.nav-item-indicator {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  border-radius: 999px;
+  background: var(--color-accent);
+  opacity: 0;
+  transform: scaleY(0.4);
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.yohaku-nav-item:hover {
+  background: var(--accent-subtle);
+  transform: translateX(2px);
+}
+
+.yohaku-nav-item.active {
+  background: var(--accent-subtle);
+  border-color: rgba(var(--color-accent-rgb), 0.2);
+}
+
+.yohaku-nav-item.active .nav-item-indicator {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+.nav-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.nav-item-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.nav-item-idx {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+}
+
+.nav-item-topic {
+  font-size: 0.68rem;
+  color: var(--color-accent);
+  opacity: 0.85;
+}
+
+.nav-item-title {
+  display: block;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color var(--duration-fast);
+}
+
+.yohaku-nav-item:hover .nav-item-title,
+.yohaku-nav-item.active .nav-item-title {
+  color: var(--text-primary);
+}
+
+.yohaku-nav-item.active .nav-item-title {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* 侧边栏底部 */
+.notes-sidebar-footer {
+  padding: 10px 14px;
+  border-top: 1px solid var(--border-subtle);
+  font-size: 0.72rem;
+  color: var(--text-tertiary);
+  text-align: center;
+  background: var(--bg-surface-elevated);
+}
+
+/* ==============================================================================
+   2. 中栏：主体手记阅读卡片 (Center Reader)
+   ============================================================================== */
+.yohaku-reader-main {
+  min-width: 0;
+}
+
+.yohaku-reader-card {
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: 0 10px 36px rgba(0, 0, 0, 0.03);
+  transition: all var(--duration-normal) var(--ease-apple);
+  position: relative;
+}
+
+/* 封面横幅 */
+.yohaku-reader-cover {
+  width: 100%;
+  height: 270px;
+  position: relative;
+  overflow: hidden;
+  background: #141416;
+}
+
+.yohaku-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.yohaku-reader-card:hover .yohaku-cover-img {
+  transform: scale(1.02);
+}
+
+.yohaku-cover-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 0%, rgba(0, 0, 0, 0.28) 55%, var(--bg-surface-elevated) 100%);
+  pointer-events: none;
+}
+
+.yohaku-topic-pill {
+  position: absolute;
+  top: 20px;
+  left: 24px;
+  background: var(--color-accent);
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  z-index: 2;
+}
+
+/* 标题与元数据 */
+.yohaku-reader-head {
+  padding: 28px 36px 14px;
+}
+
+.yohaku-reader-title {
+  font-size: clamp(1.8rem, 3.2vw, 2.2rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 14px 0;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+.yohaku-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 0.84rem;
+  color: var(--text-tertiary);
+  margin-bottom: 6px;
+}
+
+.yohaku-meta-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.yohaku-date-term {
+  color: var(--text-secondary);
+}
+
+.yohaku-meta-dot {
+  color: var(--border-subtle);
+}
+
+/* 字体排印切换按钮 */
+.notes-font-toggle-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+
+.notes-font-toggle-btn:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.notes-font-toggle-btn .font-letter {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+/* ==============================================================================
+   3. AI 智析摘要卡片 (AI Summary Card - 支持外部 API 架构)
+   ============================================================================== */
+.seihaku-ai-summary-card {
+  margin: 12px 36px 24px;
+  padding: 18px 22px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+  transition: border-color var(--duration-fast);
+}
+
+.seihaku-ai-summary-card:hover {
+  border-color: var(--border-focus);
+}
+
+.ai-summary-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.ai-summary-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.ai-sparkle-icon {
+  font-size: 0.95rem;
+}
+
+.ai-badge-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.ai-model-tag {
+  font-size: 0.68rem;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-subtle);
+  color: var(--color-accent);
+  letter-spacing: 0.04em;
+}
+
+.ai-summary-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ai-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.ai-action-btn:hover {
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+  transform: translateY(-1px);
+}
+
+.ai-action-btn.refreshing .ai-refresh-icon {
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.ai-summary-body {
+  position: relative;
+}
+
+.ai-summary-text {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* Loading 蒙层 */
+.ai-summary-loading-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(var(--bg-surface-elevated-rgb, 255, 255, 255), 0.88);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: var(--radius-xl);
+  z-index: 10;
+}
+
+.ai-loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-subtle);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 0.8s infinite linear;
+}
+
+.ai-loading-text {
+  font-size: 0.78rem;
+  color: var(--color-accent);
+}
+
+/* ==============================================================================
+   4. 正文与落笔大字 (Article Body & Drop Cap)
+   ============================================================================== */
+.yohaku-article-body {
+  padding: 0 36px 40px;
+  line-height: 1.9;
+  color: var(--text-secondary);
+}
+
+.yohaku-reader-card.font-serif-mode .yohaku-article-body {
+  font-family: var(--font-serif);
+}
+
+.yohaku-reader-card.font-sans-mode .yohaku-article-body {
+  font-family: var(--font-sans);
+}
+
+/* 落笔大字规范：自然融入人文墨韵，不产生断层空白与多行重叠错位 */
+.yohaku-article-body > p:first-of-type::first-letter {
+  font-family: var(--font-serif);
+  font-size: 1.35em;
+  color: var(--color-accent);
+  font-weight: 600;
+  margin-right: 2px;
+  vertical-align: baseline;
+}
+
+.yohaku-article-body h2 {
+  font-family: var(--font-serif);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 36px 0 16px;
+  line-height: 1.4;
+  scroll-margin-top: 110px;
+}
+
+.yohaku-article-body h3 {
+  font-family: var(--font-serif);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 28px 0 12px;
+  line-height: 1.4;
+  scroll-margin-top: 110px;
+}
+
+.yohaku-article-body p {
+  font-size: 1.02rem;
+  margin-bottom: 1.4em;
+}
+
+.yohaku-article-body a {
+  color: var(--color-accent);
+  text-decoration: none;
+  word-break: break-all;
+}
+.yohaku-article-body a:hover {
+  text-decoration: underline;
+}
+
+.yohaku-article-body blockquote {
+  border-left: 3px solid var(--color-accent);
+  margin: 20px 0;
+  padding: 8px 18px;
+  background: var(--accent-subtle);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+}
+
+/* 底部交互条 */
+.yohaku-reader-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 20px 36px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.yohaku-like-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.yohaku-like-btn:hover {
+  border-color: #f43f5e;
+  color: #f43f5e;
+  transform: translateY(-1px);
+}
+
+.yohaku-like-btn.liked {
+  background: rgba(244, 63, 94, 0.08);
+  border-color: #f43f5e;
+  color: #f43f5e;
+}
+
+/* ==============================================================================
+   5. 右栏：100% 对齐文章目录规范的随动目录 (Right Floating TOC Aside)
+   样式直接继承自 post.css 中的 .post-toc-column 与 .seihaku-floating-toc
+   ============================================================================== */
+.yohaku-notes-toc-aside {
+  position: sticky;
+  top: 96px;
+  align-self: start;
+  width: 220px;
+  flex-shrink: 0;
+  z-index: 10;
+}
+
+/* ==============================================================================
+   6. 响应式断点 (Responsive Layout)
+   ============================================================================== */
+@media (max-width: 1200px) {
+  .yohaku-notes-viewport {
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 28px;
+  }
+  .yohaku-notes-toc-aside {
+    display: none;
+  }
+}
+
+@media (max-width: 860px) {
+  .yohaku-notes-viewport {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 16px 60px;
+    gap: 20px;
+  }
+  .yohaku-notes-nav {
+    position: static;
+    height: auto;
+    max-height: none;
+    width: 100%;
+  }
+  .yohaku-nav-scroll {
+    max-height: 240px;
+  }
+  .yohaku-reader-head,
+  .yohaku-article-body,
+  .yohaku-reader-footer {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .seihaku-ai-summary-card {
+    margin: 16px 0 !important;
+    padding: 14px 16px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+  .yohaku-reader-title {
+    font-size: 1.35rem;
+    line-height: 1.35;
+  }
+}

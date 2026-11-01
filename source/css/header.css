@@ -1,0 +1,631 @@
+/* ==============================================================================
+   🍃 栖白 (Theme Seihaku) - 浮动灵动胶囊导航坞 (Floating Capsule Header)
+   ============================================================================== */
+
+.seihaku-capsule-header-wrapper {
+  position: fixed;
+  top: 18px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  pointer-events: none; /* 让两侧留白区域穿透点击 */
+  padding: 0 16px;
+  transition: transform var(--duration-fast) var(--ease-apple);
+}
+
+.seihaku-capsule-nav-dock {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 12px 5px 7px;
+  background: var(--bg-glass-card);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-full);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.08), inset 0 0.5px 0.5px rgba(255, 255, 255, 0.1);
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] .seihaku-capsule-nav-dock {
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.04), inset 0 0.5px 0.5px rgba(255, 255, 255, 0.9);
+}
+
+.seihaku-capsule-nav-dock:hover {
+  border-color: var(--border-focus);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22), 0 0 16px var(--accent-glow);
+}
+
+/* 左侧圆形头像与在线状态指示点 */
+.capsule-dock-avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+  transition: transform 0.2s var(--ease-spring);
+}
+
+.capsule-dock-avatar:hover {
+  transform: scale(1.1);
+}
+
+.capsule-dock-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.capsule-dock-pulse-dot {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  border: 1.5px solid var(--bg-surface);
+  box-shadow: 0 0 6px rgba(34, 197, 94, 0.8);
+}
+
+/* 顶栏左侧状态群与网易云音乐微型胶囊 */
+.capsule-dock-left-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+/* 优雅细微圆角分割线 */
+.capsule-dock-divider {
+  width: 1px;
+  height: 14px;
+  background: var(--border-subtle);
+  border-radius: 1px;
+  flex-shrink: 0;
+  margin: 0 2px;
+}
+
+/* 中部主导航链接 */
+.capsule-dock-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.capsule-dock-item {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.18s ease, background 0.18s ease, transform 0.18s ease;
+}
+
+.capsule-dock-item:hover {
+  color: var(--text-primary);
+  background: var(--accent-soft);
+}
+
+.capsule-dock-item.active {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* 手绘暖棕弧线波浪下划线：毛笔运笔绘制与温润微澜律动 */
+.capsule-dock-item .seihaku-wave-underline {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 6px;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.capsule-dock-item .seihaku-wave-underline path {
+  stroke-dasharray: 45;
+  stroke-dashoffset: 0;
+  animation: navWaveDraw 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: stroke 0.2s ease;
+}
+
+.capsule-dock-item.active .seihaku-wave-underline {
+  animation: navWaveBreathe 3.2s ease-in-out infinite;
+}
+
+@keyframes navWaveDraw {
+  from {
+    stroke-dashoffset: 45;
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes navWaveBreathe {
+  0%, 100% {
+    transform: translateX(-50%) translateY(0) scaleY(1);
+    filter: drop-shadow(0 0 2px var(--accent-glow));
+  }
+  50% {
+    transform: translateX(-50%) translateY(-1px) scaleY(1.18);
+    filter: drop-shadow(0 0 5px var(--accent-glow));
+  }
+}
+
+/* 顶栏二级导航下拉菜单包装 */
+.capsule-dock-group,
+.capsule-dock-more-group {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.capsule-dock-group-btn,
+.capsule-dock-more-btn {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-chevron-icon,
+.more-chevron-icon {
+  opacity: 0.65;
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, color 0.2s ease;
+}
+
+.capsule-dock-group:hover .nav-chevron-icon,
+.capsule-dock-group.is-open .nav-chevron-icon,
+.capsule-dock-more-group:hover .more-chevron-icon,
+.capsule-dock-more-group.is-open .more-chevron-icon {
+  transform: rotate(180deg);
+  opacity: 1;
+  color: var(--color-accent);
+}
+
+.capsule-dock-dropdown {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%) translateY(-6px) scale(0.96);
+  transform-origin: top center;
+  width: 350px;
+  max-width: calc(100vw - 32px);
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.28), 0 0 0 1px var(--border-subtle);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s ease;
+  pointer-events: none;
+  z-index: 1002;
+}
+
+.capsule-dock-dropdown.is-compact {
+  width: 220px;
+}
+
+/* 隐形鼠标悬浮安全桥 (Hover Tunnel) - 跨越 12px 间隙，彻底消除鼠标滑向选项时面板误关闭 */
+.capsule-dock-dropdown::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 0;
+  right: 0;
+  height: 16px;
+  background: transparent;
+  pointer-events: auto;
+}
+
+[data-theme="light"] .capsule-dock-dropdown {
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.capsule-dock-group.is-open .capsule-dock-dropdown,
+.capsule-dock-group:hover .capsule-dock-dropdown,
+.capsule-dock-group:focus-within .capsule-dock-dropdown,
+.capsule-dock-more-group.is-open .capsule-dock-dropdown,
+.capsule-dock-more-group:hover .capsule-dock-dropdown,
+.capsule-dock-more-group:focus-within .capsule-dock-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.capsule-dropdown-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* 分组小标题 */
+.dropdown-group-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dropdown-group-heading {
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--text-tertiary);
+  padding: 2px 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  text-transform: uppercase;
+  border-bottom: 0.5px dashed var(--border-subtle);
+  padding-bottom: 4px;
+}
+
+.heading-sparkle {
+  color: var(--color-accent);
+  font-size: 0.75rem;
+}
+
+/* 双列网格 */
+.dropdown-group-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 5px;
+}
+
+/* 单个网格卡片 */
+.dropdown-grid-card {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 8px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  background: transparent;
+  border: 1px solid transparent;
+  transition: all 0.16s ease;
+}
+
+.grid-card-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-subtle);
+  color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  flex-shrink: 0;
+  transition: transform 0.16s ease, background 0.16s ease;
+}
+
+.grid-card-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-card-title {
+  font-size: 0.82rem;
+  font-weight: 550;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.25;
+}
+
+.grid-card-desc {
+  font-size: 0.68rem;
+  color: var(--text-tertiary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+  margin-top: 1px;
+}
+
+.dropdown-grid-card:hover {
+  background: var(--accent-soft);
+  border-color: var(--border-subtle);
+  transform: translateY(-1px);
+}
+
+.dropdown-grid-card:hover .grid-card-icon {
+  transform: scale(1.08);
+  background: var(--color-accent);
+  color: #fff;
+}
+
+.dropdown-grid-card.active {
+  background: var(--accent-soft);
+  border-color: var(--border-focus);
+}
+
+.dropdown-grid-card.active .grid-card-title {
+  color: var(--color-accent);
+  font-weight: 600;
+}
+
+/* 兼容保留旧版类名 */
+.dock-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.86rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  transition: all 0.18s ease;
+}
+
+.dock-dropdown-item:hover {
+  color: var(--text-primary);
+  background: var(--accent-soft);
+}
+
+/* 右侧色彩模式切换按钮 */
+.capsule-dock-actions {
+  display: flex;
+  align-items: center;
+}
+
+.capsule-theme-toggle-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 0.5px solid transparent;
+  background: transparent;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-spring);
+}
+
+.capsule-theme-toggle-btn:hover {
+  color: var(--color-accent);
+  background: var(--accent-soft);
+  border-color: var(--border-subtle);
+  transform: scale(1.1);
+}
+
+/* 品牌文字名称 */
+.capsule-dock-brand {
+  font-size: 0.96rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-left: 2px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color var(--duration-fast);
+}
+
+.capsule-dock-brand:hover {
+  color: var(--color-accent);
+}
+
+/* 移动端顶栏精巧悬浮胶囊 */
+@media (max-width: 768px) {
+  .seihaku-capsule-header-wrapper {
+    top: 10px;
+    padding: 0 16px;
+    width: 100%;
+    box-sizing: border-box;
+    pointer-events: none;
+  }
+
+  .seihaku-capsule-nav-dock {
+    width: 100%;
+    max-width: 440px;
+    justify-content: space-between;
+    padding: 5px 12px 5px 6px;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  .capsule-dock-links {
+    display: none !important;
+  }
+
+  .capsule-dock-divider {
+    display: none !important;
+  }
+
+
+  .capsule-theme-toggle-btn {
+    width: 34px;
+    height: 34px;
+  }
+}
+
+/* ==============================================================================
+   全站即时检索面板 (Seihaku Spotlight Search Modal · ⌘K)
+   ============================================================================== */
+.seihaku-search-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(15, 14, 13, 0.52);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 12vh 16px 24px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s var(--ease-apple), visibility 0.22s ease;
+}
+
+.seihaku-search-backdrop.is-open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.seihaku-search-dialog {
+  width: 100%;
+  max-width: 620px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.32);
+  overflow: hidden;
+  transform: translateY(-10px) scale(0.98);
+  transition: transform 0.26s var(--ease-spring);
+}
+
+.seihaku-search-backdrop.is-open .seihaku-search-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.seihaku-search-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.seihaku-search-icon {
+  color: var(--color-accent);
+  font-size: 0.95rem;
+}
+
+.seihaku-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 1rem;
+  min-width: 0;
+}
+
+.seihaku-search-input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.seihaku-search-kbd {
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  border-radius: var(--radius-xs);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  user-select: none;
+}
+
+.seihaku-search-results {
+  max-height: 58vh;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.seihaku-search-empty {
+  padding: 36px 20px;
+  text-align: center;
+  color: var(--text-tertiary);
+  font-size: 0.88rem;
+}
+
+.seihaku-search-hit {
+  display: block;
+  padding: 12px 16px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: background var(--duration-fast);
+  margin-bottom: 4px;
+}
+
+.seihaku-search-hit:hover,
+.seihaku-search-hit.is-selected {
+  background: var(--accent-subtle);
+  border-left: 2.5px solid var(--color-accent);
+}
+
+.seihaku-search-mark {
+  background: rgba(var(--color-accent-rgb, 225, 29, 72), 0.2);
+  color: var(--color-accent);
+  padding: 0 2px;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+.seihaku-search-hit-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.seihaku-search-hit-title {
+  font-family: var(--font-serif);
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.seihaku-search-hit-badge {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+.seihaku-search-hit-snippet {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

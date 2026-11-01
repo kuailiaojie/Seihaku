@@ -1,0 +1,103 @@
+<%
+  // 全站统计数据计算 (由 seihaku_site_stats Helper 统一提供)
+  var siteStats = typeof seihaku_site_stats === 'function' ? seihaku_site_stats() : { postCount: site.posts.length, wordsInWan: '0.0', diffDays: 1 };
+  var wordsInWan = siteStats.wordsInWan;
+  var diffDays = siteStats.diffDays;
+
+  var heroCfg = theme.hero || {};
+  var badgeWords = (heroCfg.badge_words && heroCfg.badge_words.length) ? heroCfg.badge_words : ["AI Agents", "Crafted Code", "Apple HIG"];
+  var authorName = config.author || (theme.author && theme.author.name) || "栖白";
+%>
+
+<section class="seihaku-hero-section">
+  <!-- 居中柔光氛围光晕 -->
+  <div class="seihaku-hero-backdrop-glow" aria-hidden="true"></div>
+
+  <!-- 居中圆环头像与悬浮光环 -->
+  <div class="seihaku-avatar-center-wrapper">
+    <img 
+      src="<%- url_for((theme.author && theme.author.avatar) || '/images/avatar.svg') %>" 
+      alt="<%= authorName %>" 
+      class="seihaku-avatar-center"
+      onerror="this.src='/images/avatar.svg'"
+    >
+  </div>
+
+  <!-- 首页核心标语主区域 (层级分明 · 雅致留白) -->
+  <div class="seihaku-hero-header">
+    <div class="hero-greeting-line">
+      <span class="hero-greeting-text"><%= heroCfg.greeting || __('hero.greeting') %> </span>
+      <span class="hero-author-highlight"><%= authorName %></span>
+      <span class="hero-wave-hand"><%= heroCfg.wave_emoji || "👋" %></span>
+    </div>
+    <h1 class="hero-statement-main">
+      <span class="hero-statement-lead">
+        <span class="hero-orchestrate-text"><%= heroCfg.h1_prefix || "I orchestrate" %></span>
+        <span class="hero-ideas-italic"><%= heroCfg.h1_italic || "ideas" %></span>
+        <span class="hero-orchestrate-text"><%= heroCfg.h1_suffix || "into products with" %></span>
+      </span>
+      <span class="hero-statement-badge">
+        <span class="hero-twinkle-sparkle"><%= heroCfg.twinkle_icon || "✦" %></span>
+        <code class="seihaku-ai-badge">
+          <span id="typewriter-badge-text"><%= badgeWords[0] %></span>
+        </code>
+        <span class="hero-cursor-blink"></span>
+      </span>
+    </h1>
+  </div>
+
+  <!-- 大写等宽副标语 -->
+  <div class="seihaku-hero-subtitle">
+    <%= (theme.slogan && theme.slogan.sub) || 'A PRODUCT-MINDED ENGINEER BUILDING TRANQUIL INTERFACES AND AUTONOMOUS SYSTEMS.' %>
+  </div>
+
+  <!-- 首页站长自身理念金句与统计 -->
+  <div class="seihaku-hero-quote-stats">
+    <div class="seihaku-hero-own-quote font-serif">
+      “<%= heroCfg.quote || (theme.slogan && theme.slogan.primary) || '于方寸留白处，栖息万物微光。' %>”
+    </div>
+
+    <% if (heroCfg.show_stats !== false) { %>
+      <div class="seihaku-hero-stats-line">
+        <span><%= site.posts.length %> <%= __('hero.stats_posts') %></span>
+        <span>·</span>
+        <span><%= wordsInWan %> <%= __('hero.stats_words') %></span>
+        <span>·</span>
+        <span><%= diffDays %> <%= __('hero.stats_days') %></span>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- 极简圆形线框社交图标列表 (完全由配置文件数据驱动) -->
+  <% if (heroCfg.social && heroCfg.social.length > 0) { %>
+    <div class="seihaku-social-icons-row">
+      <% heroCfg.social.forEach(function(item) { %>
+        <a 
+          href="<%- item.link %>" 
+          target="<%= item.link.startsWith('http') ? '_blank' : '_self' %>" 
+          rel="noreferrer" 
+          class="seihaku-icon-circle" 
+          aria-label="<%= item.name %>"
+          title="<%= item.name %>"
+        >
+          <i class="<%= item.icon %>"></i>
+        </a>
+      <% }); %>
+    </div>
+  <% } %>
+
+  <!-- 底部轻柔向下滚动指示器 -->
+  <a href="#content-stream" class="hero-scroll-cue" aria-label="SCROLL">
+    <span>SCROLL</span>
+    <svg class="hero-scroll-cue-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+  </a>
+</section>
+
+<!-- 动态打字机词汇传递脚本 -->
+<script>
+  window.__SEIHAKU_WORDS = <%- JSON.stringify(badgeWords) %>;
+  window.__SEIHAKU_BADGE_SPEED = <%= heroCfg.badge_speed || 90 %>;
+  window.__SEIHAKU_BADGE_DELAY = <%= heroCfg.badge_delay || 2400 %>;
+</script>

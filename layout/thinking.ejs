@@ -1,0 +1,124 @@
+<%
+  // 筛选属于思考/思维模型/深度随想的文章与手记
+  var thinkingCfg = theme.thinking || {};
+  var allowedCategories = Array.isArray(thinkingCfg.categories) && thinkingCfg.categories.length
+    ? thinkingCfg.categories
+    : ["思维模型", "哲学", "思考", "Thinking", "Philosophy", "思索"];
+  var allowedTags = Array.isArray(thinkingCfg.tags) && thinkingCfg.tags.length
+    ? thinkingCfg.tags
+    : ["思考", "思维模型", "心流", "智能体", "Thinking", "Flow", "思索"];
+
+  var thinkingPosts = [];
+  site.posts.sort('date', -1).forEach(function(post) {
+    var isThinking = false;
+    if (post.categories) {
+      post.categories.forEach(function(c) {
+        if (allowedCategories.indexOf(c.name) !== -1) isThinking = true;
+      });
+    }
+    if (post.tags) {
+      post.tags.forEach(function(t) {
+        if (allowedTags.indexOf(t.name) !== -1) isThinking = true;
+      });
+    }
+    if (isThinking) {
+      thinkingPosts.push(post);
+    }
+  });
+
+  // 抓取思考类手记
+  var thinkingNotes = [];
+  var allNotes = (site.data && site.data.notes) ? site.data.notes : [];
+  allNotes.forEach(function(n) {
+    if (n.tag === "思考" || n.tag === "哲学" || n.tag === "Thinking" || n.tag === "思索" || (n.content && n.content.includes("思维"))) {
+      thinkingNotes.push(n);
+    }
+  });
+%>
+
+<section class="seihaku-archive-container thinking-page-container">
+  <header class="archive-header">
+    <span class="archive-eyebrow font-mono">ESSAYS / <%= __('nav.thinking') %></span>
+    <h1 class="archive-title font-serif">
+      <span><%= __('pages.thinking_title') %></span>
+      <span class="archive-count-badge font-mono">
+        <%= thinkingPosts.length %> <%= __('hero.stats_posts') %>
+      </span>
+    </h1>
+    <p class="archive-desc">
+      <%= page.description || __('pages.thinking_sub') %>
+    </p>
+  </header>
+
+  <!-- 页面自定义 Markdown 导言 -->
+  <% if (page.content && page.content.trim().length > 0) { %>
+    <div class="markdown-body" style="margin-bottom: 36px;">
+      <%- page.content %>
+    </div>
+  <% } %>
+
+  <!-- 思考长文专栏 -->
+  <div class="thinking-posts-grid">
+    <% if (thinkingPosts.length > 0) { %>
+      <% thinkingPosts.forEach(function(post) { %>
+        <article class="thinking-card">
+          <div class="thinking-card-meta">
+            <time datetime="<%= date_xml(post.date) %>" class="font-mono">
+              <%= date(post.date, 'YYYY-MM-DD') %>
+            </time>
+            <% if (post.categories && post.categories.length) { %>
+              <span class="thinking-cat-pill"><%= post.categories.data[0].name %></span>
+            <% } %>
+          </div>
+
+          <h2 class="thinking-card-title font-serif">
+            <a href="<%- url_for(post.path) %>">
+              <%= post.title %>
+            </a>
+          </h2>
+
+          <% var excerpt = post.excerpt ? strip_html(post.excerpt) : strip_html(post.content).substring(0, 120); %>
+          <p class="thinking-card-excerpt">
+            <%= excerpt %>...
+          </p>
+
+          <div class="thinking-card-footer">
+            <a href="<%- url_for(post.path) %>" class="thinking-read-link">
+              <span><%= __('stream.minutes_read') %></span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </article>
+      <% }); %>
+    <% } else { %>
+      <div style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; color: var(--text-tertiary); background: var(--bg-surface-elevated); border: 1px dashed var(--border-subtle); border-radius: var(--radius-xl);">
+        <i class="far fa-lightbulb" style="font-size: 2.2rem; color: var(--color-accent); margin-bottom: 12px; opacity: 0.6;"></i>
+        <p style="margin: 0; font-size: 0.92rem;"><%= __('stream.empty_writing') %></p>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- 思考微手记 (Fragments) -->
+  <% if (thinkingNotes.length > 0) { %>
+    <div class="thinking-notes-section">
+      <div class="thinking-section-head">
+        <span class="font-mono eyebrow">THOUGHT FRAGMENTS</span>
+        <h3 class="font-serif section-title"><%= __('stream.musings') %></h3>
+      </div>
+
+      <div class="thinking-notes-grid">
+        <% thinkingNotes.forEach(function(n) { %>
+          <div class="thinking-note-card font-serif">
+            <div class="note-time-row font-mono">
+              <span><%= n.time || '—' %></span>
+              <span class="note-pill"><%= n.tag || __('nav.thinking') %></span>
+            </div>
+            <div class="note-body">
+              <%= n.content %>
+            </div>
+          </div>
+        <% }); %>
+      </div>
+    </div>
+  <% } %>
+</section>

@@ -1,0 +1,150 @@
+<%
+  function resolveNavTitle(name) {
+    var keyMap = {
+      '首页': 'nav.home', 'Home': 'nav.home', 'ホーム': 'nav.home',
+      '文稿': 'nav.writing', 'Writing': 'nav.writing', '記事': 'nav.writing',
+      '笔墨': 'nav.writing',
+      '手记': 'nav.notes', 'Notes': 'nav.notes', '手記': 'nav.notes',
+      '项目': 'nav.portfolio', 'Portfolio': 'nav.portfolio', '作品': 'nav.portfolio',
+      '时光': 'nav.timeline', 'Timeline': 'nav.timeline', '年表': 'nav.timeline',
+      '友邻': 'nav.friends', 'Friends': 'nav.friends', '知己': 'nav.friends',
+      '关于': 'nav.about_short', 'About': 'nav.about_short',
+      '探索': 'nav.explore', 'Explore': 'nav.explore',
+      '更多': 'nav.more', 'More': 'nav.more', 'その他': 'nav.more'
+    };
+    if (keyMap[name]) return __(keyMap[name]);
+    if (name && name.startsWith('nav.')) return __(name);
+    return name;
+  }
+
+  function resolveSubTitle(name) {
+    var keyMap = {
+      '全部文稿': 'nav.writing',
+      '文稿归档': 'nav.writing',
+      '随笔手记': 'nav.notes',
+      '精选项目': 'nav.portfolio', 'Portfolio': 'nav.portfolio',
+      '分类专栏': 'nav.categories', 'Categories': 'nav.categories',
+      '标签画廊': 'nav.tags', 'Tags': 'nav.tags',
+      '时光足迹': 'nav.timeline', '时光': 'nav.timeline', 'Timeline': 'nav.timeline',
+      '文档中心': 'nav.docs', 'Docs': 'nav.docs',
+      '追番记录': 'nav.bangumis', 'Bangumi': 'nav.bangumis',
+      '我的装备': 'nav.equipments', 'Equipments': 'nav.equipments',
+      '光影图库': 'nav.photos', '光影画廊': 'nav.photos', 'Gallery': 'nav.photos',
+      'Steam 展馆': 'nav.steam', 'Steam 游戏': 'nav.steam', 'Steam': 'nav.steam',
+      '友邻聚落': 'nav.friends', 'Friends': 'nav.friends',
+      '朋友圈子': 'nav.friendcircle', 'Friend Circle': 'nav.friendcircle',
+      '访客留言': 'nav.guestbook', 'Guestbook': 'nav.guestbook',
+      '关于栖白': 'nav.about', '关于本站': 'nav.about', 'About': 'nav.about'
+    };
+    if (keyMap[name]) return __(keyMap[name]);
+    if (name && name.startsWith('nav.')) return __(name);
+    return name;
+  }
+
+  var navMenu = typeof seihaku_nav_menu === 'function' ? seihaku_nav_menu() : [];
+%>
+
+<header class="seihaku-capsule-header-wrapper" id="site-header">
+  <div class="seihaku-capsule-nav-dock" id="capsule-nav-dock">
+    <!-- Left: 头像与品牌 -->
+    <div class="capsule-dock-left-group">
+      <a href="<%- url_for('/') %>" class="capsule-dock-avatar" aria-label="<%= __('nav.home') %>" title="<%= config.title || (theme.author && theme.author.name) || '栖白' %>">
+        <img 
+          src="<%- url_for((theme.author && theme.author.avatar) || '/images/avatar.svg') %>" 
+          alt="<%= (theme.author && theme.author.name) || 'Avatar' %>" 
+          class="capsule-dock-avatar-img"
+        >
+        <span class="capsule-dock-pulse-dot" title="<%= __('header.online') %>"></span>
+      </a>
+      <a href="<%- url_for('/') %>" class="capsule-dock-brand font-serif" title="<%= config.title || (theme.author && theme.author.name) || '栖白' %>">
+        <%= config.title || "栖白" %>
+      </a>
+    </div>
+
+    <!-- 分割线 -->
+    <div class="capsule-dock-divider" aria-hidden="true"></div>
+
+    <!-- Center: 核心常驻导航链接 (精简一级 + 二级折叠下拉) -->
+    <nav class="capsule-dock-links" aria-label="<%= __('header.search') %>">
+      <% navMenu.forEach(function(item, idx) { %>
+        <%
+          var hasChildren = item.children && item.children.length > 0;
+          var navLabel = resolveNavTitle(item.name);
+          var isParentActive = item.isActive;
+        %>
+        <% if (!hasChildren) { %>
+          <a href="<%- url_for(item.url || '/') %>" class="capsule-dock-item <%= isParentActive ? 'active' : '' %>">
+            <span><%= navLabel %></span>
+            <% if (isParentActive) { %>
+              <svg class="seihaku-wave-underline" width="34" height="7" viewBox="0 0 34 7" fill="none">
+                <path d="M1.5 4.5 C 7 2.8, 14 5.2, 22 3.6 S 29 3.2, 32.5 2.5" stroke="var(--color-accent)" stroke-linecap="round" stroke-width="2.2"/>
+              </svg>
+            <% } %>
+          </a>
+        <% } else { %>
+          <div class="capsule-dock-group" data-nav-group="<%= navLabel %>" id="capsule-nav-group-<%= idx %>">
+            <a href="<%- url_for(item.url || '#') %>" class="capsule-dock-item capsule-dock-group-btn <%= isParentActive ? 'active' : '' %>" aria-haspopup="true" aria-expanded="false">
+              <span><%= navLabel %></span>
+              <svg class="nav-chevron-icon" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"></polyline></svg>
+              <% if (isParentActive) { %>
+                <svg class="seihaku-wave-underline" width="34" height="7" viewBox="0 0 34 7" fill="none">
+                  <path d="M1.5 4.5 C 7 2.8, 14 5.2, 22 3.6 S 29 3.2, 32.5 2.5" stroke="var(--color-accent)" stroke-linecap="round" stroke-width="2.2"/>
+                </svg>
+              <% } %>
+            </a>
+
+            <!-- 二级折叠下拉浮岛 (Apple HIG 磨砂浮岛卡片) -->
+            <div class="capsule-dock-dropdown <%= item.children.length > 3 ? 'is-grid' : 'is-compact' %>" role="menu">
+              <div class="capsule-dropdown-inner">
+                <% if (item.desc) { %>
+                  <div class="dropdown-group-heading font-mono">
+                    <span class="heading-sparkle">✦</span>
+                    <span><%= item.desc %></span>
+                  </div>
+                <% } %>
+                <div class="dropdown-group-grid <%= item.children.length <= 3 ? 'is-single-col' : '' %>">
+                  <% item.children.forEach(function(subItem) { %>
+                    <%
+                      var subLabel = resolveSubTitle(subItem.name);
+                    %>
+                    <a href="<%- url_for(subItem.url) %>" class="dropdown-grid-card <%= subItem.isActive ? 'active' : '' %>" role="menuitem">
+                      <div class="grid-card-icon">
+                        <i class="<%= subItem.icon || 'fas fa-compass' %>"></i>
+                      </div>
+                      <div class="grid-card-body">
+                        <div class="grid-card-title"><%= subLabel %></div>
+                        <% if (subItem.desc) { %>
+                          <div class="grid-card-desc"><%= subItem.desc %></div>
+                        <% } %>
+                      </div>
+                    </a>
+                  <% }); %>
+                </div>
+              </div>
+            </div>
+          </div>
+        <% } %>
+      <% }); %>
+    </nav>
+
+    <!-- 分割线 -->
+    <div class="capsule-dock-divider" aria-hidden="true"></div>
+
+    <!-- Right: 全站检索与色彩模式切换按钮 -->
+    <div class="capsule-dock-actions" style="display: inline-flex; align-items: center; gap: 4px;">
+      <% if (!theme.features || !theme.features.search || theme.features.search.enable !== false) { %>
+        <button id="header-search-btn" class="capsule-theme-toggle-btn" type="button" aria-label="<%= __('header.search') %>" title="<%= __('header.search') %>">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+      <% } %>
+      <button id="theme-toggle-btn" class="capsule-theme-toggle-btn" aria-label="<%= __('header.theme_toggle') %>" title="<%= __('header.theme_toggle') %>">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>

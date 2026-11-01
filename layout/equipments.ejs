@@ -1,0 +1,52 @@
+<%
+  var eqGroups = (site.data && site.data.equipments && site.data.equipments.length > 0)
+    ? site.data.equipments
+    : ((theme.equipments && theme.equipments.list) ? theme.equipments.list : []);
+%>
+
+<div class="seihaku-page-container">
+  
+  <div class="page-header-block">
+    <span class="page-eyebrow font-mono">EQUIPMENTS / <%= __('nav.equipments') %></span>
+    <h1 class="page-title font-serif"><%= __('pages.equipments_title') %></h1>
+    <p class="page-subtitle"><%= __('pages.equipments_sub') %></p>
+  </div>
+
+  <% if (eqGroups && eqGroups.length > 0) { %>
+    <% eqGroups.forEach(function(group) { %>
+      <div class="equipments-group">
+        <h2 class="equipments-group-title">
+          <i class="fas fa-tools" style="color: var(--color-accent); font-size: 0.9em;"></i>
+          <span><%= group.category %></span>
+        </h2>
+
+        <div class="equipments-grid">
+          <% group.items.forEach(function(item) { %>
+            <div class="equipment-card">
+              <img src="<%- item.thumb %>" alt="<%= item.name %>" class="equipment-thumb" loading="lazy">
+              <div class="equipment-details">
+                <div class="equipment-name"><%= item.name %></div>
+                <div class="equipment-spec"><%= item.spec %></div>
+                <p class="equipment-review"><%= item.review %></p>
+              </div>
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <div style="text-align: center; padding: 48px 24px; color: var(--text-tertiary); background: var(--bg-surface-elevated); border: 1px dashed var(--border-subtle); border-radius: var(--radius-xl);">
+      <i class="fas fa-tools" style="font-size: 2.2rem; color: var(--color-accent); margin-bottom: 12px; opacity: 0.6;"></i>
+      <p style="margin: 0; font-size: 0.92rem;"><%= __('pages.equipments_empty') %></p>
+    </div>
+  <% } %>
+
+  <% if (page.content) { %>
+    <div class="post-article-card" style="margin-top: 48px;">
+      <div class="markdown-body font-serif">
+        <%- page.content %>
+      </div>
+    </div>
+  <% } %>
+
+</div>

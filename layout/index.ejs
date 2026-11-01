@@ -1,0 +1,187 @@
+<!-- 首屏展示区 (第一页展示) -->
+<% if (page.current === 1) { %>
+  <% if (!theme.hero || theme.hero.enable !== false) { %>
+    <%- partial('partial/hero') %>
+  <% } %>
+
+  <!-- 独立一言诗韵长廊 (宁静转场过渡) -->
+  <% if (!theme.hitokoto || theme.hitokoto.enable !== false) { %>
+  <div class="seihaku-hitokoto-strip-container" id="content-stream">
+    <div class="seihaku-hitokoto-strip">
+      <%
+        var hitokotoTag = __('pages.hitokoto_tag');
+        if (!hitokotoTag || hitokotoTag === 'pages.hitokoto_tag') hitokotoTag = '一言 · HITOKOTO';
+        var hitokotoQuote = __('pages.hitokoto_quote');
+        if (!hitokotoQuote || hitokotoQuote === 'pages.hitokoto_quote') hitokotoQuote = '万物皆有裂痕，那是光照进来的地方。';
+        var hitokotoFrom = __('pages.hitokoto_from');
+        if (!hitokotoFrom || hitokotoFrom === 'pages.hitokoto_from') hitokotoFrom = '莱昂纳德·科恩';
+        var hitokotoRefresh = __('pages.hitokoto_refresh');
+        if (!hitokotoRefresh || hitokotoRefresh === 'pages.hitokoto_refresh') hitokotoRefresh = '点击刷新一言';
+      %>
+      <div class="hitokoto-strip-left">
+        <span class="hitokoto-strip-tag font-mono">✦ <%= hitokotoTag %></span>
+        <div class="hitokoto-strip-content">
+          <span class="seihaku-hitokoto-text font-serif" id="seihaku-hitokoto-text"><%= hitokotoQuote %></span>
+          <span class="seihaku-hitokoto-from" id="seihaku-hitokoto-from"> —— <%= hitokotoFrom %></span>
+        </div>
+      </div>
+      <button class="hitokoto-refresh-btn" id="hitokoto-refresh-btn" type="button" title="<%= hitokotoRefresh %>" aria-label="<%= hitokotoRefresh %>">
+        <svg class="hitokoto-refresh-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10"></polyline>
+          <polyline points="1 20 1 14 7 14"></polyline>
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <% } else { %>
+    <div id="content-stream" style="scroll-margin-top: 96px;"></div>
+  <% } %>
+<% } %>
+
+<%
+  var streamCfg = theme.stream || {};
+  var normNotesObj = (typeof seihaku_normalized_notes === 'function') ? seihaku_normalized_notes() : null;
+  var musingsList = (normNotesObj && normNotesObj.notes && normNotesObj.notes.length > 0)
+    ? normNotesObj.notes
+    : (site.data && (site.data.notes || site.data.musings) ? (site.data.notes || site.data.musings) : []);
+%>
+
+<!-- 栖白双流信息网格 (左：近期笔墨 / 右：碎念手记) -->
+<section class="seihaku-dual-stream-section">
+  <div class="seihaku-dual-stream-grid">
+    
+    <!-- 左列：近期笔墨 (Recent Writing) -->
+    <div class="stream-column-writing">
+      <div class="column-header">
+        <span class="column-eyebrow"><%= streamCfg.left_title_en || __('stream.recent_writing_sub') %></span>
+        <h2 class="column-title font-serif"><%= streamCfg.left_title_zh || __('stream.recent_writing') %></h2>
+      </div>
+
+      <div class="writing-articles-list">
+        <%
+          var postsList = (typeof seihaku_sorted_posts === 'function') ? seihaku_sorted_posts(page.posts) : (page.posts || []);
+        %>
+        <% if (postsList && postsList.length > 0) { %>
+          <% postsList.forEach(function(post, index) { %>
+            <% var isPinned = post.sticky || post.pin; %>
+            <article class="writing-item <%= index === 0 ? 'writing-item-featured' : '' %>">
+              <% if (index === 0) { %>
+                <!-- 最新首篇精选展示卡片 -->
+                <div class="featured-writing-card">
+                  <% if (post.cover) { %>
+                    <a href="<%- url_for(post.path) %>" class="featured-cover-link" aria-label="<%= post.title %>">
+                      <div class="featured-cover-box">
+                        <img src="<%- post.cover %>" alt="<%= post.title %>" class="featured-cover-img" loading="lazy">
+                      </div>
+                    </a>
+                  <% } %>
+                  <div class="item-meta-row">
+                    <% if (isPinned) { %>
+                      <span class="item-pinned-badge" style="color: var(--color-accent); font-weight: 600; display: inline-flex; align-items: center; gap: 4px;">
+                        <i class="fas fa-thumbtack" style="font-size: 0.72rem;"></i>
+                        <span><%= __('post.sticky') || '置顶' %></span>
+                      </span>
+                      <span>·</span>
+                    <% } %>
+                    <time datetime="<%= date_xml(post.date) %>">
+                      <%= date(post.date, 'YYYY-MM-DD') %>
+                    </time>
+                    <% if (post.categories && post.categories.length) { %>
+                      <span>·</span>
+                      <span class="item-category"><%= post.categories.data[0].name %></span>
+                    <% } %>
+                    <span>·</span>
+                    <% var featStats = typeof seihaku_post_stats === 'function' ? seihaku_post_stats(post) : { readTime: 1 }; %>
+                    <span><%= featStats.readTime %> <%= __('stream.minutes_read') %></span>
+                  </div>
+
+                  <h3 class="featured-title font-serif">
+                    <a href="<%- url_for(post.path) %>">
+                      <%= post.title || __('post.untitled') || '无题' %>
+                    </a>
+                  </h3>
+
+                  <% var excerptText = post.excerpt ? strip_html(post.excerpt) : strip_html(post.content).substring(0, 140); %>
+                  <% if (excerptText) { %>
+                    <p class="featured-excerpt">
+                      <%= excerptText %>...
+                    </p>
+                  <% } %>
+                </div>
+              <% } else { %>
+                <!-- 后续文章以整齐数字标号排列 -->
+                <div class="standard-writing-row">
+                  <span class="item-index-num"><%= index < 10 ? '0' + index : index %></span>
+                  <div class="item-main-content">
+                    <div class="flex-title-date-row">
+                      <h3 class="standard-title">
+                        <% if (isPinned) { %>
+                          <span style="color: var(--color-accent); font-size: 0.76rem; vertical-align: middle; margin-right: 4px;" title="<%= __('post.sticky') || '置顶' %>"><i class="fas fa-thumbtack"></i></span>
+                        <% } %>
+                        <a href="<%- url_for(post.path) %>">
+                          <%= post.title || __('post.untitled') || '无题' %>
+                        </a>
+                      </h3>
+                      <time class="item-date" datetime="<%= date_xml(post.date) %>">
+                        <%= date(post.date, 'MM-DD') %>
+                      </time>
+                    </div>
+                    <% if (post.categories && post.categories.length) { %>
+                      <div class="item-sub-info">
+                        <%= __('nav.writing') %> · <%= post.categories.data[0].name %>
+                      </div>
+                    <% } %>
+                  </div>
+                </div>
+              <% } %>
+            </article>
+          <% }); %>
+        <% } else { %>
+          <div class="empty-state" style="padding: 40px 16px; text-align: center; color: var(--text-tertiary);"><%= __('stream.empty_writing') %></div>
+        <% } %>
+      </div>
+
+      <!-- 分页导航 -->
+      <%- partial('partial/pagination') %>
+    </div>
+
+    <!-- 右列：碎念手记 (Musings & Notes) -->
+    <div class="stream-column-musings">
+      <div class="column-header">
+        <span class="column-eyebrow"><%= streamCfg.right_title_en || __('stream.musings_sub') %></span>
+        <h2 class="column-title font-serif"><%= streamCfg.right_title_zh || __('stream.musings') %></h2>
+      </div>
+
+      <div class="musings-feed-list">
+        <% if (musingsList && musingsList.length > 0) { %>
+          <% musingsList.slice(0, 6).forEach(function(item) { %>
+            <a href="<%- url_for('/notes?nid=' + (item.nid || 1)) %>" class="musing-card-link" style="text-decoration: none; color: inherit; display: block;">
+              <div class="musing-card">
+                <div class="musing-header">
+                  <span class="musing-tag"><%= (item.topic ? item.topic.name : item.tag) || __('nav.notes') %></span>
+                  <span>·</span>
+                  <span class="musing-time"><%= item.time || (item.created ? item.created.slice(0, 10) : '—') %></span>
+                </div>
+                <% if (item.title && item.title !== '手记' && (!item.content || !item.content.startsWith(item.title))) { %>
+                  <h4 class="musing-title font-serif" style="margin: 0 0 6px 0; font-size: 0.95rem; font-weight: 600; color: var(--text-primary);"><%= item.title %></h4>
+                <% } %>
+                <div class="musing-body font-serif">
+                  <%= item.content %>
+                </div>
+              </div>
+            </a>
+          <% }); %>
+        <% } else { %>
+          <div class="empty-state" style="padding: 40px 16px; text-align: center; color: var(--text-tertiary);"><%= __('stream.empty_musings') %></div>
+        <% } %>
+
+        <a href="<%- url_for('/notes') %>" class="musings-view-all">
+          <span><%= __('stream.read_more_notes') %></span>
+          <i class="fas fa-arrow-right" style="font-size: 0.75rem;"></i>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>

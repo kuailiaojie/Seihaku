@@ -1,0 +1,198 @@
+# ==============================================================================
+# 🍃 Theme Seihaku - English Language Pack (en)
+# ==============================================================================
+
+# Core Global Navigation
+nav:
+  home: "Home"
+  writing: "Writing"
+  notes: "Notes"
+  timeline: "Timeline"
+  thinking: "Thinking"
+  more: "More"
+  explore: "Explore"
+  portfolio: "Portfolio"
+  categories: "Categories"
+  tags: "Tags"
+  docs: "Docs"
+  bangumis: "Bangumi"
+  equipments: "Equipments"
+  photos: "Gallery"
+  steam: "Steam"
+  friends: "Friends"
+  friendcircle: "Circle"
+  guestbook: "Guestbook"
+  about: "About Seihaku"
+  about_short: "About"
+  menu: "Menu"
+
+# Header & Global Interactions
+header:
+  search: "Search (⌘K / Ctrl+K)"
+  theme_toggle: "Toggle Light & Dark Appearance"
+  online: "Online"
+
+hero:
+  greeting: "Hi, I'm"
+  stats_posts: "posts"
+  stats_words: "10k words"
+  stats_days: "days"
+
+# Home Dual Stream
+stream:
+  recent_writing: "Recent Writing"
+  recent_writing_sub: "RECENT WRITING"
+  musings: "Musings"
+  musings_sub: "MUSINGS"
+  minutes_read: "min read"
+  read_more_notes: "Read More Notes"
+  empty_writing: "No writings available yet."
+  empty_musings: "No musings available yet."
+
+# Post Reading & Metadata
+post:
+  reading_progress: "Reading Progress"
+  word_count: "words"
+  read_time_prefix: "About"
+  read_time_suffix: "min read"
+  toc: "Contents"
+  ai_summary: "AI Summary"
+  ai_refresh: "Refresh with AI"
+  ai_copy: "Copy"
+  ai_copied: "Copied ✓"
+  ai_loading: "Connecting to external AI API to synthesize key insights..."
+  like: "Spark"
+  liked: "Sparked"
+  share: "Share"
+  share_copied: "Article link copied to clipboard"
+  reward: "Sponsor"
+  reward_title: "Thank you for supporting and kindling sparks 🍃"
+  reward_wechat: "WeChat Pay"
+  reward_alipay: "Alipay"
+  copyright_title: "Copyright Notice"
+  copyright_author: "Author: "
+  copyright_link: "Post Link: "
+  copyright_notice: "License: "
+  copyright_desc: "Unless otherwise stated, all articles are licensed under %s. Attribution is required upon reposting!"
+  prev_post: "Previous"
+  next_post: "Next"
+  sticky: "Pinned"
+  untitled: "Untitled"
+  read_more: "Read More"
+  comments_title: "Comments & Echoes"
+  comments_desc: "Negative space has its echoes. Leave your thoughts, questions, or sparks here."
+  back_to_top: "Back to Top"
+  updated: "Last Updated"
+  pageviews: "Pageviews"
+  outdate_notice: "This post was updated %s days ago. Some information or APIs may have evolved."
+  related_posts: "Related Articles"
+
+# About Page & Social
+about:
+  copy_email: "Copy Email"
+
+# Code Blocks & Interactions
+code:
+  copy: "Copy"
+  copied: "Copied"
+  expand: "Expand Code"
+  collapse: "Collapse Code"
+  wrap: "Wrap Lines"
+  unwrap: "Unwrap Lines"
+  zoom: "Zoom"
+
+portfolio:
+  live_demo: "Live Demo"
+  github_repo: "Source Code"
+
+# Spotlight Search
+search:
+  title: "Search"
+  placeholder: "Search writings, notes, categories, tags..."
+  esc: "ESC"
+  empty_hint: "Type keywords to search writings and notes"
+  no_results: "No records found matching \"%s\""
+
+# Footer
+footer:
+  running_days: "Site running peacefully for"
+  days: "days"
+  powered_by: "Powered by %s"
+  theme: "Theme"
+  all_rights_reserved: "All Rights Reserved"
+
+# Custom Showcase Pages
+pages:
+  hitokoto_tag: "Hitokoto"
+  hitokoto_quote: "There is a crack in everything, that's how the light gets in."
+  hitokoto_from: "Leonard Cohen"
+  hitokoto_refresh: "Refresh Quote"
+
+  notes_title: "Tranquil Notes"
+  notes_sub: "Magazine-style musings capturing fleeting inspirations and quiet thoughts."
+  notes_column: "Topics"
+  notes_search: "Search notes..."
+  notes_empty: "No notes recorded yet. Add your musings to source/_data/notes.yml."
+  notes_topic_all: "All Topics"
+  
+  bangumis_title: "Anime Journey"
+  bangumis_sub: "Memories across light years and time. Works that touched, healed, and inspired."
+  bangumis_sync_badge: "Synchronized automatically via Bilibili API"
+  bangumis_total_tracked: "Tracking %s anime series"
+  bangumis_all: "All"
+  bangumis_watching: "Watching"
+  bangumis_finished: "Finished"
+  bangumis_wish: "Wishlist"
+  bangumis_empty: "No anime records found. Configure platforms.bilibili in _config.yml or add items in source/_data/bangumis.yml."
+  
+  portfolio_title: "Portfolio & Creations"
+  portfolio_sub: "Orchestrating ideas and code into independent products and tranquil interfaces."
+  portfolio_empty: "No projects to display yet. Configure featured projects in source/_data/portfolio.yml."
+  
+  equipments_title: "Digital & Productivity Gears"
+  equipments_sub: "Tools shaping how we think, write, code, and capture light."
+  equipments_empty: "No equipment data found. Add items to source/_data/equipments.yml."
+  
+  photos_title: "Light & Shadow Gallery"
+  photos_sub: "Carving time with the shutter, embracing the boundless in negative space."
+  photos_empty: "No photographs recorded yet. Add photos in source/_data/photos.yml."
+  
+  steam_title: "Steam Gaming Cosmos"
+  steam_sub: "Video games as the ninth art. Deep immersion, exploration, and mental flow."
+  steam_empty: "No Steam games data found. Add records to source/_data/steam.yml."
+  
+  docs_title: "Knowledge Docs Center"
+  docs_sub: "Structured engineering manuals and knowledge systems for deep craft."
+  docs_read: "Read Docs"
+  docs_count: "articles"
+  docs_empty: "No document columns configured. Add entries to source/_data/docs.yml."
+  
+  friends_title: "Kindred Spirits"
+  friends_sub: "Kindred spirits across the boundless web. Connecting tranquil sparks."
+  friends_empty: "No friend links added yet. Add links to source/_data/friends.yml."
+  friends_apply: "Link Exchange Guide"
+  
+  friendcircle_title: "Friend Circle"
+  friendcircle_sub: "Decentralized RSS feed stream. Wandering through friends' latest writings."
+  friendcircle_sync_badge: "Friend RSS Live Aggregation"
+  friendcircle_empty: "No friend circle feed entries found. Configure friend RSS feeds in _config.seihaku.yml under friendcircle.sources."
+  
+  guestbook_title: "Guestbook"
+  guestbook_sub: "Leave your echoes and footsteps. Converse with this space and fellow travelers."
+  
+  thinking_title: "Deep Thinking & Flow"
+  thinking_sub: "Distilling essential wisdom away from digital noise."
+  
+  timeline_title: "Timeline of Footsteps"
+  timeline_sub: "Tracing seasons and milestones through words and memory."
+  
+  archive_title: "Writing Archives"
+  archive_sub: "The index of all published writings and reflections."
+  
+  categories_title: "Categories"
+  tags_title: "Tags"
+  
+  not_found_title: "Lost in Negative Space"
+  not_found_desc: "The page you are looking for has drifted away with the breeze or moved to a new coordinate. Return to the home sanctuary or search for clues."
+  back_to_home: "Return Home"
+  browse_archives: "Browse Archives"

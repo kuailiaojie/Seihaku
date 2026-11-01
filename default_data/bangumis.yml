@@ -1,0 +1,16 @@
+# ==============================================================================
+# 🍃 二次元追番数据 (Bangumis Data)
+# 提示：若开启了 _config.seihaku.yml 的 platforms.bilibili 自动同步，
+# 则无需在此手动维护。若手动配置，格式示例如下：
+# - title: "葬送的芙莉莲"
+#   status: "finished" # watching | finished | wish
+#   rating: 9.9
+#   total_eps: 28
+#   current_ep: 28
+#   progress_text: "全28话"
+#   cover: "https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80"
+#   summary: "千年精灵魔法使芙莉莲，在打倒魔王后的漫长生命旅途中重新理解人类与生死。"
+#   type: "奇幻 / 治愈 / 冒险"
+#   year: "2023"
+# ==============================================================================
+[]

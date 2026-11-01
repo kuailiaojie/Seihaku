@@ -1,0 +1,198 @@
+# ==============================================================================
+# 🍃 栖白 (Theme Seihaku) - 日本語言語パック (ja)
+# ==============================================================================
+
+# コアグローバルナビゲーション
+nav:
+  home: "ホーム"
+  writing: "記事"
+  notes: "手記"
+  timeline: "年表"
+  thinking: "思索"
+  more: "その他"
+  explore: "探索"
+  portfolio: "作品集"
+  categories: "カテゴリー"
+  tags: "タグ"
+  docs: "ドキュメント"
+  bangumis: "アニメ録"
+  equipments: "デスク＆ツール"
+  photos: "写真館"
+  steam: "ゲーム回廊"
+  friends: "友隣リンク"
+  friendcircle: "友隣の輪"
+  guestbook: "芳名帳"
+  about: "栖白について"
+  about_short: "について"
+  menu: "ナビ"
+
+# ヘッダーとインタラクション
+header:
+  search: "サイト内検索 (⌘K / Ctrl+K)"
+  theme_toggle: "明暗テーマ切り替え"
+  online: "オンライン"
+
+hero:
+  greeting: "Hi, I'm"
+  stats_posts: "篇"
+  stats_words: "万字"
+  stats_days: "日"
+
+# ホーム二段ストリーム
+stream:
+  recent_writing: "最近の筆墨"
+  recent_writing_sub: "RECENT WRITING"
+  musings: "呟き"
+  musings_sub: "MUSINGS"
+  minutes_read: "分で読了"
+  read_more_notes: "手記をもっと読む"
+  empty_writing: "記事の記録はまだありません。"
+  empty_musings: "呟きの記録はまだありません。"
+
+# 記事閲覧とメタデータ
+post:
+  reading_progress: "読了進捗"
+  word_count: "文字"
+  read_time_prefix: "約"
+  read_time_suffix: "分"
+  toc: "目次"
+  ai_summary: "AI要約インサイト"
+  ai_refresh: "AI再解析"
+  ai_copy: "コピー"
+  ai_copied: "コピー完了 ✓"
+  ai_loading: "外部AIと連携して長文の核心を抽出中..."
+  like: "灯火を灯す"
+  liked: "灯火済み"
+  share: "共有"
+  share_copied: "記事のリンクをクリップボードにコピーしました"
+  reward: "支援・応援"
+  reward_title: "温かいご支援と微光に心より感謝いたします 🍃"
+  reward_wechat: "WeChat Pay"
+  reward_alipay: "Alipay"
+  copyright_title: "著作権表示"
+  copyright_author: "記事著者："
+  copyright_link: "記事リンク："
+  copyright_notice: "ライセンス："
+  copyright_desc: "本ブログの記事は、特段の記載がない限り %s ライセンスの下で提供されています。転載時は出典を明記してください。"
+  prev_post: "前の記事"
+  next_post: "次の記事"
+  sticky: "固定"
+  untitled: "無題"
+  read_more: "続きを読む"
+  comments_title: "声と木霊"
+  comments_desc: "余白には微かな木霊が宿る。あなたの思索や足跡をお気軽に残してください。"
+  back_to_top: "ページ先頭へ"
+  updated: "最終更新"
+  pageviews: "閲覧数"
+  outdate_notice: "この記事は %s 日前に更新されました。一部の情報やAPIが変更されている可能性があります。"
+  related_posts: "関連記事"
+
+# プロフィールと交流
+about:
+  copy_email: "メールアドレスをコピー"
+
+# コードブロックと操作
+code:
+  copy: "コピー"
+  copied: "コピー完了"
+  expand: "コードを展開"
+  collapse: "コードを折りたたむ"
+  wrap: "折り返し"
+  unwrap: "折り返し解除"
+  zoom: "拡大"
+
+portfolio:
+  live_demo: "作品を見る"
+  github_repo: "リポジトリ"
+
+# 検索モーダル
+search:
+  title: "検索"
+  placeholder: "記事、手记、カテゴリー、タグを検索..."
+  esc: "ESC"
+  empty_hint: "キーワードを入力して全站の記事と手記を検索"
+  no_results: "「%s」に一致する記録は見つかりませんでした"
+
+# フッター
+footer:
+  running_days: "サイト平穏稼働中"
+  days: "日"
+  powered_by: "Powered by %s"
+  theme: "テーマ"
+  all_rights_reserved: "All Rights Reserved"
+
+# 各専用ショーケースページ
+pages:
+  hitokoto_tag: "一言 · HITOKOTO"
+  hitokoto_quote: "万物に亀裂あり、そこに光が差し込む。"
+  hitokoto_from: "レナード・コーエン"
+  hitokoto_refresh: "名言を更新"
+
+  notes_title: "微語手記"
+  notes_sub: "雑誌のような没入感。時の流れに散らばる直観と静かな思索の記録。"
+  notes_column: "手記カテゴリー"
+  notes_search: "手記のタイトルを検索..."
+  notes_empty: "手記の記録はまだありません。source/_data/notes.yml に手記を追加してください。"
+  notes_topic_all: "全カテゴリー"
+  
+  bangumis_title: "アニメ巡礼録"
+  bangumis_sub: "光年と時空を越えた想い。心打たれ、癒やされ、思索を深めたアニメ作品。"
+  bangumis_sync_badge: "Bilibili API により自動同期された視聴記録"
+  bangumis_total_tracked: "計 %s 作品を追跡中"
+  bangumis_all: "すべて"
+  bangumis_watching: "視聴中"
+  bangumis_finished: "完結"
+  bangumis_wish: "観たい"
+  bangumis_empty: "アニメの記録がありません。_config.yml の platforms.bilibili を設定するか、source/_data/bangumis.yml にデータを追加してください。"
+  
+  portfolio_title: "精選プロジェクトと作品集"
+  portfolio_sub: "心惹かれる方へ、素足で歩むように。アイデアとコードを研ぎ澄まし、独立した作品へ。"
+  portfolio_empty: "展示中の作品はありません。source/_data/portfolio.yml にプロジェクトを設定してください。"
+  
+  equipments_title: "デジタル＆生産性ギア"
+  equipments_sub: "弘法も筆を選ぶ。日々の創作と思索に寄り添うデジタル製品、デスク周り、撮影機材。"
+  equipments_empty: "装備データはありません。source/_data/equipments.yml にアイテムを追加してください。"
+  
+  photos_title: "光と影の回廊"
+  photos_sub: "天地の悠久と一瞬の刹那を留める。シャッターで時を刻み、余白で無限を包む。"
+  photos_empty: "写真作品の記録はありません。source/_data/photos.yml に写真を追加してください。"
+  
+  steam_title: "Steam ゲーム回廊"
+  steam_sub: "第九の芸術としてのゲーム。仮想世界における深い没入と心流体験。"
+  steam_empty: "Steam ゲームデータはありません。source/_data/steam.yml にデータを追加してください。"
+  
+  docs_title: "知識ドキュメントセンター"
+  docs_sub: "体系的な知の脈絡と設計マニュアル。構造化された文書群で深き認識を蓄積する。"
+  docs_read: "ドキュメントを読む"
+  docs_count: "篇の技術ドキュメント"
+  docs_empty: "ドキュメント設定はありません。source/_data/docs.yml を設定してください。"
+  
+  friends_title: "友隣リンク集"
+  friends_sub: "海内に知己あれば天涯も比隣の若し。広大なネットの海で交差する微かな灯火。"
+  friends_empty: "リンク記録はありません。source/_data/friends.yml に友隣を追加してください。"
+  friends_apply: "相互リンクについて"
+  
+  friendcircle_title: "友隣の輪"
+  friendcircle_sub: "分散型 RSS フィードアグリゲーター。友隣たちの最新の思索をリアルタイムで巡る。"
+  friendcircle_sync_badge: "友隣 RSS リアルタイム集約"
+  friendcircle_empty: "友隣のフィードデータはありません。_config.seihaku.yml の friendcircle.sources で RSS フィードを設定してください。"
+  
+  guestbook_title: "芳名帳（ゲストブック）"
+  guestbook_sub: "あなたの足跡と微光を残してください。ここを訪れた旅人たちの交差の場。"
+  
+  thinking_title: "深き思索と心流漫歩"
+  thinking_sub: "本質の思索を沈殿させ、情報のノイズを断つ。世界の深層原理を巡る。"
+  
+  timeline_title: "時の軌跡・年表"
+  timeline_sub: "歳月の移ろいの中、言葉で刻む人生の道標。"
+  
+  archive_title: "記事アーカイブ"
+  archive_sub: "紡がれた言葉の全記録。時系列による全記事インデックス。"
+  
+  categories_title: "カテゴリー一覧"
+  tags_title: "タグ一覧"
+  
+  not_found_title: "雲の彼方、此の頁は余白なり"
+  not_found_desc: "お探しの筆跡は風と共に山海へと散ったか、新たな座標へと移されたようです。庭園のホームへお戻りになるか、検索をご利用ください。"
+  back_to_home: "栖白のホームへ戻る"
+  browse_archives: "記事アーカイブを見る"

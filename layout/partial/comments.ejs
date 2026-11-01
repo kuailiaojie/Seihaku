@@ -1,0 +1,171 @@
+<%
+  var commentCfg = theme.comment || {};
+  var type = commentCfg.type || 'waline';
+  var walineLang = 'zh-CN';
+  if (config.language === 'en') walineLang = 'en';
+  else if (config.language === 'ja' || config.language === 'jp') walineLang = 'jp';
+%>
+
+<% if (commentCfg.enable) { %>
+  <div class="seihaku-comments-container" id="comments">
+    <div class="comments-header" style="margin-bottom: 24px;">
+      <h3 class="font-serif" style="font-size: 1.25rem; color: var(--text-primary); margin: 0 0 6px 0;">
+        <i class="far fa-comments" style="color: var(--color-accent); margin-right: 8px;"></i>
+        <span><%= __('post.comments_title') %></span>
+      </h3>
+      <p style="font-size: 0.82rem; color: var(--text-tertiary); margin: 0;">
+        <%= __('post.comments_desc') %>
+      </p>
+    </div>
+
+    <!-- 容器挂载点 -->
+    <div id="comment-container"></div>
+  </div>
+
+  <% if (type === 'waline' && commentCfg.waline && commentCfg.waline.serverURL) { %>
+    <!-- Waline 客户端样式与脚本 (原生支持评论 + 表态反应 Reaction + 浏览量，统一 CDN 映射，视口懒加载与全面 PJAX 重载) -->
+    <link rel="stylesheet" href="<%- seihaku_cdn('waline_css') %>" />
+    <script type="module">
+      import { init } from '<%- seihaku_cdn('waline_js') %>';
+      window.__walineInit = init;
+
+      function loadWaline() {
+        const container = document.getElementById('comment-container');
+        if (!container || !window.__walineInit) return;
+        container.innerHTML = '';
+        window.__walineInit({
+          el: '#comment-container',
+          serverURL: '<%= commentCfg.waline.serverURL %>',
+          path: window.location.pathname,
+          dark: 'html[data-theme="dark"]',
+          reaction: <%= commentCfg.waline.reaction !== false ? 'true' : 'false' %>,
+          pageview: <%= commentCfg.waline.pageview !== false ? 'true' : 'false' %>,
+          comment: <%= commentCfg.waline.comment !== false ? 'true' : 'false' %>,
+          lang: '<%= walineLang %>',
+          emoji: [
+            'https://unpkg.com/@waline/emojis@1.2.0/weibo',
+            'https://unpkg.com/@waline/emojis@1.2.0/bilibili'
+          ]
+        });
+      }
+
+      function setupLazyLoad(loadFn) {
+        let isLoaded = false;
+        window.initSeihakuComments = function () {
+          const commentsEl = document.getElementById('comments');
+          if (!commentsEl) return;
+          if (isLoaded || !('IntersectionObserver' in window)) {
+            loadFn();
+            isLoaded = true;
+            return;
+          }
+          const observer = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) {
+              loadFn();
+              isLoaded = true;
+              observer.disconnect();
+            }
+          }, { rootMargin: '260px 0px' });
+          observer.observe(commentsEl);
+        };
+        window.initSeihakuComments();
+      }
+
+      setupLazyLoad(loadWaline);
+    </script>
+  <% } else if (type === 'twikoo' && commentCfg.twikoo && commentCfg.twikoo.envId) { %>
+    <!-- Twikoo 客户端脚本 (统一 CDN 映射，支持视口懒加载与 PJAX 动态重新挂载) -->
+    <script src="<%- seihaku_cdn('twikoo_js') %>"></script>
+    <script>
+      function loadTwikoo() {
+        const container = document.getElementById('comment-container');
+        if (!container || typeof twikoo === 'undefined') return;
+        container.innerHTML = '';
+        twikoo.init({
+          envId: '<%= commentCfg.twikoo.envId %>',
+          el: '#comment-container',
+          path: window.location.pathname
+        });
+      }
+
+      function setupLazyLoad(loadFn) {
+        let isLoaded = false;
+        window.initSeihakuComments = function () {
+          const commentsEl = document.getElementById('comments');
+          if (!commentsEl) return;
+          if (isLoaded || !('IntersectionObserver' in window)) {
+            loadFn();
+            isLoaded = true;
+            return;
+          }
+          const observer = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) {
+              loadFn();
+              isLoaded = true;
+              observer.disconnect();
+            }
+          }, { rootMargin: '260px 0px' });
+          observer.observe(commentsEl);
+        };
+        window.initSeihakuComments();
+      }
+
+      setupLazyLoad(loadTwikoo);
+    </script>
+  <% } else if (type === 'giscus' && commentCfg.giscus && commentCfg.giscus.repo) { %>
+    <!-- Giscus (GitHub Discussions 无服务器方案，支持动态视口挂载、深浅色即时同步与 PJAX 无缝重载) -->
+    <script>
+      function loadGiscus() {
+        const container = document.getElementById('comment-container');
+        if (!container) return;
+        container.innerHTML = '';
+        const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        const giscusTheme = currentTheme === 'dark' ? 'noborder_dark' : 'noborder_light';
+        const script = document.createElement('script');
+        script.src = 'https://giscus.app/client.js';
+        script.setAttribute('data-repo', '<%= commentCfg.giscus.repo %>');
+        script.setAttribute('data-repo-id', '<%= commentCfg.giscus.repoId %>');
+        script.setAttribute('data-category', '<%= commentCfg.giscus.category || "General" %>');
+        script.setAttribute('data-category-id', '<%= commentCfg.giscus.categoryId %>');
+        script.setAttribute('data-mapping', '<%= commentCfg.giscus.mapping || "pathname" %>');
+        script.setAttribute('data-reactions-enabled', '<%= commentCfg.giscus.reactionsEnabled || "1" %>');
+        script.setAttribute('data-emit-metadata', '0');
+        script.setAttribute('data-input-position', 'top');
+        script.setAttribute('data-theme', giscusTheme);
+        script.setAttribute('data-lang', '<%= config.language === 'en' ? 'en' : (config.language === 'ja' ? 'ja' : 'zh-CN') %>');
+        script.crossOrigin = 'anonymous';
+        script.async = true;
+        container.appendChild(script);
+      }
+
+      function setupLazyLoad(loadFn) {
+        let isLoaded = false;
+        window.initSeihakuComments = function () {
+          const commentsEl = document.getElementById('comments');
+          if (!commentsEl) return;
+          if (isLoaded || !('IntersectionObserver' in window)) {
+            loadFn();
+            isLoaded = true;
+            return;
+          }
+          const observer = new IntersectionObserver(function (entries) {
+            if (entries[0].isIntersecting) {
+              loadFn();
+              isLoaded = true;
+              observer.disconnect();
+            }
+          }, { rootMargin: '260px 0px' });
+          observer.observe(commentsEl);
+        };
+        window.initSeihakuComments();
+      }
+
+      setupLazyLoad(loadGiscus);
+    </script>
+  <% } else { %>
+    <div style="text-align: center; padding: 40px 24px; color: var(--text-tertiary); background: var(--bg-surface-elevated); border: 1px dashed var(--border-subtle); border-radius: var(--radius-lg);">
+      <p style="font-size: 0.88rem; margin: 0 0 6px 0;">已开启评论系统，但尚未配置服务端地址凭证。</p>
+      <span class="font-mono" style="font-size: 0.76rem; color: var(--color-accent);">请在 _config.yml 中完善 comment.<%= type %> 对应参数</span>
+    </div>
+  <% } %>
+<% } %>

@@ -1,0 +1,27 @@
+<% if (page.total > 1) { %>
+  <nav class="pagination-wrapper" aria-label="Pagination">
+    <% if (page.prev) { %>
+      <a href="<%- url_for(page.prev_link) %>" class="pagination-item" aria-label="<%= __('post.prev_post') || '上一页' %>">
+        <i class="fas fa-chevron-left" style="font-size: 0.75rem;"></i>
+      </a>
+    <% } %>
+
+    <% for (var i = 1; i <= page.total; i++) { %>
+      <% if (i === page.current) { %>
+        <span class="pagination-item current"><%= i %></span>
+      <% } else if (i === 1 || i === page.total || Math.abs(i - page.current) <= 2) { %>
+        <a href="<%- url_for(i === 1 ? (page.base || '') : (page.base || '') + 'page/' + i + '/') %>" class="pagination-item">
+          <%= i %>
+        </a>
+      <% } else if (Math.abs(i - page.current) === 3) { %>
+        <span class="pagination-item" style="border: none; background: transparent; box-shadow: none;">…</span>
+      <% } %>
+    <% } %>
+
+    <% if (page.next) { %>
+      <a href="<%- url_for(page.next_link) %>" class="pagination-item" aria-label="<%= __('post.next_post') || '下一页' %>">
+        <i class="fas fa-chevron-right" style="font-size: 0.75rem;"></i>
+      </a>
+    <% } %>
+  </nav>
+<% } %>

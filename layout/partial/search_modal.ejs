@@ -1,0 +1,25 @@
+<%
+  var searchCfg = (theme.features && theme.features.search) || {};
+  var placeholder = searchCfg.placeholder || __('search.placeholder');
+%>
+<div id="seihaku-search-backdrop" class="seihaku-search-backdrop" aria-hidden="true">
+  <div class="seihaku-search-dialog" role="dialog" aria-modal="true" aria-label="<%= __('header.search') %>">
+    <div class="seihaku-search-header">
+      <i class="fas fa-search seihaku-search-icon"></i>
+      <input
+        type="text"
+        id="seihaku-search-input"
+        class="seihaku-search-input font-serif"
+        placeholder="<%= placeholder %>"
+        autocomplete="off"
+        aria-label="<%= placeholder %>"
+      >
+      <kbd class="seihaku-search-kbd font-mono" id="seihaku-search-esc-btn" title="<%= __('search.esc') %>"><%= __('search.esc') %></kbd>
+    </div>
+    <div class="seihaku-search-results" id="seihaku-search-results">
+      <div class="seihaku-search-empty font-serif">
+        <%= __('search.empty_hint') %> · <span class="font-mono">⌘K / Ctrl+K</span>
+      </div>
+    </div>
+  </div>
+</div>

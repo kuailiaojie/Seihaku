@@ -1,0 +1,44 @@
+<div class="seihaku-page-container">
+  
+  <div class="page-header-block">
+    <span class="page-eyebrow font-mono">GUESTBOOK / <%= __('nav.guestbook') %></span>
+    <h1 class="page-title font-serif"><%= __('pages.guestbook_title') %></h1>
+    <p class="page-subtitle"><%= __('pages.guestbook_sub') %></p>
+  </div>
+
+  <div class="guestbook-wrapper">
+    
+    <!-- 留言须知与寄语卡片 -->
+    <div class="guestbook-banner-card">
+      <h3><i class="far fa-paper-plane" style="color: var(--color-accent); margin-right: 8px;"></i> <%= __('post.comments_title') %></h3>
+      <p style="margin: 0; font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7;">
+        <%= __('post.comments_desc') %>
+      </p>
+    </div>
+
+    <!-- 用户自定义 Markdown 正文 -->
+    <% if (page.content) { %>
+      <div class="post-article-card" style="margin-bottom: 32px;">
+        <div class="markdown-body font-serif">
+          <%- page.content %>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- 独立留言评论系统容器 -->
+    <div class="guestbook-comment-area">
+      <% if (theme.comment && theme.comment.enable) { %>
+        <%- partial('partial/comments') %>
+      <% } else { %>
+        <div style="text-align: center; padding: 48px 24px; color: var(--text-tertiary); background: var(--bg-surface-elevated); border: 1px dashed var(--border-subtle); border-radius: var(--radius-xl);">
+          <i class="far fa-comments" style="font-size: 2.4rem; color: var(--color-accent); opacity: 0.6; margin-bottom: 16px; display: inline-block;"></i>
+          <p style="font-size: 0.88rem; max-width: 440px; margin: 0 auto; line-height: 1.6;">
+            <%= __('post.comments_desc') %>
+          </p>
+        </div>
+      <% } %>
+    </div>
+
+  </div>
+
+</div>

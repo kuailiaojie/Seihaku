@@ -1,0 +1,62 @@
+# ==============================================================================
+# 📚 文档中心项目知识库注册表 (Documentation Projects Registry)
+# ==============================================================================
+- id: "seihaku"
+  title: "栖白 (Theme Seihaku) 完整架构与使用手册"
+  icon: "fas fa-feather-alt"
+  tag: "主题手册"
+  desc: "从安装初始化、配置文件拆分，到日常写作语法、特色页面纯净配置与友邻 RSS 动态聚合的体系化技术手册。"
+  url: "/docs/seihaku/"
+  articles_count: 39
+  updated_at: "2026-11"
+  chapters:
+    - "第一篇：快速起步与基础构建 (01~06)"
+    - "第二篇：全局视觉与品牌风格 (07~11)"
+    - "第三篇：首页核心展示流 (12~14)"
+    - "第四篇：文稿写作排版与排印增强 (15~21)"
+    - "第五篇：特色独立页面定制与纯净配置 (22~30)"
+    - "第六篇：平台互联与扩展服务 (31~35)"
+    - "第七篇：常见问题与排障指南 (36~39)"
+
+- id: "agentic-systems"
+  title: "现代自主智能体系统工程"
+  icon: "fas fa-robot"
+  tag: "系统架构"
+  desc: "从 Tool Calling、动态规划到多智能体通讯编排的系统架构设计理念与实践指南。"
+  url: "/docs/agentic-systems/"
+  articles_count: 5
+  updated_at: "2026-10"
+  chapters:
+    - "01. 智能体系统架构演进"
+    - "02. Tool Calling 与 MCP 协议规范"
+    - "03. 动态规划与 DAG 拓扑编排"
+    - "04. 多智能体协作与状态总线"
+    - "05. 沙箱隔离与权限边界治理"
+
+- id: "fluid-hig"
+  title: "流体物理界面设计规范"
+  icon: "fas fa-water"
+  tag: "交互设计"
+  desc: "Apple HIG 弹簧物理方程、手势跟手动力学与触觉反馈最佳工程实践指南。"
+  url: "/docs/fluid-hig/"
+  articles_count: 4
+  updated_at: "2026-09"
+  chapters:
+    - "01. 弹簧阻尼与物理动力学"
+    - "02. 手势拖拽与实时跟手反馈"
+    - "03. 触觉反馈与人机工效学"
+    - "04. 流体响应式断点与形态收纳"
+
+- id: "frontend-typography"
+  title: "前端工程化与排版实践"
+  icon: "fas fa-code"
+  tag: "排印工程"
+  desc: "中文字体流式分包加载、矢量 SVG 纹理生成与零依赖轻量动效引擎实践总结。"
+  url: "/docs/frontend-typography/"
+  articles_count: 4
+  updated_at: "2026-09"
+  chapters:
+    - "01. WebFont 异步流式加载优化"
+    - "02. SVG 滤镜与宣纸质感着色"
+    - "03. CSS 容器查询与微倒角规范"
+    - "04. 零依赖轻量动效引擎封装"

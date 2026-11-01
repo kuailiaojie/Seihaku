@@ -1,0 +1,64 @@
+<div class="post-card-tilt-wrap">
+  <article class="post-card">
+    <!-- Optional Cover Image -->
+    <% var cover = post.cover || (post.photos && post.photos.length ? post.photos[0] : null); %>
+    <% if (cover) { %>
+      <a href="<%- url_for(post.path) %>" class="post-cover-wrapper" aria-label="<%= post.title %>">
+        <img src="<%- url_for(cover) %>" alt="<%= post.title %>" class="post-cover-img" loading="lazy">
+      </a>
+    <% } %>
+
+    <!-- Meta Information Row -->
+    <div class="post-meta-row">
+      <time datetime="<%= date_xml(post.date) %>">
+        <%= date(post.date, 'YYYY-MM-DD') %>
+      </time>
+
+      <% if (post.categories && post.categories.length) { %>
+        <span>·</span>
+        <span class="post-category-tag">
+          <%= post.categories.data[0].name %>
+        </span>
+      <% } %>
+
+      <% if (theme.post && theme.post.read_time !== false && post.content) { %>
+        <span>·</span>
+        <% var pcStats = typeof seihaku_post_stats === 'function' ? seihaku_post_stats(post) : { readTime: 1 }; %>
+        <span><%= pcStats.readTime %> <%= __('stream.minutes_read') %></span>
+      <% } %>
+    </div>
+
+    <!-- Post Title -->
+    <h2 class="post-title">
+      <a href="<%- url_for(post.path) %>">
+        <%= post.title || __('post.untitled') || '无题' %>
+      </a>
+    </h2>
+
+    <!-- Post Excerpt -->
+    <% var excerptText = post.excerpt ? strip_html(post.excerpt) : strip_html(post.content).substring(0, (theme.post && theme.post.excerpt_length) || 120); %>
+    <% if (excerptText) { %>
+      <p class="post-excerpt">
+        <%= excerptText %>...
+      </p>
+    <% } %>
+
+    <!-- Card Footer -->
+    <div class="post-footer-row">
+      <div class="post-tags-list">
+        <% if (post.tags && post.tags.length) { %>
+          <% post.tags.data.slice(0, 3).forEach(function(tag) { %>
+            <a href="<%- url_for(tag.path) %>" style="color: var(--text-tertiary); font-size: 0.76rem; margin-right: 8px;">
+              #<%= tag.name %>
+            </a>
+          <% }); %>
+        <% } %>
+      </div>
+
+      <a href="<%- url_for(post.path) %>" class="post-read-more">
+        <span><%= __('post.read_more') || '继续阅读' %></span>
+        <span>→</span>
+      </a>
+    </div>
+  </article>
+</div>

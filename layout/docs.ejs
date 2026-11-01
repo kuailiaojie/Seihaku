@@ -1,0 +1,274 @@
+<%
+  var docData = seihaku_doc_projects();
+  var isHome = docData.is_home;
+  var currentProject = docData.current;
+  var tocItems = !isHome ? seihaku_parse_doc_toc(page.content) : [];
+  
+  var totalChapters = 0;
+  docData.projects.forEach(function(p) {
+    totalChapters += (p.articles_count || 0);
+  });
+%>
+
+<div class="seihaku-docs-workstation<%= isHome ? ' is-docs-portal' : '' %>">
+  <!-- 移动端抽屉遮罩 -->
+  <div class="docs-drawer-backdrop" id="docs-drawer-backdrop"></div>
+
+  <% if (isHome) { %>
+    <!-- =========================================================================
+         【形态一】文档中心主界面：显示所有已有文档项目与分目录大纲概览
+         ========================================================================= -->
+    
+    <header class="docs-portal-header">
+      <div class="docs-hero-badge font-mono">
+        <span class="badge-dot"></span>
+        <i class="fas fa-books"></i>
+        <span>DOCUMENTATION CENTER · 知识专栏总览</span>
+      </div>
+      
+      <h1 class="docs-portal-title font-serif">文档中心</h1>
+      
+      <p class="docs-portal-desc">
+        汇集全站系统开发手册、架构设计指南与工程化规范。选择下方任意专栏进入阅读工作台，查阅完整分目录与正文细节。
+      </p>
+
+      <div class="docs-meta-pill-cluster font-mono">
+        <span class="meta-pill"><i class="fas fa-layer-group"></i> 共 <%= docData.projects.length %> 个独立文档专栏</span>
+        <span class="meta-pill"><i class="fas fa-file-alt"></i> 累计 <%= totalChapters %> 篇技术章节</span>
+        <span class="meta-pill"><i class="fas fa-search"></i> 即时全文与目录索引</span>
+        <span class="meta-pill"><i class="fas fa-mobile-alt"></i> 多端沉浸工作台</span>
+      </div>
+
+      <!-- 快速文档过滤搜索 -->
+      <div class="docs-portal-search-box">
+        <i class="fas fa-search docs-filter-icon"></i>
+        <input type="text" id="docs-portal-filter" class="docs-filter-input font-mono" placeholder="过滤文档专栏名称、标签或目录内容...">
+      </div>
+    </header>
+
+    <!-- 所有的已有文档卡片网格 (包含各文档的详细分目录大纲) -->
+    <main class="docs-portal-grid" id="docs-portal-grid">
+      <% docData.projects.forEach(function(proj) { %>
+        <article class="doc-portal-card">
+          <div class="doc-portal-card-top">
+            <div class="doc-portal-header-row">
+              <div class="doc-portal-icon">
+                <i class="<%= proj.icon %>"></i>
+              </div>
+              <div class="doc-portal-meta">
+                <span class="doc-col-tag font-mono"><%= proj.tag %></span>
+                <span class="doc-portal-count font-mono"><%= proj.articles_count %> 个小节</span>
+              </div>
+            </div>
+
+            <h2 class="doc-portal-card-title font-serif">
+              <a href="<%- url_for(proj.url) %>"><%= proj.title %></a>
+            </h2>
+
+            <p class="doc-portal-card-desc"><%= proj.desc %></p>
+          </div>
+
+          <!-- 各文档核心分目录预览 (方便在主界面直接快速浏览目录体系) -->
+          <% if (proj.chapters && proj.chapters.length > 0) { %>
+            <div class="doc-portal-chapters-box">
+              <div class="doc-chapters-header font-mono">
+                <i class="fas fa-list-ul"></i>
+                <span>分目录结构大纲：</span>
+              </div>
+              <ul class="doc-chapters-list font-sans">
+                <% proj.chapters.forEach(function(chap, idx) { %>
+                  <li>
+                    <span class="chap-bullet">›</span>
+                    <span class="chap-title"><%= chap %></span>
+                  </li>
+                <% }); %>
+              </ul>
+            </div>
+          <% } %>
+
+          <div class="doc-portal-card-footer">
+            <% if (proj.updated_at) { %>
+              <span class="doc-updated-date font-mono"><i class="far fa-clock"></i> <%= proj.updated_at %></span>
+            <% } else { %>
+              <span></span>
+            <% } %>
+            
+            <a href="<%- url_for(proj.url) %>" class="doc-portal-enter-btn font-mono">
+              <span>阅读完整文档与分目录</span>
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
+        </article>
+      <% }); %>
+    </main>
+
+  <% } else { %>
+    <!-- =========================================================================
+         【形态二】具体文档阅读工作台：左侧细粒度分目录树 + 中间正文 + 右侧锚点
+         ========================================================================= -->
+
+    <!-- 面包屑导航与返回文档主界面 -->
+    <div class="docs-workstation-top-nav font-mono">
+      <a href="<%- url_for('/docs/') %>" class="docs-crumb-back-btn">
+        <i class="fas fa-th-large"></i>
+        <span>返回文档主界面</span>
+      </a>
+      <span class="crumb-separator">/</span>
+      <span class="crumb-tag"><%= currentProject ? currentProject.tag : '文档' %></span>
+      <span class="crumb-separator">/</span>
+      <span class="crumb-current"><%= page.title || (currentProject && currentProject.title) %></span>
+    </div>
+
+    <!-- 文档专属横幅 -->
+    <header class="docs-hero-header">
+      <div class="docs-hero-badge font-mono">
+        <span class="badge-dot"></span>
+        <i class="<%= currentProject ? currentProject.icon : 'fas fa-book' %>"></i>
+        <span><%= currentProject ? currentProject.tag : '专栏' %> · 官方手册</span>
+      </div>
+      
+      <h1 class="docs-hero-title font-serif"><%= page.title || (currentProject && currentProject.title) %></h1>
+      
+      <p class="docs-hero-desc">
+        <%= (currentProject && currentProject.desc) || page.description || '技术架构手册与设计规范。' %>
+      </p>
+
+      <div class="docs-meta-pill-cluster font-mono">
+        <span class="meta-pill"><i class="fas fa-list-ol"></i> 共 <%= (tocItems && tocItems.length) || (currentProject && currentProject.articles_count) || 1 %> 个章节</span>
+        <% if (currentProject && currentProject.updated_at) { %>
+          <span class="meta-pill"><i class="far fa-calendar-alt"></i> 更新于 <%= currentProject.updated_at %></span>
+        <% } %>
+        <span class="meta-pill"><i class="fas fa-stream"></i> 动态分目录索引</span>
+      </div>
+
+      <!-- 移动端目录折叠唤起按钮 -->
+      <div class="docs-mobile-bar">
+        <button type="button" class="docs-mobile-btn font-mono" id="docs-mobile-toggle">
+          <i class="fas fa-list-ul"></i>
+          <span>展开本篇章节分目录</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- 工作台三栏栅格 -->
+    <div class="docs-grid-layout">
+      
+      <!-- 左侧粘性分目录树 -->
+      <aside class="docs-sidebar" id="docs-sidebar">
+        <div class="docs-sidebar-inner">
+          
+          <!-- 侧边栏项目快速切换器 -->
+          <div class="docs-sidebar-project-header">
+            <div class="project-current-indicator">
+              <i class="<%= currentProject ? currentProject.icon : 'fas fa-book' %>"></i>
+              <div class="project-meta-box">
+                <span class="project-tag-pill font-mono"><%= currentProject ? currentProject.tag : '文档' %></span>
+                <span class="project-name-text font-serif"><%= currentProject ? currentProject.title : page.title %></span>
+              </div>
+            </div>
+            
+            <div class="project-switch-control">
+              <label for="docs-project-selector" class="sr-only">切换文档：</label>
+              <select id="docs-project-selector" class="docs-project-selector font-mono" onchange="if(this.value) window.location.href=this.value;">
+                <option value="" disabled>-- 切换其他文档 --</option>
+                <% docData.projects.forEach(function(proj) { %>
+                  <option value="<%- url_for(proj.url) %>" <%= proj.is_current ? 'selected' : '' %>>
+                    <%= proj.title %> (<%= proj.articles_count %>章)
+                  </option>
+                <% }); %>
+              </select>
+            </div>
+          </div>
+
+          <!-- 快速过滤搜索框 -->
+          <div class="docs-filter-box">
+            <i class="fas fa-search docs-filter-icon"></i>
+            <input type="text" id="docs-filter-input" class="docs-filter-input font-mono" placeholder="过滤本篇分目录...">
+          </div>
+
+          <!-- 动态生成的章节分目录树 (自动根据 Markdown 渲染产物提取，非硬编码) -->
+          <nav class="docs-nav-tree" aria-label="文档分目录">
+            <% if (tocItems && tocItems.length > 0) { %>
+              <%
+                var chunkSize = 6;
+                var totalGroups = Math.ceil(tocItems.length / chunkSize);
+                for (var g = 0; g < totalGroups; g++) {
+                  var groupItems = tocItems.slice(g * chunkSize, (g + 1) * chunkSize);
+                  var startIdx = g * chunkSize + 1;
+                  var endIdx = Math.min((g + 1) * chunkSize, tocItems.length);
+                  var groupLabel = totalGroups > 1 ? ('第 ' + String(startIdx).padStart(2, '0') + ' ~ ' + String(endIdx).padStart(2, '0') + ' 节') : '文档章节分目录';
+              %>
+                <div class="docs-nav-group">
+                  <div class="docs-group-title font-mono">
+                    <i class="fas fa-bookmark"></i>
+                    <span><%= groupLabel %></span>
+                  </div>
+                  <ul class="docs-nav-list">
+                    <% groupItems.forEach(function(item, itemIdx) { %>
+                      <li class="docs-nav-item">
+                        <a href="#<%= item.id %>" class="docs-nav-link font-sans">
+                          <span class="link-idx font-mono"><%= item.indexStr || (String(g * chunkSize + itemIdx + 1).padStart(2, '0') + '.') %></span>
+                          <span class="link-text"><%= item.title %></span>
+                        </a>
+                        <% if (item.children && item.children.length > 0) { %>
+                          <ul class="docs-subnav-list">
+                            <% item.children.forEach(function(sub) { %>
+                              <li>
+                                <a href="#<%= sub.id %>" class="docs-subnav-link font-sans">
+                                  <span><%= sub.title %></span>
+                                </a>
+                              </li>
+                            <% }); %>
+                          </ul>
+                        <% } %>
+                      </li>
+                    <% }); %>
+                  </ul>
+                </div>
+              <% } %>
+            <% } else { %>
+              <div class="docs-nav-empty font-mono">
+                <i class="far fa-compass"></i>
+                <span>正文暂无 H2 章节锚点</span>
+              </div>
+            <% } %>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- 中间主文档阅读区 -->
+      <main class="docs-content-main" id="docs-content-main">
+        <article class="docs-content-body markdown-body">
+          <% if (page.content) { %>
+            <%- page.content %>
+          <% } %>
+        </article>
+      </main>
+
+      <!-- 右侧快捷锚点导航轨 (宽屏显示) -->
+      <aside class="docs-anchor-rail">
+        <div class="docs-rail-card">
+          <h5 class="rail-title font-mono">
+            <i class="fas fa-stream"></i>
+            <span>章节快速直达</span>
+          </h5>
+          <nav class="docs-rail-list">
+            <% if (tocItems && tocItems.length > 0) { %>
+              <% tocItems.slice(0, 8).forEach(function(item) { %>
+                <a href="#<%= item.id %>" class="docs-anchor-link font-sans"><%= item.title %></a>
+              <% }); %>
+            <% } %>
+          </nav>
+
+          <div class="docs-rail-actions">
+            <button type="button" class="rail-action-btn font-mono" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+              <i class="fas fa-arrow-up"></i>
+              <span>回到顶部</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  <% } %>
+</div>

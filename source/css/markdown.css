@@ -1,0 +1,1770 @@
+/* ==============================================================================
+   🍃 栖白 (Theme Seihaku) - 文章排版与墨韵排印规范 (Markdown Typography)
+   ============================================================================== */
+
+.markdown-body {
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.95;
+  color: var(--text-primary);
+  letter-spacing: 0.025em;
+  word-break: break-word;
+}
+
+/* 标题规范：流畅缩放与舒朗呼吸留白 */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  font-family: var(--font-serif);
+  color: var(--text-primary);
+  font-weight: 600;
+  line-height: 1.45;
+  margin-top: 2.2em;
+  margin-bottom: 0.8em;
+  letter-spacing: 0.03em;
+  position: relative;
+}
+
+.markdown-body h1 { font-size: 1.85rem; border-bottom: 0.5px solid var(--border-subtle); padding-bottom: 0.4em; }
+.markdown-body h2 { font-size: 1.45rem; border-bottom: 0.5px solid var(--border-subtle); padding-bottom: 0.35em; }
+.markdown-body h3 { font-size: 1.25rem; }
+.markdown-body h4 { font-size: 1.1rem; }
+.markdown-body h5 { font-size: 1.0rem; }
+.markdown-body h6 { font-size: 0.95rem; color: var(--text-secondary); }
+
+.markdown-body p {
+  margin-top: 0;
+  margin-bottom: 1.8em;
+  text-align: justify;
+}
+
+/* 链接交互：手绘微动下划线 */
+.markdown-body a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--border-focus);
+  text-underline-offset: 4px;
+  transition: all var(--duration-fast) var(--ease-apple);
+}
+
+.markdown-body a:hover {
+  color: var(--accent-hover);
+  text-decoration-color: var(--accent);
+}
+
+/* 引用块 (Blockquote)：优雅留白宣纸微圆角边框 */
+.markdown-body blockquote {
+  margin: 2em 0;
+  padding: 16px 22px;
+  background: var(--accent-soft);
+  border-left: 3.5px solid var(--accent);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-style: normal;
+}
+
+.markdown-body blockquote p:last-child {
+  margin-bottom: 0;
+}
+
+/* 列表规范 */
+.markdown-body ul,
+.markdown-body ol {
+  margin: 1.2em 0 1.8em 1.6em;
+  padding: 0;
+}
+
+.markdown-body li {
+  margin-bottom: 0.6em;
+  line-height: 1.85;
+}
+
+/* 行内代码 */
+.markdown-body code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  padding: 2px 7px;
+  background: var(--code-bg);
+  color: var(--accent);
+  border-radius: var(--radius-xs);
+  border: 0.5px solid var(--border-subtle);
+}
+
+/* 代码块容器 (macOS 风格圆角与晶透阴影) */
+.markdown-body pre:not(figure.highlight pre),
+.markdown-body figure.highlight {
+  position: relative;
+  margin: 2.2em 0;
+  padding: 0;
+  background: var(--code-bg);
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.22);
+  line-height: 1.7;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.markdown-body figure.highlight:not(.code-mac-enhanced) {
+  overflow-x: auto;
+}
+
+/* macOS 风格窗口顶栏 */
+.code-mac-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 38px;
+  padding: 0 16px;
+  background: var(--code-header-bg, rgba(255, 255, 255, 0.035));
+  border-bottom: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  user-select: none;
+}
+
+/* macOS 三色微晶控制点 */
+.code-mac-dots {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+}
+
+.code-mac-dots .mac-dot,
+.code-mac-dots .code-mac-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.18s ease;
+}
+
+.code-mac-dots:hover .mac-dot,
+.code-mac-dots:hover .code-mac-dot {
+  opacity: 1;
+}
+
+.code-mac-dots .dot-red,
+.code-mac-dots .dot-close {
+  background-color: #ff5f56;
+  box-shadow: 0 0 6px rgba(255, 95, 86, 0.4);
+}
+
+.code-mac-dots .dot-yellow,
+.code-mac-dots .dot-min {
+  background-color: #ffbd2e;
+  box-shadow: 0 0 6px rgba(255, 189, 46, 0.4);
+}
+
+.code-mac-dots .dot-green,
+.code-mac-dots .dot-max {
+  background-color: #27c93f;
+  box-shadow: 0 0 6px rgba(39, 201, 63, 0.4);
+  cursor: pointer;
+}
+
+.code-mac-dots .dot-green:hover,
+.code-mac-dots .dot-max:hover {
+  transform: scale(1.2);
+}
+
+/* 语言徽标 */
+.code-mac-lang {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+
+/* 右侧操作按钮组 (全屏 + 复制) */
+.code-mac-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 全屏按钮与一键复制按钮 */
+.code-mac-btn,
+.code-mac-fullscreen-btn,
+.code-mac-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  font-size: 0.72rem;
+  font-family: var(--font-sans);
+  color: var(--text-tertiary);
+  background: var(--bg-surface-elevated, rgba(125, 125, 125, 0.06));
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  cursor: pointer;
+  outline: none;
+  line-height: 1.4;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.code-mac-btn:hover,
+.code-mac-fullscreen-btn:hover,
+.code-mac-copy-btn:hover {
+  color: var(--text-primary);
+  background: rgba(125, 125, 125, 0.12);
+  border-color: var(--border-focus);
+  transform: translateY(-1px);
+}
+
+.code-mac-copy-btn.copied,
+.code-mac-copy-btn.is-copied {
+  color: #16a34a !important;
+  background: rgba(22, 163, 74, 0.1) !important;
+  border-color: rgba(22, 163, 74, 0.3) !important;
+}
+
+.code-mac-btn svg {
+  flex-shrink: 0;
+}
+
+/* ==============================================================================
+   代码块全屏与放大聚焦模式 (Code Block Lightbox Zoom Modal)
+   ============================================================================== */
+.code-fullscreen-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 9, 8, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  z-index: 99998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.code-fullscreen-backdrop.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 优雅浮层放大模式 (Lightbox Zoom Modal - 完美对标苹果 HIG 与栖白极简纸墨美学) */
+.code-mac-enhanced.is-code-zoomed,
+.markdown-body .code-mac-enhanced.is-code-zoomed {
+  position: fixed !important;
+  top: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  inset: 0 !important;
+  margin: auto !important;
+  width: min(92vw, 1140px) !important;
+  max-width: 1140px !important;
+  height: min(84vh, 780px) !important;
+  max-height: 780px !important;
+  z-index: 99999 !important;
+  border-radius: 18px !important;
+  border: 1px solid var(--border-subtle) !important;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  opacity: 1 !important;
+  transform-origin: center center !important;
+}
+
+[data-theme="dark"] .code-mac-enhanced.is-code-zoomed {
+  background: #1c1b19 !important;
+  border-color: rgba(255, 255, 255, 0.12) !important;
+}
+
+[data-theme="light"] .code-mac-enhanced.is-code-zoomed,
+.code-mac-enhanced.is-code-zoomed {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+.code-mac-enhanced.is-code-zoomed .code-mac-header,
+.markdown-body .code-mac-enhanced.is-code-zoomed .code-mac-header {
+  height: 44px;
+  padding: 0 20px;
+  border-bottom: 1px solid var(--border-subtle);
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .code-mac-enhanced.is-code-zoomed .code-mac-header,
+.code-mac-enhanced.is-code-zoomed .code-mac-header {
+  background: #f5efe6 !important;
+}
+
+[data-theme="dark"] .code-mac-enhanced.is-code-zoomed .code-mac-header {
+  background: #252320 !important;
+}
+
+.code-mac-enhanced.is-code-zoomed .code-mac-fullscreen-btn,
+.markdown-body .code-mac-enhanced.is-code-zoomed .code-mac-fullscreen-btn {
+  color: var(--color-accent);
+  background: var(--accent-subtle);
+  border-color: var(--color-accent);
+}
+
+.code-mac-enhanced.is-code-zoomed .code-scroll-wrapper,
+.markdown-body .code-mac-enhanced.is-code-zoomed .code-scroll-wrapper {
+  flex: 1 1 auto !important;
+  height: calc(100% - 44px) !important;
+  max-height: calc(100% - 44px) !important;
+  width: 100% !important;
+  overflow: auto !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+[data-theme="light"] .code-mac-enhanced.is-code-zoomed .code-scroll-wrapper,
+.code-mac-enhanced.is-code-zoomed .code-scroll-wrapper {
+  background: #ffffff !important;
+}
+
+[data-theme="dark"] .code-mac-enhanced.is-code-zoomed .code-scroll-wrapper {
+  background: #1c1b19 !important;
+}
+
+.code-mac-enhanced.is-code-zoomed table,
+.markdown-body .code-mac-enhanced.is-code-zoomed table {
+  min-width: 100% !important;
+  width: max-content !important;
+  margin: 0 !important;
+  table-layout: auto !important;
+  border-collapse: collapse !important;
+}
+
+.code-mac-enhanced.is-code-zoomed td.gutter,
+.markdown-body .code-mac-enhanced.is-code-zoomed td.gutter {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 5 !important;
+  padding: 16px 14px 16px 20px !important;
+  color: var(--text-tertiary) !important;
+  opacity: 0.6 !important;
+  user-select: none !important;
+}
+
+[data-theme="light"] .code-mac-enhanced.is-code-zoomed td.gutter,
+.code-mac-enhanced.is-code-zoomed td.gutter {
+  background: #ffffff !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.05) !important;
+}
+
+[data-theme="dark"] .code-mac-enhanced.is-code-zoomed td.gutter {
+  background: #1c1b19 !important;
+  border-right: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.code-mac-enhanced.is-code-zoomed td.code,
+.markdown-body .code-mac-enhanced.is-code-zoomed td.code {
+  overflow: visible !important;
+  padding: 16px 24px !important;
+}
+
+[data-theme="light"] .code-mac-enhanced.is-code-zoomed td.code,
+.code-mac-enhanced.is-code-zoomed td.code {
+  background: #ffffff !important;
+}
+
+[data-theme="dark"] .code-mac-enhanced.is-code-zoomed td.code {
+  background: #1c1b19 !important;
+}
+
+.code-mac-enhanced.is-code-zoomed td.code pre,
+.markdown-body .code-mac-enhanced.is-code-zoomed td.code pre {
+  max-height: none !important;
+  font-size: 0.95rem !important;
+  line-height: 1.8 !important;
+  overflow: visible !important;
+  white-space: pre !important;
+}
+
+pre.code-mac-enhanced.is-code-zoomed .code-scroll-wrapper code,
+.markdown-body pre.code-mac-enhanced.is-code-zoomed .code-scroll-wrapper code {
+  display: block !important;
+  padding: 20px 24px !important;
+  min-width: max-content !important;
+  white-space: pre !important;
+  font-size: 0.95rem !important;
+  line-height: 1.8 !important;
+}
+
+.code-mac-enhanced.is-code-zoomed .code-collapse-mask,
+.code-mac-enhanced.is-code-zoomed .code-expand-bar,
+.code-mac-enhanced.is-code-zoomed .code-collapse-footer-bar,
+.markdown-body .code-mac-enhanced.is-code-zoomed .code-collapse-mask,
+.markdown-body .code-mac-enhanced.is-code-zoomed .code-expand-bar,
+.markdown-body .code-mac-enhanced.is-code-zoomed .code-collapse-footer-bar {
+  display: none !important;
+}
+
+@media (max-width: 768px) {
+  .markdown-body .code-mac-enhanced.is-code-zoomed {
+    width: 95vw !important;
+    height: 90vh !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ==============================================================================
+   过长代码块折叠与专用滚动视窗系统 (Code Block Fold & Scroll System)
+   ============================================================================== */
+.code-mac-enhanced,
+.code-pre-container {
+  position: relative !important;
+}
+
+.code-scroll-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.code-collapse-mask {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 96px;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, var(--code-bg) 85%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 12px;
+  z-index: 5;
+  pointer-events: none;
+  border-bottom-left-radius: var(--radius-lg, 12px);
+  border-bottom-right-radius: var(--radius-lg, 12px);
+}
+
+.code-collapse-mask .code-expand-btn {
+  pointer-events: auto;
+}
+
+.code-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 18px;
+  font-size: 0.78rem;
+  font-family: var(--font-sans);
+  font-weight: 500;
+  color: var(--text-primary);
+  background: var(--bg-surface-elevated, var(--bg-surface, #232220));
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+}
+
+.code-expand-btn:hover {
+  background: var(--bg-card);
+  border-color: var(--color-accent, #6366f1);
+  color: var(--color-accent, #6366f1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+}
+
+.code-expand-btn .expand-icon {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s ease;
+}
+
+/* 展开后的底部收起条 */
+.code-collapse-footer-bar {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 12px;
+  background: var(--code-bg);
+  border-top: 1px dashed var(--border-subtle);
+  border-bottom-left-radius: var(--radius-lg, 12px);
+  border-bottom-right-radius: var(--radius-lg, 12px);
+}
+
+.code-collapse-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  font-size: 0.74rem;
+  font-family: var(--font-sans);
+  color: var(--text-tertiary);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.code-collapse-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--color-accent, #6366f1);
+}
+
+.code-collapse-btn .collapse-icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* 自动换行切换状态 */
+.code-mac-enhanced.is-word-wrapped .code-scroll-wrapper {
+  overflow-x: hidden !important;
+}
+.code-mac-enhanced.is-word-wrapped table {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+.code-mac-enhanced.is-word-wrapped td.code,
+.code-mac-enhanced.is-word-wrapped td.code pre,
+.code-mac-enhanced.is-word-wrapped pre code {
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
+  overflow-wrap: anywhere !important;
+}
+.code-mac-btn.is-active {
+  color: var(--color-accent, #6366f1) !important;
+  background: rgba(99, 102, 241, 0.12) !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+}
+}
+
+/* 代码主体与排版 */
+.markdown-body figure.highlight table {
+  margin: 0;
+  border: none;
+  background: transparent;
+  min-width: 100%;
+  width: max-content;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.markdown-body figure.highlight td {
+  border: none;
+  padding: 16px 0;
+  vertical-align: top;
+}
+
+.markdown-body figure.highlight .gutter {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--code-bg);
+  padding-left: 14px;
+  padding-right: 14px;
+  text-align: right;
+  color: var(--text-tertiary);
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  line-height: 1.7;
+  user-select: none;
+  border-right: 0.5px solid var(--border-subtle);
+  width: 48px;
+  white-space: nowrap;
+}
+
+.markdown-body figure.highlight .code {
+  padding-left: 18px;
+  padding-right: 28px;
+  overflow: visible;
+}
+
+.markdown-body figure.highlight pre,
+.markdown-body figure.highlight td.gutter pre,
+.markdown-body figure.highlight td.code pre {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  line-height: 1.7;
+  font-family: var(--font-mono);
+}
+
+.markdown-body figure.highlight td.code pre {
+  overflow: visible !important;
+  white-space: pre !important;
+  word-wrap: normal !important;
+  word-break: normal !important;
+}
+
+/* 优雅细微滚动条 (同时支持 code-scroll-wrapper 与 pre) */
+.code-scroll-wrapper::-webkit-scrollbar,
+.markdown-body figure.highlight .code::-webkit-scrollbar,
+.markdown-body figure.highlight td.code pre::-webkit-scrollbar,
+.markdown-body pre:not(figure.highlight pre)::-webkit-scrollbar,
+.markdown-body .table-wrapper::-webkit-scrollbar {
+  height: 6px;
+  width: 6px;
+}
+.code-scroll-wrapper::-webkit-scrollbar-track,
+.markdown-body figure.highlight .code::-webkit-scrollbar-track,
+.markdown-body figure.highlight td.code pre::-webkit-scrollbar-track,
+.markdown-body pre:not(figure.highlight pre)::-webkit-scrollbar-track,
+.markdown-body .table-wrapper::-webkit-scrollbar-track {
+  background: transparent;
+}
+.code-scroll-wrapper::-webkit-scrollbar-thumb,
+.markdown-body figure.highlight .code::-webkit-scrollbar-thumb,
+.markdown-body figure.highlight td.code pre::-webkit-scrollbar-thumb,
+.markdown-body pre:not(figure.highlight pre)::-webkit-scrollbar-thumb,
+.markdown-body .table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.16);
+  border-radius: 999px;
+}
+[data-theme="light"] .code-scroll-wrapper::-webkit-scrollbar-thumb,
+[data-theme="light"] .markdown-body figure.highlight .code::-webkit-scrollbar-thumb,
+[data-theme="light"] .markdown-body figure.highlight td.code pre::-webkit-scrollbar-thumb,
+[data-theme="light"] .markdown-body pre:not(figure.highlight pre)::-webkit-scrollbar-thumb,
+[data-theme="light"] .markdown-body .table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.16);
+}
+
+/* 独立 pre 样式 */
+.markdown-body pre:not(figure.highlight pre) {
+  padding: 16px 20px;
+  overflow-x: auto;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  border: none;
+  padding: 0;
+  color: var(--code-text);
+  font-size: 0.9em;
+  line-height: 1.7;
+  font-family: var(--font-mono);
+}
+
+/* ==============================================================================
+   代码高亮语法配色规范 (Syntax Highlighting - Light & Dark Tranquil Palette)
+   ============================================================================== */
+
+/* 浅色主题代码高亮 (Light Mode - 宣纸茶韵与落樱墨色) */
+:root[data-theme="light"] .markdown-body figure.highlight,
+:root[data-theme="light"] .markdown-body pre code,
+.markdown-body figure.highlight,
+.markdown-body pre code {
+  color: #2e2c29;
+}
+
+:root[data-theme="light"] .highlight .comment,
+:root[data-theme="light"] .highlight .quote,
+:root[data-theme="light"] .highlight .hljs-comment,
+:root[data-theme="light"] .highlight .hljs-quote,
+.highlight .comment,
+.highlight .quote,
+.highlight .hljs-comment,
+.highlight .hljs-quote {
+  color: #8c887b !important;
+  font-style: italic;
+}
+
+:root[data-theme="light"] .highlight .keyword,
+:root[data-theme="light"] .highlight .selector-tag,
+:root[data-theme="light"] .highlight .subst,
+:root[data-theme="light"] .highlight .hljs-keyword,
+:root[data-theme="light"] .highlight .hljs-selector-tag,
+:root[data-theme="light"] .highlight .hljs-subst,
+.highlight .keyword,
+.highlight .selector-tag,
+.highlight .subst,
+.highlight .hljs-keyword,
+.highlight .hljs-selector-tag,
+.highlight .hljs-subst {
+  color: #b91c1c !important;
+  font-weight: 500;
+}
+
+:root[data-theme="light"] .highlight .string,
+:root[data-theme="light"] .highlight .doctag,
+:root[data-theme="light"] .highlight .hljs-string,
+:root[data-theme="light"] .highlight .hljs-doctag,
+.highlight .string,
+.highlight .doctag,
+.highlight .hljs-string,
+.highlight .hljs-doctag {
+  color: #15803d !important;
+}
+
+:root[data-theme="light"] .highlight .title,
+:root[data-theme="light"] .highlight .title.function_,
+:root[data-theme="light"] .highlight .section,
+:root[data-theme="light"] .highlight .hljs-title,
+:root[data-theme="light"] .highlight .hljs-section,
+.highlight .title,
+.highlight .title.function_,
+.highlight .section,
+.highlight .hljs-title,
+.highlight .hljs-section {
+  color: #0369a1 !important;
+  font-weight: 600;
+}
+
+:root[data-theme="light"] .highlight .title.class_,
+:root[data-theme="light"] .highlight .type,
+:root[data-theme="light"] .highlight .built_in,
+:root[data-theme="light"] .highlight .hljs-type,
+:root[data-theme="light"] .highlight .hljs-built_in,
+.highlight .title.class_,
+.highlight .type,
+.highlight .built_in,
+.highlight .hljs-type,
+.highlight .hljs-built_in {
+  color: #7e22ce !important;
+}
+
+:root[data-theme="light"] .highlight .attr,
+:root[data-theme="light"] .highlight .attribute,
+:root[data-theme="light"] .highlight .variable,
+:root[data-theme="light"] .highlight .property,
+:root[data-theme="light"] .highlight .params,
+:root[data-theme="light"] .highlight .hljs-attr,
+:root[data-theme="light"] .highlight .hljs-attribute,
+:root[data-theme="light"] .highlight .hljs-variable,
+:root[data-theme="light"] .highlight .hljs-params,
+.highlight .attr,
+.highlight .attribute,
+.highlight .variable,
+.highlight .property,
+.highlight .params,
+.highlight .hljs-attr,
+.highlight .hljs-attribute,
+.highlight .hljs-variable,
+.highlight .hljs-params {
+  color: #b45309 !important;
+}
+
+:root[data-theme="light"] .highlight .number,
+:root[data-theme="light"] .highlight .literal,
+:root[data-theme="light"] .highlight .hljs-number,
+:root[data-theme="light"] .highlight .hljs-literal,
+.highlight .number,
+.highlight .literal,
+.highlight .hljs-number,
+.highlight .hljs-literal {
+  color: #c2410c !important;
+}
+
+:root[data-theme="light"] .highlight .meta,
+:root[data-theme="light"] .highlight .tag,
+:root[data-theme="light"] .highlight .name,
+:root[data-theme="light"] .highlight .hljs-meta,
+:root[data-theme="light"] .highlight .hljs-tag,
+:root[data-theme="light"] .highlight .hljs-name,
+.highlight .meta,
+.highlight .tag,
+.highlight .name,
+.highlight .hljs-meta,
+.highlight .hljs-tag,
+.highlight .hljs-name {
+  color: #475569 !important;
+}
+
+/* 深色主题代码高亮 (Dark Mode - 暖夜炭墨与霓虹微光) */
+[data-theme="dark"] .markdown-body figure.highlight,
+[data-theme="dark"] .markdown-body pre code {
+  color: #e6edf3 !important;
+}
+
+[data-theme="dark"] .highlight .comment,
+[data-theme="dark"] .highlight .quote,
+[data-theme="dark"] .highlight .hljs-comment,
+[data-theme="dark"] .highlight .hljs-quote {
+  color: #8b949e !important;
+  font-style: italic;
+}
+
+[data-theme="dark"] .highlight .keyword,
+[data-theme="dark"] .highlight .selector-tag,
+[data-theme="dark"] .highlight .subst,
+[data-theme="dark"] .highlight .hljs-keyword,
+[data-theme="dark"] .highlight .hljs-selector-tag,
+[data-theme="dark"] .highlight .hljs-subst {
+  color: #ff7b72 !important;
+  font-weight: 500;
+}
+
+[data-theme="dark"] .highlight .string,
+[data-theme="dark"] .highlight .doctag,
+[data-theme="dark"] .highlight .hljs-string,
+[data-theme="dark"] .highlight .hljs-doctag {
+  color: #7ee787 !important;
+}
+
+[data-theme="dark"] .highlight .title,
+[data-theme="dark"] .highlight .title.function_,
+[data-theme="dark"] .highlight .section,
+[data-theme="dark"] .highlight .hljs-title,
+[data-theme="dark"] .highlight .hljs-section {
+  color: #79c0ff !important;
+  font-weight: 600;
+}
+
+[data-theme="dark"] .highlight .title.class_,
+[data-theme="dark"] .highlight .type,
+[data-theme="dark"] .highlight .built_in,
+[data-theme="dark"] .highlight .hljs-type,
+[data-theme="dark"] .highlight .hljs-built_in {
+  color: #d2a8ff !important;
+}
+
+[data-theme="dark"] .highlight .attr,
+[data-theme="dark"] .highlight .attribute,
+[data-theme="dark"] .highlight .variable,
+[data-theme="dark"] .highlight .property,
+[data-theme="dark"] .highlight .params,
+[data-theme="dark"] .highlight .hljs-attr,
+[data-theme="dark"] .highlight .hljs-attribute,
+[data-theme="dark"] .highlight .hljs-variable,
+[data-theme="dark"] .highlight .hljs-params {
+  color: #ffa657 !important;
+}
+
+[data-theme="dark"] .highlight .number,
+[data-theme="dark"] .highlight .literal,
+[data-theme="dark"] .highlight .hljs-number,
+[data-theme="dark"] .highlight .hljs-literal {
+  color: #f0883e !important;
+}
+
+[data-theme="dark"] .highlight .meta,
+[data-theme="dark"] .highlight .tag,
+[data-theme="dark"] .highlight .name,
+[data-theme="dark"] .highlight .hljs-meta,
+[data-theme="dark"] .highlight .hljs-tag,
+[data-theme="dark"] .highlight .hljs-name {
+  color: #8b949e !important;
+}
+
+[data-theme="dark"] .highlight .symbol,
+[data-theme="dark"] .highlight .bullet,
+[data-theme="dark"] .highlight .hljs-symbol,
+[data-theme="dark"] .highlight .hljs-bullet {
+  color: #56d364 !important;
+}
+
+[data-theme="dark"] .highlight .addition,
+[data-theme="dark"] .highlight .hljs-addition {
+  color: #aff5b4 !important;
+  background-color: rgba(46, 160, 67, 0.15) !important;
+}
+
+[data-theme="dark"] .highlight .deletion,
+[data-theme="dark"] .highlight .hljs-deletion {
+  color: #ffdcd7 !important;
+  background-color: rgba(248, 81, 73, 0.15) !important;
+}
+
+/* ==============================================================================
+   任务清单规范 (Task Lists) - 杜绝原生圆点与复选框重叠
+   ============================================================================== */
+.markdown-body ul:has(input[type="checkbox"]),
+.markdown-body ul.task-list {
+  list-style: none !important;
+  padding-left: 0 !important;
+  margin-left: 0.2em !important;
+}
+
+.markdown-body li:has(> input[type="checkbox"]),
+.markdown-body li.task-list-item {
+  list-style: none !important;
+  list-style-type: none !important;
+  display: flex !important;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 0.6em;
+}
+
+.markdown-body li:has(> input[type="checkbox"])::marker,
+.markdown-body li.task-list-item::marker {
+  content: none !important;
+}
+
+.markdown-body input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 17px;
+  height: 17px;
+  border-radius: 5px;
+  border: 1.5px solid var(--border-subtle, rgba(125, 125, 125, 0.35));
+  background: var(--bg-surface-elevated, #fff);
+  cursor: pointer;
+  display: inline-grid;
+  place-content: center;
+  margin: 0;
+  vertical-align: middle;
+  flex-shrink: 0;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.markdown-body input[type="checkbox"]:checked {
+  background: var(--color-accent, #c2410c);
+  border-color: var(--color-accent, #c2410c);
+}
+
+.markdown-body input[type="checkbox"]:checked::before {
+  content: "";
+  width: 9px;
+  height: 5px;
+  border-left: 1.8px solid #fff;
+  border-bottom: 1.8px solid #fff;
+  transform: rotate(-45deg) translate(0.5px, -0.5px);
+}
+
+/* ==============================================================================
+   表格规范与响应式溢出保护 (Responsive Tables)
+   ============================================================================== */
+.markdown-body .table-wrapper,
+.markdown-table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 2.2em 0;
+  border-radius: var(--radius-md);
+}
+
+.markdown-body table {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 0.5px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  font-size: 0.92rem;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.03);
+}
+
+.markdown-body th,
+.markdown-body td {
+  padding: 13px 18px;
+  border-bottom: 0.5px solid var(--border-subtle);
+  border-right: 0.5px solid var(--border-subtle);
+  text-align: left;
+}
+
+.markdown-body th:last-child,
+.markdown-body td:last-child {
+  border-right: none;
+}
+
+.markdown-body tr:last-child td {
+  border-bottom: none;
+}
+
+.markdown-body th {
+  background: var(--bg-surface-elevated, var(--bg-surface));
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+.markdown-body tbody tr:hover {
+  background: var(--accent-soft);
+}
+
+/* 标题锚点指示与点击吸顶间距 (Headerlink Anchors) */
+.markdown-body .headerlink {
+  float: left;
+  margin-left: -0.9em;
+  padding-right: 0.3em;
+  opacity: 0;
+  color: var(--color-accent);
+  text-decoration: none !important;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  transition: opacity 0.2s ease;
+}
+
+.markdown-body h1:hover .headerlink,
+.markdown-body h2:hover .headerlink,
+.markdown-body h3:hover .headerlink,
+.markdown-body h4:hover .headerlink,
+.markdown-body h5:hover .headerlink,
+.markdown-body h6:hover .headerlink,
+.markdown-body .headerlink:focus {
+  opacity: 0.75;
+}
+
+.markdown-body .headerlink::before {
+  content: "#";
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4,
+.markdown-body h5,
+.markdown-body h6 {
+  scroll-margin-top: 100px;
+}
+
+/* 图片与其随后的图注排版 (Image & Captions) */
+.markdown-body img {
+  border-radius: var(--radius-md);
+  margin: 2.2em auto 0.8em;
+  max-width: 100%;
+  display: block;
+  box-shadow: var(--shadow-sm);
+  border: 0.5px solid var(--border-subtle);
+  transition: transform var(--duration-normal) var(--ease-apple);
+}
+
+.markdown-body p > img:only-child + em,
+.markdown-body p:has(> img) + p:has(> em:only-child) {
+  display: block;
+  text-align: center;
+  font-size: 0.86rem;
+  color: var(--text-tertiary);
+  margin-top: -0.2em;
+  margin-bottom: 2.4em;
+  font-style: normal;
+  letter-spacing: 0.03em;
+}
+}
+
+.markdown-body img:hover {
+  transform: scale(1.01);
+}
+
+/* 分隔线 */
+.markdown-body hr {
+  margin: 3.5em 0;
+  border: none;
+  height: 0.5px;
+  background: linear-gradient(to right, transparent, var(--border-subtle), transparent);
+}
+
+/* 任务清单列表 */
+.markdown-body input[type="checkbox"] {
+  margin-right: 8px;
+  accent-color: var(--color-accent);
+}
+
+/* ==============================================================================
+   移动端 Markdown 排版与阅读体验优化 (Mobile Markdown Optimization)
+   ============================================================================== */
+@media (max-width: 768px) {
+  .markdown-body {
+    font-size: 0.98rem;
+    line-height: 1.8;
+    letter-spacing: 0.018em;
+  }
+
+  .markdown-body h1 {
+    font-size: 1.48rem;
+    margin-top: 1.8em;
+    margin-bottom: 0.6em;
+  }
+
+  .markdown-body h2 {
+    font-size: 1.28rem;
+    margin-top: 1.6em;
+    margin-bottom: 0.6em;
+  }
+
+  .markdown-body h3 {
+    font-size: 1.12rem;
+    margin-top: 1.4em;
+    margin-bottom: 0.5em;
+  }
+
+  .markdown-body h4 {
+    font-size: 1.02rem;
+    margin-top: 1.2em;
+    margin-bottom: 0.4em;
+  }
+
+  .markdown-body p {
+    margin-bottom: 1.5em;
+    text-align: left;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .markdown-body blockquote {
+    margin: 1.5em 0;
+    padding: 12px 14px;
+    font-size: 0.92rem;
+    line-height: 1.75;
+  }
+
+  .markdown-body ul,
+  .markdown-body ol {
+    margin: 1em 0 1.5em 1.25em;
+  }
+
+  .markdown-body li {
+    line-height: 1.75;
+    margin-bottom: 0.4em;
+  }
+
+  .markdown-body pre:not(figure.highlight pre),
+  .markdown-body figure.highlight {
+    margin: 1.6em 0;
+    border-radius: var(--radius-sm);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .code-mac-header {
+    height: 34px;
+    padding: 0 10px;
+  }
+
+  .code-mac-lang-title,
+  .code-mac-lang {
+    font-size: 0.72rem;
+  }
+
+  .code-mac-actions {
+    gap: 6px;
+  }
+
+  /* 移动端代码块按钮：仅展示清晰微型图标，隐藏文字标签，杜绝重叠串字 */
+  .code-mac-btn .fs-label,
+  .code-mac-btn .copy-label {
+    display: none !important;
+  }
+
+  .code-mac-btn,
+  .code-mac-fullscreen-btn,
+  .code-mac-copy-btn {
+    width: 28px !important;
+    height: 28px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    border-radius: 6px !important;
+    overflow: hidden !important;
+    flex-shrink: 0 !important;
+  }
+
+  .markdown-body figure.highlight .gutter {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 0.78em;
+    width: 36px;
+  }
+
+  .markdown-body figure.highlight .code {
+    padding-left: 12px;
+    padding-right: 14px;
+  }
+
+  .markdown-body figure.highlight td {
+    padding: 10px 0;
+  }
+
+  .markdown-body figure.highlight pre,
+  .markdown-body pre:not(figure.highlight pre) {
+    font-size: 0.82rem;
+    line-height: 1.65;
+  }
+
+  .markdown-body table {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 0.85rem;
+    margin: 1.5em 0;
+  }
+
+  .markdown-body th,
+  .markdown-body td {
+    padding: 8px 12px;
+  }
+
+  .markdown-body img {
+    margin: 1.5em auto;
+    border-radius: var(--radius-sm);
+  }
+
+  .markdown-body hr {
+    margin: 2.2em 0;
+  }
+}
+
+/* ==============================================================================
+   GitHub Alert Callouts (Note, Tip, Important, Warning, Caution)
+   ============================================================================== */
+.markdown-body blockquote.markdown-alert {
+  padding: 14px 20px;
+  border-left-width: 4px;
+  border-radius: var(--radius-md);
+  margin: 1.8em 0;
+  font-size: 0.96rem;
+  line-height: 1.75;
+}
+
+.markdown-body blockquote.markdown-alert .alert-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.markdown-body blockquote.markdown-alert-note {
+  border-left-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.08);
+}
+.markdown-body blockquote.markdown-alert-note .alert-title {
+  color: #3b82f6;
+}
+
+.markdown-body blockquote.markdown-alert-tip {
+  border-left-color: #10b981;
+  background: rgba(16, 185, 129, 0.08);
+}
+.markdown-body blockquote.markdown-alert-tip .alert-title {
+  color: #10b981;
+}
+
+.markdown-body blockquote.markdown-alert-important {
+  border-left-color: #8b5cf6;
+  background: rgba(139, 92, 246, 0.08);
+}
+.markdown-body blockquote.markdown-alert-important .alert-title {
+  color: #8b5cf6;
+}
+
+.markdown-body blockquote.markdown-alert-warning {
+  border-left-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+}
+.markdown-body blockquote.markdown-alert-warning .alert-title {
+  color: #f59e0b;
+}
+
+.markdown-body blockquote.markdown-alert-caution {
+  border-left-color: #ef4444;
+  background: rgba(239, 68, 68, 0.08);
+}
+.markdown-body blockquote.markdown-alert-caution .alert-title {
+  color: #ef4444;
+}
+
+/* ==============================================================================
+   Seihaku Fluid Lightbox (全屏流体图片视窗)
+   ============================================================================== */
+.seihaku-lightbox-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(18, 17, 16, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.seihaku-lightbox-backdrop.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox-content-box {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  transform: scale(0.95);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.seihaku-lightbox-backdrop.is-active .lightbox-img {
+  transform: scale(1);
+}
+
+.lightbox-caption {
+  margin-top: 14px;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.9rem;
+  letter-spacing: 0.03em;
+  text-align: center;
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: 24px;
+  right: 28px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.lightbox-close-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(1.08);
+}
+
+.lightbox-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  backdrop-filter: blur(8px);
+}
+
+.lightbox-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-50%) scale(1.08);
+}
+
+.lightbox-prev-btn {
+  left: 24px;
+}
+
+.lightbox-next-btn {
+  right: 24px;
+}
+
+.lightbox-counter {
+  margin-top: 6px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+  letter-spacing: 0.05em;
+}
+
+.image-caption {
+  display: block;
+  text-align: center;
+  margin: 8px 0 20px 0;
+  font-size: 0.82rem;
+  color: var(--text-tertiary);
+  font-style: italic;
+}
+
+/* ==============================================================================
+   🍃 栖白 (Theme Seihaku) - 优雅外链与内链解析卡片 (Link Preview Card)
+   ============================================================================== */
+.seihaku-link-card-wrap {
+  margin: 1.8em 0;
+  width: 100%;
+}
+
+.seihaku-link-card {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 16px;
+  background: var(--bg-surface-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  text-decoration: none !important;
+  color: inherit !important;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--duration-fast) var(--ease-apple),
+              border-color var(--duration-fast) ease,
+              box-shadow var(--duration-fast) var(--ease-apple),
+              background var(--duration-fast) ease;
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.seihaku-link-card:hover {
+  transform: translateY(-2.5px);
+  border-color: var(--border-focus);
+  box-shadow: var(--shadow-md);
+  background: var(--bg-surface-elevated);
+}
+
+.seihaku-link-card:active {
+  transform: translateY(-1px) scale(0.995);
+}
+
+.seihaku-link-card .link-card-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  padding-right: 22px;
+}
+
+.seihaku-link-card .link-card-site {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.seihaku-link-card .link-card-favicon {
+  width: 16px;
+  height: 16px;
+  border-radius: var(--radius-xs);
+  object-fit: contain;
+  flex-shrink: 0;
+  display: inline-block;
+  margin: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.seihaku-link-card .link-card-host {
+  font-size: 0.76rem;
+  color: var(--text-tertiary);
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.seihaku-link-card .link-card-internal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  padding: 1px 7px;
+  background: var(--accent-soft);
+  color: var(--color-accent);
+  border-radius: var(--radius-pill);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.seihaku-link-card .link-card-title {
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  transition: color 0.2s ease;
+}
+
+.seihaku-link-card:hover .link-card-title {
+  color: var(--color-accent);
+}
+
+.seihaku-link-card .link-card-desc {
+  font-size: 0.84rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  margin-top: 2px;
+}
+
+.seihaku-link-card .link-card-cover-box {
+  flex: 0 0 148px;
+  width: 148px;
+  min-height: 94px;
+  max-height: 108px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  align-self: center;
+}
+
+.seihaku-link-card .link-card-cover {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  display: block !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  border: none !important;
+  box-shadow: none !important;
+  transition: transform 0.4s var(--ease-apple);
+}
+
+.seihaku-link-card:hover .link-card-cover {
+  transform: scale(1.05);
+}
+
+.seihaku-link-card .link-card-action {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-size: 0.78rem;
+  color: var(--text-tertiary);
+  transition: color 0.2s ease, transform var(--duration-fast) var(--ease-apple);
+  pointer-events: none;
+}
+
+.seihaku-link-card:hover .link-card-action {
+  color: var(--color-accent);
+  transform: translate(2px, -2px);
+}
+
+/* ==============================================================================
+   富文本标签外挂系统 (Tag Plugins: Tabs / Folding / Blur / Gallery)
+   ============================================================================== */
+
+/* 1. 分栏选项卡 (Tabs) */
+.seihaku-tabs {
+  margin: 28px 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg, 12px);
+  overflow: hidden;
+  background: var(--bg-surface);
+}
+
+.seihaku-tabs-nav {
+  display: flex;
+  gap: 4px;
+  padding: 6px 8px;
+  background: var(--bg-surface-elevated, rgba(125, 125, 125, 0.05));
+  border-bottom: 1px solid var(--border-subtle);
+  overflow-x: auto;
+}
+
+.seihaku-tab-btn {
+  padding: 6px 14px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.seihaku-tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(125, 125, 125, 0.08);
+}
+
+.seihaku-tab-btn.is-active {
+  color: var(--color-accent, #6366f1);
+  background: var(--bg-surface);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+}
+
+.seihaku-tab-pane {
+  display: none;
+  padding: 18px 20px;
+}
+
+.seihaku-tab-pane.is-active {
+  display: block;
+  animation: fadeIn 0.25s ease-out;
+}
+
+.seihaku-tab-pane > :first-child {
+  margin-top: 0 !important;
+}
+
+.seihaku-tab-pane > :last-child {
+  margin-bottom: 0 !important;
+}
+
+/* 2. 手风琴折叠框 (Folding) */
+details.seihaku-folding {
+  margin: 20px 0;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--bg-surface);
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+}
+
+details.seihaku-folding summary.folding-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 18px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  color: var(--text-primary);
+  background: var(--bg-surface-elevated, rgba(125, 125, 125, 0.03));
+  list-style: none;
+}
+
+details.seihaku-folding summary::-webkit-details-marker {
+  display: none;
+}
+
+details.seihaku-folding .folding-arrow svg {
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  color: var(--text-tertiary);
+}
+
+details.seihaku-folding[open] .folding-arrow svg {
+  transform: rotate(90deg);
+  color: var(--color-accent);
+}
+
+details.seihaku-folding .folding-content {
+  padding: 16px 20px;
+  border-top: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+details.seihaku-folding.folding-blue { border-left: 3.5px solid #3b82f6; }
+details.seihaku-folding.folding-green { border-left: 3.5px solid #10b981; }
+details.seihaku-folding.folding-yellow { border-left: 3.5px solid #f59e0b; }
+details.seihaku-folding.folding-red { border-left: 3.5px solid #ef4444; }
+details.seihaku-folding.folding-purple { border-left: 3.5px solid #8b5cf6; }
+details.seihaku-folding.folding-cyan { border-left: 3.5px solid #06b6d4; }
+
+/* 3. 行内毛玻璃遮罩 (Blur) */
+.seihaku-blur-text {
+  filter: blur(5px);
+  background: rgba(125, 125, 125, 0.12);
+  border-radius: 4px;
+  padding: 1px 6px;
+  cursor: pointer;
+  transition: filter 0.3s cubic-bezier(0.16, 1, 0.3, 1), background 0.3s ease;
+  user-select: none;
+}
+
+.seihaku-blur-text:hover,
+.seihaku-blur-text.is-unblurred {
+  filter: blur(0);
+  background: transparent;
+  user-select: text;
+}
+
+/* 4. 多图网格画廊 (Gallery) */
+.seihaku-gallery {
+  display: grid;
+  gap: 14px;
+  margin: 24px 0;
+}
+
+.seihaku-gallery.gallery-cols-2 { grid-template-columns: repeat(2, 1fr); }
+.seihaku-gallery.gallery-cols-3 { grid-template-columns: repeat(3, 1fr); }
+.seihaku-gallery.gallery-cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+.seihaku-gallery img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: var(--radius-md, 8px);
+  margin: 0 !important;
+}
+
+@media (max-width: 640px) {
+  .seihaku-gallery.gallery-cols-2,
+  .seihaku-gallery.gallery-cols-3,
+  .seihaku-gallery.gallery-cols-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+/* 骨架与动态补全过渡动画 (Hydration loading transition) */
+.seihaku-link-card.hydrated .link-card-title,
+.seihaku-link-card.hydrated .link-card-desc,
+.seihaku-link-card.hydrated .link-card-cover {
+  animation: seihakuCardFadeIn 0.35s ease forwards;
+}
+
+@keyframes seihakuCardFadeIn {
+  from { opacity: 0; transform: translateY(2px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 移动端响应式规范 (Mobile Responsive) */
+@media (max-width: 640px) {
+  .seihaku-link-card {
+    padding: 13px 15px;
+    gap: 12px;
+  }
+  .seihaku-link-card .link-card-body {
+    padding-right: 14px;
+    gap: 4px;
+  }
+  .seihaku-link-card .link-card-title {
+    font-size: 0.94rem;
+    -webkit-line-clamp: 1;
+  }
+  .seihaku-link-card .link-card-desc {
+    font-size: 0.78rem;
+    -webkit-line-clamp: 2;
+  }
+  .seihaku-link-card .link-card-cover-box {
+    flex: 0 0 88px;
+    width: 88px;
+    min-height: 72px;
+    max-height: 84px;
+  }
+  .seihaku-link-card .link-card-action {
+    top: 10px;
+    right: 12px;
+    font-size: 0.72rem;
+  }
+}
+

@@ -1,0 +1,52 @@
+<%
+  var steamList = (site.data && site.data.steam && site.data.steam.length > 0)
+    ? site.data.steam
+    : ((theme.steam && theme.steam.list) ? theme.steam.list : []);
+%>
+
+<div class="seihaku-page-container">
+  
+  <div class="page-header-block">
+    <span class="page-eyebrow font-mono">STEAM / <%= __('nav.steam') %></span>
+    <h1 class="page-title font-serif"><%= __('pages.steam_title') %></h1>
+    <p class="page-subtitle"><%= __('pages.steam_sub') %></p>
+  </div>
+
+  <div class="steam-games-grid">
+    <% if (steamList && steamList.length > 0) { %>
+      <% steamList.forEach(function(game) { %>
+        <div class="steam-game-card">
+          <img src="<%- game.poster %>" alt="<%= game.title %>" class="steam-game-poster" loading="lazy">
+          <div class="steam-game-body">
+            <h3 class="steam-game-title"><%= game.title %></h3>
+            
+            <div class="steam-meta-pills">
+              <span><i class="far fa-clock" style="margin-right: 4px;"></i> <%= game.playtime %></span>
+              <span>·</span>
+              <span><i class="fas fa-trophy" style="color: #f59e0b; margin-right: 4px;"></i> <%= game.achievements %></span>
+            </div>
+
+            <div style="font-size: 0.82rem; color: var(--text-secondary); display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+              <span><%= game.genre %></span>
+              <span class="steam-badge-clear"><i class="fas fa-check-circle"></i> <%= game.status %></span>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; color: var(--text-tertiary); background: var(--bg-surface-elevated); border: 1px dashed var(--border-subtle); border-radius: var(--radius-xl);">
+        <i class="fab fa-steam" style="font-size: 2.2rem; color: var(--color-accent); margin-bottom: 12px; opacity: 0.6;"></i>
+        <p style="margin: 0; font-size: 0.92rem;"><%= __('pages.steam_empty') %></p>
+      </div>
+    <% } %>
+  </div>
+
+  <% if (page.content) { %>
+    <div class="post-article-card" style="margin-top: 48px;">
+      <div class="markdown-body font-serif">
+        <%- page.content %>
+      </div>
+    </div>
+  <% } %>
+
+</div>

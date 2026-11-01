@@ -1,0 +1,533 @@
+# ==============================================================================
+# 🍃 栖白 (Theme Seihaku) - 主题全局配置文件
+# 标语：浮生偷闲，以白为度。落樱成诗，微澜生辉。
+# 理念：于方寸留白处，栖息万物微光。
+# ==============================================================================
+
+# ==============================================================================
+# 模块一：全局基础与视觉身份 (Global & Identity)
+# ==============================================================================
+
+# 1.1 站点作者与个性签名 (Author & Profile)
+author:
+  name: "栖白"
+  title: "独立思考者 · 创作者"
+  avatar: "/images/avatar.svg"       # 头像路径（支持本地相对路径或外部 URL）
+  description: "A product-minded engineer building tranquil interfaces and autonomous systems."
+
+slogan:
+  primary: "浮生偷闲，以白为度。落樱成诗，微澜生辉。"
+  sub: "A PRODUCT-MINDED ENGINEER BUILDING TRANQUIL INTERFACES AND AUTONOMOUS SYSTEMS."
+
+# 1.2 视觉色彩与设计风格预设 (Design Tokens & Color Presets)
+style:
+  accent_color: ""                  # 主题色（留空使用落樱默认绯红 #e11d48；亦可自定义如 "#10b981", "#6366f1", "#0284c7"）
+  preset: "sakura"                  # 色彩预设: sakura (落樱绯红) | bamboo (竹青翠绿) | indigo (黛蓝水墨) | charcoal (素炭宣纸)
+
+# 1.3 顶栏灵动胶囊状态岛 (Header Dynamic Island Capsule)
+island:
+  enable: true                      # 是否开启顶栏灵动胶囊
+  status_text: "✦ Building Tranquil Spaces"
+  quote: "留白不是空无一物，而是让风穿过文字的间隙。"
+
+# 1.4 全局导航菜单与多级下拉 Dock (Navigation Menu & Hierarchical Dropdown Dock)
+# 准则：少即是多，一级保持精炼（4 个核心入口），次级内容通过二级折叠下拉收纳
+menu:
+  首页:
+    url: /
+    icon: "fas fa-home"
+
+  文稿:
+    url: /archives
+    icon: "fas fa-feather-alt"
+    desc: "笔墨文存 · 知识体系"
+    children:
+      - name: "全部文稿"
+        url: "/archives"
+        icon: "fas fa-archive"
+        desc: "岁月沉淀的万字长文"
+      - name: "随笔手记"
+        url: "/notes"
+        icon: "far fa-comment-dots"
+        desc: "随时记下的灵感微光"
+      - name: "分类专栏"
+        url: "/categories"
+        icon: "far fa-folder-open"
+        desc: "体系化知识图谱"
+      - name: "标签画廊"
+        url: "/tags"
+        icon: "fas fa-hashtag"
+        desc: "灵感思维网状连接"
+      - name: "时光足迹"
+        url: "/timeline"
+        icon: "fas fa-hourglass-half"
+        desc: "流金岁月沉淀轨迹"
+      - name: "文档中心"
+        url: "/docs"
+        icon: "fas fa-book"
+        desc: "系统化知识文库"
+
+  探索:
+    url: /portfolio
+    icon: "fas fa-compass"
+    desc: "造物实践 · 兴趣生活"
+    children:
+      - name: "精选项目"
+        url: "/portfolio"
+        icon: "fas fa-cube"
+        desc: "独立创造与工程实践"
+      - name: "追番记录"
+        url: "/bangumis"
+        icon: "fas fa-tv"
+        desc: "光影二次元旅程"
+      - name: "光影图库"
+        url: "/photos"
+        icon: "fas fa-camera"
+        desc: "定格世间微光"
+      - name: "我的装备"
+        url: "/equipments"
+        icon: "fas fa-laptop"
+        desc: "数字生产力工具"
+      - name: "Steam 展馆"
+        url: "/steam"
+        icon: "fab fa-steam"
+        desc: "探索游戏宇宙"
+
+  关于:
+    url: /about
+    icon: "far fa-user"
+    desc: "名片履历 · 友邻聚落"
+    children:
+      - name: "关于栖白"
+        url: "/about"
+        icon: "far fa-user"
+        desc: "独立思考者 · 创作者"
+      - name: "友邻聚落"
+        url: "/friends"
+        icon: "far fa-handshake"
+        desc: "志同道合的数字花园"
+      - name: "朋友圈子"
+        url: "/friendcircle"
+        icon: "fas fa-rss"
+        desc: "友邻即时动态流"
+      - name: "访客留言"
+        url: "/guestbook"
+        icon: "far fa-comment-dots"
+        desc: "纸短情长，留下回响"
+
+# 1.5 静谧多栏页脚与建站运行统计 (Footer & Running Days)
+footer:
+  since: 2024                       # 建站起步年份
+  start_date: "2024-03-15"          # 精确建站起算日期 (YYYY-MM-DD)，自动计算全站真实运行天数
+  custom_days: ""                   # 直接指定静态运行天数（若设置则优先直接显示该天数，如 520；留空则按日期自动计算）
+  custom_text: "于方寸留白处，栖息万物微光。"
+  icp: ""                           # 网站 ICP 备案号（如不需要留空即可）
+  columns:
+    - title: "NAVIGATION / 巡礼"
+      links:
+        - name: "首页 · Home"
+          url: "/"
+        - name: "文稿归档 · Writing"
+          url: "/archives"
+        - name: "微语手记 · Notes"
+          url: "/notes"
+        - name: "时光足迹 · Timeline"
+          url: "/timeline"
+        - name: "关于本站 · About"
+          url: "/about"
+    - title: "EXPLORE / 探索"
+      links:
+        - name: "追番记录 · Bangumis"
+          url: "/bangumis"
+        - name: "我的装备 · Equipments"
+          url: "/equipments"
+        - name: "分类专栏 · Categories"
+          url: "/categories"
+        - name: "光影画廊 · Photos"
+          url: "/photos"
+        - name: "Steam 游戏 · Steam"
+          url: "/steam"
+    - title: "RESOURCES / 专栏"
+      links:
+        - name: "文档中心 · Docs"
+          url: "/docs"
+        - name: "精选项目 · Portfolio"
+          url: "/portfolio"
+        - name: "朋友圈子 · FriendCircle"
+          url: "/friendcircle"
+        - name: "访客留言 · Guestbook"
+          url: "/guestbook"
+        - name: "RSS 订阅 · Feed"
+          url: "/atom.xml"
+          target: "_blank"
+    - title: "CONNECT / 交汇"
+      social: true
+
+
+# ==============================================================================
+# 模块二：首页核心展示流 (Home Showcase & Streams)
+# ==============================================================================
+
+# 2.1 首页巨幕展示 (Hero Showcase)
+hero:
+  enable: true
+  greeting: "Hi, I'm"               # 问候语
+  wave_emoji: "👋"
+  h1_prefix: "I orchestrate"
+  h1_italic: "ideas"
+  h1_suffix: "into products with"
+  twinkle_icon: "✦"
+  # 打字机轮播胶囊词汇（在首屏代码胶囊中循环打字呈现）
+  badge_words:
+    - "AI Agents"
+    - "Crafted Code"
+    - "Tranquil Spaces"
+    - "Apple HIG"
+    - "Fluid Systems"
+  badge_speed: 90                   # 打字速度 (ms)
+  badge_delay: 2400                 # 词组停顿时间 (ms)
+  quote: "留白不是空无一物，而是让风穿过文字的间隙，带去回响与呼吸。"
+  show_stats: true                  # 是否展示「X 篇 · X 万字 · X 天」全站统计数据
+  # 社交媒体图标入口
+  social:
+    - name: "GitHub"
+      icon: "fab fa-github"
+      link: "https://github.com"
+    - name: "X (Twitter)"
+      icon: "fab fa-x-twitter"
+      link: "https://x.com"
+    - name: "Bilibili"
+      icon: "fab fa-bilibili"
+      link: "https://bilibili.com"
+    - name: "RSS Feed"
+      icon: "fas fa-rss"
+      link: "/atom.xml"
+    - name: "Email"
+      icon: "fas fa-envelope"
+      link: "mailto:hello@example.com"
+
+# 2.2 一言诗韵长廊配置 (Hitokoto Strip)
+hitokoto:
+  enable: true                      # 是否开启一言诗韵长廊
+  auto_refresh: true                # 是否开启自动轮播刷新
+  interval: 8500                    # 轮播间隔 (毫秒)
+
+# 2.3 首页双流内容区 (Dual Stream Grid - 近期笔墨与微手记)
+stream:
+  left_title_en: "RECENT WRITING"
+  left_title_zh: "近期笔墨"
+  right_title_en: "MUSINGS"
+  right_title_zh: "碎念"
+  # 首页即时手记列表（默认空，若配置则在首页右侧展示；亦可直接在 source/_data/notes.yml 中集中管理）
+  musings: []
+
+
+# ==============================================================================
+# 模块三：文章与阅读体验 (Post & Reading)
+# ==============================================================================
+
+# 3.1 文章详情页基础配置 (Post Detail Settings)
+post:
+  default_cover: "https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&w=1200&q=80"
+  word_count: true                  # 显示字数
+  read_time: true                   # 显示预估阅读时长
+  show_toc: true                    # 显示右侧悬浮随动目录 (TOC)
+  toc_depth: 3                      # 目录最大层级深度 (H1-H3)
+  like_button:
+    enable: true                    # 点亮微光互动按钮（纯静态持久化）
+    text: "点亮微光"
+  reward:
+    enable: false                   # 赞赏支持弹窗（填入二维码图片链接开启）
+    wechat: ""
+    alipay: ""
+  copyright:
+    enable: true                    # 原创版权声明卡片
+    license: "署名-非商业性使用-相同方式共享 4.0 国际 (CC BY-NC-SA 4.0)"
+    license_url: "https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh"
+  prev_next: true                   # 上下篇导航卡片
+  related_posts:
+    enable: true                    # 智能相关文章推荐
+    limit: 3
+  outdate_notice:
+    enable: true                    # 文章时效性/过期温和提示
+    days: 180                       # 超过设定天数时触发提示
+
+# 3.2 AI 智能摘要系统 (AI Summary Engine)
+ai_summary:
+  enable: true
+  model_label: "Gemini 1.5 Pro"     # 前端展示的 AI 模型标签
+  provider: "gemini"                # gemini | openai | deepseek | custom
+  api_key: ""                       # 外部 AI API Key（支持前端代理或直接接入）
+  api_url: ""                       # 外部 API 请求端点（留空使用默认官方端点）
+  model: "gemini-1.5-flash"
+  auto_generate: false              # 无本地摘要时是否自动请求外部 API
+  allow_refresh: true               # 是否允许读者点击“外部 AI 智析”按钮实时调用 API 生成摘要
+  prompt: "你是一位兼具理性深度与东方文字温度的思想博主。请用通顺优雅的2-3句话总结以下长篇文稿的核心洞察与精髓，保留余白韵味："
+
+# 3.3 智能链接预览卡片解析 (Link Preview Cards)
+link_card:
+  enable: true                      # 是否开启链接卡片功能
+  auto_card: true                   # 自动将独立的单行外链转为富媒体链接卡片
+  fetch_meta: true                  # 构建时自动抓取目标网站元数据（标题、描述、Favicon、封面）
+  timeout: 3000                     # 请求超时时间 (ms)
+  cache: true                       # 启用本地持久化缓存 (source/_data/link_cards.json)，保证离线构建秒开
+
+
+# ==============================================================================
+# 模块四：特色独立页面配置 (Special Pages Configuration)
+# 提示：默认提供干净配置项，内容列表默认保持为空，开箱即可直接使用各专栏页面！
+# ==============================================================================
+
+# 4.1 微语手记 (/notes)
+notes:
+  enable: true
+  title: "微语手记"
+  subtitle: "杂志级沉浸手记与灵感漫步。随时记下的灵感微光与日常碎片。"
+  source: "local"                   # 数据源: local (优先读取 source/_data/notes.yml)
+  initial_nid: 1
+  default_topic: "手记"
+  enable_toc: true
+  enable_reading_progress: true
+  enable_search: true
+
+# 4.2 深度思考专栏 (/thinking)
+thinking:
+  enable: true
+  title: "深度思考与心流漫步"
+  subtitle: "沉淀本质思考，拒绝信息噪音。记录对世界底层规律的探索。"
+  categories: []                    # 自动筛选归入思考专栏的分类名列表
+  tags: []                          # 自动筛选归入思考专栏的标签名列表
+
+# 4.3 友邻聚落 (/friends)
+friends:
+  enable: true
+  title: "海内存知己"
+  subtitle: "路遥山远，文字为凭。与志同道合的友邻在此相逢。"
+  apply_info: "欢迎在下方留言交换友链。格式：名称、链接、头像、简介、RSS。"
+  list: []                          # 友链列表，默认无内容。在 source/_data/friends.yml 或 links.yml 中维护，亦可在此直接配置
+  # 配置示例：
+  # list:
+  #   - name: "余白居"
+  #     link: "https://example.com/yohaku"
+  #     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+  #     desc: "于空灵处见精神，写意代码与诗篇。"
+  #     tag: "设计 / 诗意"
+  #     rss: "https://example.com/yohaku/atom.xml"
+
+# 4.4 友邻朋友圈 (/friendcircle - 自动从友邻 RSS 实时获取最新文章)
+friendcircle:
+  enable: true
+  title: "友邻朋友圈"
+  subtitle: "去中心化 RSS 动态聚合流。实时探访友邻博主的最新笔墨与灵感。"
+  auto_sync: true                   # 是否在 Hexo 构建/启动时自动实时抓取各友邻 RSS 最新文章
+  limit: 20                         # 聚合展示的最大文章总篇数
+  cache_days: 1                     # 本地数据缓存保留天数
+  sources: []                       # 友邻 RSS 订阅源列表，默认无内容，填入友邻 RSS 即可自动抓取
+  # 配置示例（填入友邻订阅源即可自动实时抓取）：
+  # sources:
+  #   - name: "余白居"
+  #     author: "余白"
+  #     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+  #     rss: "https://example.com/yohaku/atom.xml"
+  #     url: "https://example.com/yohaku"
+  #   - name: "落樱书舍"
+  #     author: "小樱"
+  #     avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80"
+  #     rss: "https://example.com/sakura/feed.xml"
+  #     url: "https://example.com/sakura"
+
+# 4.5 精选项目展厅 (/portfolio)
+portfolio:
+  enable: true
+  title: "精选项目与造物展厅"
+  subtitle: "心之所向，素履以往。将想法、代码与设计打磨成独立作品与系统。"
+  source: "local"                   # 数据源: local (本地配置或 source/_data/portfolio.yml) | github (GitHub API 自动同步) | both (两者融合)
+  list: []                          # 本地项目列表，默认无内容
+  github:
+    enable: false                   # 是否开启 GitHub 仓库自动同步
+    username: ""                    # GitHub 用户名
+    token: ""                       # 可选 GitHub Token 防限流
+    sort: "stars"                   # stars | updated
+    limit: 12
+    exclude_forks: true
+    pinned: []                      # 强制置顶仓库名数组
+
+# 4.6 二次元追番录 (/bangumis)
+bangumis:
+  enable: true
+  title: "二次元追番录"
+  subtitle: "跨越光年与时空的思念。记录那些感动、治愈与沉思的动画作品。"
+  list: []                          # 本地追番数据列表，默认无内容。亦可开启下方 platforms.bilibili 进行自动同步
+
+# 4.7 光影画廊 (/photos)
+photos:
+  enable: true
+  title: "光影画廊"
+  subtitle: "定格天地苍茫与微小刹那。以快门雕刻时间，以留白容纳无垠。"
+  list: []                          # 光影相片列表，默认无内容。可在 source/_data/photos.yml 中维护，亦可在此直接配置
+
+# 4.8 Steam 游戏宇宙 (/steam)
+steam:
+  enable: true
+  title: "Steam 游戏展馆"
+  subtitle: "游戏是第九艺术。在数字虚拟世界中的沉浸探索与心流体验。"
+  list: []                          # 游戏列表，默认无内容。可在 source/_data/steam.yml 中维护，亦可在此直接配置
+
+# 4.9 我的装备库 (/equipments)
+equipments:
+  enable: true
+  title: "数字与生产力装备"
+  subtitle: "工欲善其事，必先利其器。记录日常陪伴创作与思考的数码、桌面与生产力清单。"
+  list: []                          # 装备分组列表，默认无内容。可在 source/_data/equipments.yml 中维护，亦可在此直接配置
+
+# 4.10 关于页面 (/about)
+about:
+  enable: true
+  title: "关于栖白"
+  subtitle: "于方寸留白处，栖息万物微光。"
+
+# 4.11 访客留言板 (/guestbook)
+guestbook:
+  enable: true
+  title: "访客留言"
+  subtitle: "纸短情长，留下你的回响与微光印记。"
+
+# 4.12 知识文档中心 (/docs)
+docs:
+  enable: true
+  title: "知识文档中心"
+  subtitle: "系统性知识脉络与工程设计手册。以结构化专栏沉淀深度认知与实战经验。"
+  list: []                          # 文档专栏列表，默认无内容。可在 source/_data/docs.yml 中维护，亦可在此直接配置
+
+
+# ==============================================================================
+# 模块五：外部主流平台 API 互联 (Platforms & Integrations)
+# ==============================================================================
+platforms:
+  # 5.1 哔哩哔哩 (Bilibili) - 用于追番录 (/bangumis) 实时同步
+  bilibili:
+    enable: false                   # 是否开启 Bilibili 数据同步（填入 vmid 后开启）
+    vmid: ""                        # 你的 B 站用户数字 UID (例如 "26578164")
+    type: 1                         # 1: 追番 (Anime), 2: 追剧 (Drama)
+    page_size: 30                   # 同步数量
+    auto_sync: true                 # Hexo 构建或启动时自动拉取最新追番数据
+
+  # 5.2 GitHub 开源项目互联 (用于作品展厅 /portfolio)
+  github:
+    enable: false
+    username: ""                    # 你的 GitHub 用户名
+    token: ""                       # 可选 GitHub Personal Access Token (或配置环境变量 GITHUB_TOKEN)
+    sort: "stars"                   # stars (按星标排序) | updated (按活跃更新)
+    limit: 12
+    exclude_forks: true
+    auto_sync: true
+
+
+# ==============================================================================
+# 模块六：交互与扩展服务 (Interactions & Services)
+# ==============================================================================
+
+# 6.1 评论与表情互动系统 (Comments, Reactions & Likes)
+comment:
+  enable: false                     # 是否开启评论互动系统 (true / false)
+  type: "waline"                    # waline (内置表情点赞/同情/共鸣 Reaction) | twikoo | giscus
+  waline:
+    serverURL: ""                   # 你的 Waline 服务端地址
+    reaction: true                  # 是否开启文章底部表情表态
+    pageview: true                  # 是否开启阅读量统计
+    comment: true                   # 是否开启评论输入框
+  twikoo:
+    envId: ""                       # Twikoo 环境 ID
+  giscus:
+    repo: ""                        # username/repo
+    repoId: ""
+    category: "Announcements"
+    categoryId: ""
+    mapping: "pathname"
+    reactionsEnabled: "1"
+
+# 6.2 站点访问统计与可观测性分析 (Web Analytics & Observability)
+analytics:
+  busuanzi:
+    enable: true                    # 不蒜子极简访问量/访客统计 (PV/UV)
+  umami:
+    enable: false                   # Umami 轻量统计
+    website_id: ""
+    src: "https://cloud.umami.is/script.js"
+  google:
+    enable: false                   # Google Analytics 4
+    measurement_id: ""              # G-XXXXXXXXXX
+  baidu:
+    enable: false                   # 百度统计
+    token: ""                       # 百度统计站点 token
+
+
+# ==============================================================================
+# 模块七：视觉材质、氛围与动效引擎 (Materials, Effects & Performance)
+# ==============================================================================
+
+# 7.1 核心动效与视觉体验开关 (Features)
+features:
+  # 静谧禅意预加载遮罩（同一会话内仅首次进入展示，站内跳转零阻滞）
+  preloader:
+    enable: true
+
+  # 全站即时检索面板 (⌘K / Ctrl+K 快捷唤起)
+  search:
+    enable: true
+    placeholder: "搜索文稿、手记、分类或标签关键词..."
+
+  # 微风避让落樱轻粒子
+  petal_breeze:
+    enable: true
+    petal_count: 14                 # 粒子数量（12-16片为宜，极轻量，余白感更强）
+    mouse_repel: true               # 光标微风避让排斥动效
+
+  # 和风丝缕微纹理（高雅宣纸经纬线，为纯色背景增添呼吸感）
+  silk_threads:
+    enable: true
+    opacity_dark: 0.04
+    opacity_light: 0.03
+
+  # 纸张微噪点质感（消除屏幕冷硬感）
+  grain_texture:
+    enable: true
+    opacity: 0.035
+
+  # 顶部阅读进度条
+  reading_progress:
+    enable: true
+
+  # 霞鹜文楷在线 Web 字体（极具人文墨韵）
+  lxgw_wenkai:
+    enable: true
+
+  # 代码块 macOS 三色控制微晶圆点、一键复制、过长限高折叠与自动换行
+  code_block:
+    mac_dots: true
+    copy_button: true
+    word_wrap: true                 # 顶栏自动换行/横向滚动切换按钮
+    height_limit: 380               # 代码块最大初始折叠高度 (px)，0 或 false 为不限制
+
+  # LaTeX 数学公式渲染 (KaTeX)
+  math:
+    enable: true
+    engine: "katex"
+
+  # Mermaid 流程图与时序架构图渲染
+  mermaid:
+    enable: true
+
+  # 流体原生图片全屏放大灯箱 (Fluid Lightbox)
+  lightbox:
+    enable: true
+
+  # 无刷新丝滑页面流转 (PJAX)
+  pjax:
+    enable: true
+
+# 7.2 资源网络与 CDN 容灾配置 (CDN & Network Resilience)
+cdn:
+  provider: "cdnjs"                 # cdnjs | unpkg | loli | local
+  fonts_mirror: "google"            # google (fonts.googleapis.com) | loli (国内镜像加速)
+  lxgw_wenkai_cdn: "https://npm.elemecdn.com/lxgw-wenkai-screen-webfont@1.7.0/style.css"

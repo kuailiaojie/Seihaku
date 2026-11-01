@@ -1,0 +1,265 @@
+<%
+  var apiData = typeof seihaku_normalized_notes === 'function' 
+    ? seihaku_normalized_notes() 
+    : { notes: [], topics: [] };
+  var notesCfg = theme.notes || {};
+  var aiSummaryCfg = theme.ai_summary || {};
+  var initialNid = notesCfg.initial_nid || (apiData.notes && apiData.notes[0] ? apiData.notes[0].nid : 1);
+  
+  var initialNote = null;
+  if (apiData.notes && apiData.notes.length) {
+    initialNote = apiData.notes.find(function(n) { return n.nid === initialNid; }) || apiData.notes[0];
+  }
+
+  var initialSummary = (initialNote && (initialNote.summary || initialNote.description))
+    ? (initialNote.summary || initialNote.description)
+    : '留白不是空无一物，而是让风穿过文字的间隙，带去回响与呼吸。在此记录关于生活、技术与思维的即时灵感。';
+  var initialCover = (initialNote && initialNote.meta && initialNote.meta.cover)
+    ? initialNote.meta.cover
+    : url_for('/images/covers/drifting-through-the-world.png');
+  var initialTopicName = (initialNote && initialNote.topic) ? initialNote.topic.name : (notesCfg.default_topic || __('nav.notes'));
+%>
+
+<div class="yohaku-notes-viewport">
+
+  <!-- 1. 左栏：高级手记名录导航与专栏过滤 (Redesigned Elegant Left Sidebar) -->
+  <aside class="yohaku-notes-nav" aria-label="<%= __('pages.notes_title') %>">
+    
+    <!-- 顶部专栏筛选与控制台 -->
+    <div class="notes-sidebar-header">
+      <div class="notes-sidebar-top-row">
+        <span class="notes-sidebar-title font-mono">
+          <i class="far fa-compass"></i>
+          <span><%= __('pages.notes_column') %></span>
+        </span>
+        <button type="button" class="notes-topic-filter-btn" id="notes-topic-filter-btn" aria-haspopup="true" aria-expanded="false" title="<%= __('pages.notes_column') %>">
+          <span id="current-topic-label"><%= initialTopicName %></span>
+          <svg class="topic-chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </button>
+      </div>
+
+      <!-- 搜索过滤条 -->
+      <div class="notes-search-wrapper">
+        <i class="fas fa-search notes-search-icon"></i>
+        <input type="text" id="notes-search-input" class="notes-search-input" placeholder="<%= __('pages.notes_search') %>" aria-label="<%= __('pages.notes_search') %>">
+        <button type="button" class="notes-search-clear" id="notes-search-clear" title="<%= __('search.esc') %>" style="display: none;">×</button>
+      </div>
+
+      <!-- 专栏下拉选择浮层 -->
+      <div class="yohaku-topic-dropdown" id="yohaku-topic-dropdown">
+        <!-- JS 动态填充 -->
+      </div>
+    </div>
+
+    <!-- 手记列表滚动容器 -->
+    <div class="yohaku-nav-scroll" id="notes-list-scroll">
+      <ul class="yohaku-nav-list" id="yohaku-nav-list">
+        <% (apiData.notes || []).slice(0, 15).forEach(function(note, idx) { %>
+          <%
+            var isActive = initialNote && (initialNote.nid === note.nid);
+            var cleanTitle = (note.title || '').replace(/^「|」$/g, '');
+            var padIndex = (idx + 1) < 10 ? '0' + (idx + 1) : (idx + 1);
+            var noteTopic = note.topic ? note.topic.name : __('nav.notes');
+          %>
+          <li class="yohaku-nav-item <%= isActive ? 'active' : '' %>" data-nid="<%= note.nid %>" title="<%= cleanTitle %>">
+            <div class="nav-item-indicator" aria-hidden="true"></div>
+            <div class="nav-item-body">
+              <div class="nav-item-meta">
+                <span class="nav-item-idx font-mono">#<%= padIndex %></span>
+                <span class="nav-item-topic font-mono"><%= noteTopic %></span>
+              </div>
+              <span class="nav-item-title font-serif"><%= cleanTitle %></span>
+            </div>
+          </li>
+        <% }); %>
+      </ul>
+    </div>
+
+    <!-- 左侧底部简要状态 -->
+    <div class="notes-sidebar-footer font-mono">
+      <span class="notes-total-count" id="notes-total-count">共 <%= (apiData.notes || []).length %> <%= __('hero.stats_posts') %></span>
+    </div>
+
+  </aside>
+
+  <!-- 2. 中栏：主体阅读卡片 (Center Reader) -->
+  <main class="yohaku-reader-main" id="yohaku-reader-main">
+    <article class="yohaku-reader-card font-serif-mode" id="yohaku-reader-card">
+      
+      <!-- 封面图横幅与标签胶囊 -->
+      <div class="yohaku-reader-cover" id="yohaku-cover-box">
+        <span class="yohaku-topic-pill" id="yohaku-topic-pill"><%= initialTopicName %></span>
+        <img src="<%- initialCover %>" alt="<%= initialNote ? initialNote.title : 'Cover' %>" class="yohaku-cover-img" id="yohaku-cover-img" onerror="this.src='<%- url_for('images/covers/drifting-through-the-world.png') %>'">
+        <div class="yohaku-cover-gradient"></div>
+      </div>
+
+      <!-- 标题与元数据行 -->
+      <div class="yohaku-reader-head">
+        <h1 class="yohaku-reader-title font-serif" id="yohaku-reader-title">
+          <%= initialNote ? initialNote.title.replace(/^「|」$/g, '') : __('pages.notes_title') %>
+        </h1>
+        <div class="yohaku-meta-row">
+          <div class="yohaku-meta-left">
+            <span class="yohaku-date-term font-mono" id="yohaku-date-term"><%= initialNote && initialNote.created ? initialNote.created.slice(0, 10) : '2026-10-31' %></span>
+          </div>
+          <div class="yohaku-meta-right">
+            <button type="button" class="notes-font-toggle-btn font-mono" id="yohaku-font-btn" title="Toggle Font">
+              <span class="font-letter">A</span>
+              <span id="yohaku-font-label">Serif</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. AI 智析摘要卡片 (AI Summary Block - 支持外部 API 实时接入) -->
+      <% if (aiSummaryCfg.enable !== false) { %>
+        <div class="seihaku-ai-summary-card" id="notes-summary-card">
+          <div class="ai-summary-header">
+            <div class="ai-summary-badge">
+              <span class="ai-sparkle-icon">✨</span>
+              <span class="ai-badge-title font-serif"><%= __('post.ai_summary') %></span>
+              <span class="ai-model-tag font-mono" id="ai-summary-model-tag"><%= aiSummaryCfg.model_label || 'AI' %></span>
+            </div>
+            
+            <div class="ai-summary-actions">
+              <% if (aiSummaryCfg.allow_refresh !== false) { %>
+                <button type="button" class="ai-action-btn" id="ai-summary-refresh-btn" title="<%= __('post.ai_refresh') %>" aria-label="<%= __('post.ai_refresh') %>">
+                  <i class="fas fa-sync-alt ai-refresh-icon"></i>
+                  <span><%= __('post.ai_refresh') %></span>
+                </button>
+              <% } %>
+              <button type="button" class="ai-action-btn" id="ai-summary-copy-btn" title="<%= __('post.ai_copy') %>" aria-label="<%= __('post.ai_copy') %>">
+                <i class="far fa-copy"></i>
+                <span><%= __('post.ai_copy') %></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="ai-summary-body" id="notes-summary-body">
+            <p class="ai-summary-text" id="yohaku-summary-text">
+              <%= initialSummary %>
+            </p>
+          </div>
+
+          <!-- API 实时调用加载状态指示器 -->
+          <div class="ai-summary-loading-overlay" id="ai-summary-loading" style="display: none;">
+            <div class="ai-loading-spinner"></div>
+            <span class="ai-loading-text font-mono"><%= __('post.ai_loading') %></span>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- 正文内容 (服务端直出优雅排版 · 告别原始 JSON 暴露) -->
+      <div class="yohaku-article-body markdown-body" id="yohaku-article-body">
+        <% 
+          var noteRawText = (initialNote && (initialNote.text || initialNote.content)) || '';
+          if (noteRawText && typeof noteRawText === 'string' && noteRawText.startsWith('{"root"')) {
+            noteRawText = initialNote.text || '';
+          }
+        %>
+        <% if (noteRawText) { %>
+          <%- (typeof markdown === 'function') ? markdown(noteRawText) : noteRawText %>
+        <% } else { %>
+          <p>万物皆有裂痕，那是光照进来的地方。留白不是空无一物，而是让风穿过文字的间隙，带去回响与呼吸。</p>
+          <p>欢迎在 <code>source/_data/notes.yml</code> 中记录你的灵感与手记。</p>
+        <% } %>
+      </div>
+
+      <!-- 底部微光点赞与交互 -->
+      <div class="yohaku-reader-footer">
+        <button type="button" class="yohaku-like-btn" id="yohaku-like-btn">
+          <i class="far fa-heart"></i>
+          <span><%= __('post.like') %></span>
+        </button>
+        <div style="font-size: 0.8rem; color: var(--text-tertiary); font-family: var(--font-serif);">
+          <%= (theme.slogan && theme.slogan.primary) || "于方寸留白处，栖息万物微光。" %>
+        </div>
+      </div>
+
+    </article>
+  </main>
+
+  <!-- 3. 右栏：随动目录 (Right Floating TOC) -->
+  <aside class="post-toc-column yohaku-notes-toc-aside" id="post-toc-sidebar" aria-label="<%= __('post.toc') %>">
+    <div class="seihaku-floating-toc">
+      
+      <!-- 目录树导航区 -->
+      <nav class="floating-toc-nav" id="notes-toc-nav" aria-label="<%= __('post.toc') %>">
+        <div class="toc-indicator-track" aria-hidden="true">
+          <div class="toc-indicator-thumb" id="notes-toc-indicator-thumb"></div>
+        </div>
+        <div class="toc-tree-content" id="notes-toc-tree-content">
+          <!-- 由 notes.js 动态渲染 -->
+        </div>
+      </nav>
+
+      <!-- 手绘自然波浪微动分割线 -->
+      <div class="floating-toc-divider" aria-hidden="true">
+        <svg class="toc-wave-svg" width="72" height="8" viewBox="0 0 72 8" fill="none">
+          <path d="M1.5 4 C 8 1.5, 14 6.5, 22 4 S 34 2, 42 4 S 54 6.5, 62 4 S 69 2.5, 70.5 4" stroke="var(--color-accent)" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <!-- 环形阅读进度与操作按钮栏 -->
+      <div class="floating-toc-dock">
+        <!-- 环形进度 -->
+        <div class="toc-progress-pill" id="notes-toc-progress" title="<%= __('post.reading_progress') %>">
+          <svg class="progress-ring-svg" width="18" height="18" viewBox="0 0 24 24">
+            <circle class="ring-bg" cx="12" cy="12" r="9" fill="none" stroke-width="2.2" />
+            <circle class="ring-fill" id="notes-progress-val" cx="12" cy="12" r="9" fill="none" stroke-width="2.2" stroke-linecap="round" />
+          </svg>
+          <span class="progress-text font-mono" id="notes-progress-text">0%</span>
+        </div>
+
+        <!-- 操作按钮组 -->
+        <div class="toc-actions-cluster">
+          <button class="toc-icon-btn like-btn-trigger" id="notes-toc-like-btn" aria-label="<%= __('post.like') %>" title="<%= __('post.like') %>">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            </svg>
+          </button>
+
+          <button class="toc-icon-btn" id="notes-toc-share-btn" aria-label="<%= __('post.share') %>" title="<%= __('post.share') %>">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="18" cy="5" r="3"></circle>
+              <circle cx="6" cy="12" r="3"></circle>
+              <circle cx="18" cy="19" r="3"></circle>
+              <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+              <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+            </svg>
+          </button>
+
+          <button class="toc-icon-btn" id="notes-toc-top-btn" aria-label="<%= __('post.back_to_top') %>" title="<%= __('post.back_to_top') %>">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="18 15 12 9 6 15"></polyline>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </aside>
+
+</div>
+
+<!-- 注入内置数据缓存与外部 AI Summary 配置 -->
+<script id="yohaku-notes-data" type="application/json"><%- JSON.stringify(apiData) %></script>
+<script>
+  window.__YOHAKU_CONFIG__ = <%- JSON.stringify({
+    source: notesCfg.source || 'local',
+    initialNid: initialNid,
+    defaultTopic: initialTopicName,
+    aiSummary: {
+      enable: aiSummaryCfg.enable !== false,
+      provider: aiSummaryCfg.provider || 'gemini',
+      apiUrl: aiSummaryCfg.api_url || '',
+      model: aiSummaryCfg.model || 'gemini-1.5-flash',
+      modelLabel: aiSummaryCfg.model_label || 'AI',
+      prompt: aiSummaryCfg.prompt || '请用简练精辟的2-3句话总结以下手记的核心洞察：'
+    }
+  }) %>;
+</script>
+
+<!-- 引入客户端 Markdown 解析器与手记交互系统 -->
+<%- js('js/vendor/marked.min.js') %>
+<%- js('js/notes.js') %>

@@ -1,0 +1,42 @@
+<div class="seihaku-page-container">
+  <div class="page-header-block">
+    <span class="page-eyebrow font-mono">COLLECTION / <%= __('nav.categories') %></span>
+    <h1 class="page-title font-serif"><%= __('pages.categories_title') %></h1>
+    <p class="page-subtitle">
+      <%= page.description || __('pages.docs_sub') %> (<%= site.categories.length %>)
+    </p>
+  </div>
+
+  <!-- 页面用户自定义导言 -->
+  <% if (page.content && page.content.trim().length > 0) { %>
+    <div class="post-article-card" style="margin-bottom: 32px; max-width: 860px; margin-left: auto; margin-right: auto;">
+      <div class="markdown-body">
+        <%- page.content %>
+      </div>
+    </div>
+  <% } %>
+
+  <div class="seihaku-categories-grid">
+    <% if (site.categories && site.categories.length > 0) { %>
+      <% site.categories.forEach(function(category) { %>
+        <a href="<%- url_for(category.path) %>" class="category-block-card">
+          <div class="category-card-top">
+            <div class="category-card-icon">
+              <i class="far fa-folder-open"></i>
+            </div>
+            <span class="category-post-num font-mono"><%= category.posts.length %> <%= __('hero.stats_posts') %></span>
+          </div>
+          <h2 class="category-card-title font-serif"><%= category.name %></h2>
+          <div class="category-card-arrow">
+            <span><%= __('pages.docs_read') %></span>
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </a>
+      <% }); %>
+    <% } else { %>
+      <div style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; color: var(--text-tertiary); background: var(--bg-surface-elevated); border: 1px dashed var(--border-subtle); border-radius: var(--radius-xl);">
+        <p style="margin: 0; font-size: 0.92rem;"><%= __('stream.empty_writing') %></p>
+      </div>
+    <% } %>
+  </div>
+</div>

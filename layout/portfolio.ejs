@@ -1,0 +1,112 @@
+<%
+  var portfolioCfg = theme.portfolio || {};
+  var portfolioSource = portfolioCfg.source || 'github';
+  var ghCfg = portfolioCfg.github || (theme.platforms && theme.platforms.github) || {};
+  var ghUsername = ghCfg.username ? String(ghCfg.username).trim() : '';
+
+  var localList = (site.data && (site.data.portfolio || site.data.projects) && (site.data.portfolio || site.data.projects).length > 0)
+    ? (site.data.portfolio || site.data.projects)
+    : ((portfolioCfg && portfolioCfg.list) ? portfolioCfg.list : []);
+  var ghList = (site.data && site.data.portfolio_github) ? site.data.portfolio_github : [];
+
+  var portfolioList = [];
+  if (portfolioSource === 'github') {
+    portfolioList = ghList.length ? ghList : localList;
+  } else if (portfolioSource === 'both') {
+    portfolioList = localList.concat(ghList);
+  } else {
+    portfolioList = localList;
+  }
+%>
+
+<div class="seihaku-page-container">
+  
+  <div class="page-header-block">
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+      <div>
+        <span class="page-eyebrow font-mono">PORTFOLIO / <%= __('nav.portfolio') %></span>
+        <h1 class="page-title font-serif"><%= __('pages.portfolio_title') %></h1>
+        <p class="page-subtitle"><%= __('pages.portfolio_sub') %></p>
+      </div>
+
+      <% if (ghUsername) { %>
+        <a href="https://github.com/<%= ghUsername %>" target="_blank" rel="noopener noreferrer" class="portfolio-github-profile-pill font-mono" title="GitHub Profile">
+          <i class="fab fa-github"></i>
+          <span>@<%= ghUsername %></span>
+          <i class="fas fa-arrow-up-right-from-square" style="font-size: 0.72rem; opacity: 0.7;"></i>
+        </a>
+      <% } %>
+    </div>
+  </div>
+
+  <div class="portfolio-grid" id="portfolio-grid" data-gh-user="<%= ghUsername %>" data-source="<%= portfolioSource %>" data-sort="<%= ghCfg.sort || 'stars' %>" data-limit="<%= ghCfg.limit || 12 %>" data-exclude-forks="<%= ghCfg.exclude_forks !== false %>">
+    <% if (portfolioList && portfolioList.length > 0) { %>
+      <% portfolioList.forEach(function(item) { %>
+        <div class="portfolio-card">
+          <div class="portfolio-cover-frame">
+            <img src="<%- item.cover %>" alt="<%= item.title %>" loading="lazy" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=700&q=80';">
+          </div>
+
+          <div class="portfolio-content-body">
+            <span class="portfolio-badge-pill"><%= item.tag || __('nav.portfolio') %></span>
+            <h3 class="portfolio-item-title"><%= item.title %></h3>
+            <p class="portfolio-item-desc"><%= item.desc %></p>
+
+            <% if (item.tech && item.tech.length > 0) { %>
+              <div class="tech-tag-group" style="margin-bottom: 16px;">
+                <% item.tech.slice(0, 4).forEach(function(t) { %>
+                  <span class="tech-tag-pill" style="font-size: 0.72rem; padding: 2px 7px;"><%= t %></span>
+                <% }); %>
+              </div>
+            <% } %>
+
+            <div class="portfolio-links-row">
+              <% if (item.url && item.url !== item.github) { %>
+                <a href="<%- item.url %>" class="portfolio-link-btn" target="_blank" rel="noopener noreferrer">
+                  <span><%= __('portfolio.live_demo') || '访问项目' %></span>
+                  <i class="fas fa-external-link-alt" style="font-size: 0.8em;"></i>
+                </a>
+              <% } %>
+              <% if (item.github) { %>
+                <a href="<%- item.github %>" class="portfolio-link-btn" style="color: var(--text-secondary); <%= (item.url && item.url !== item.github) ? 'margin-left: 12px;' : '' %>" target="_blank" rel="noopener noreferrer">
+                  <i class="fab fa-github"></i>
+                  <span>GitHub</span>
+                </a>
+              <% } %>
+              <% if (item.metrics) { %>
+                <span style="margin-left: auto; font-family: var(--font-mono); font-size: 0.74rem; color: var(--text-tertiary);">
+                  <%= item.metrics %>
+                </span>
+              <% } %>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } else if (ghUsername && portfolioSource !== 'local') { %>
+      <!-- 骨架加载卡片 (当正在从前端 GitHub API 实时拉取时展示) -->
+      <div class="portfolio-skeleton-loading" style="grid-column: 1 / -1; text-align: center; padding: 60px 24px; color: var(--text-tertiary);">
+        <i class="fas fa-circle-notch fa-spin" style="font-size: 1.8rem; color: var(--color-accent); margin-bottom: 16px;"></i>
+        <p class="font-mono" style="font-size: 0.88rem;">Syncing repositories from GitHub...</p>
+      </div>
+    <% } else { %>
+      <div class="portfolio-empty-box" style="grid-column: 1 / -1; padding: 48px 24px; text-align: center; color: var(--text-tertiary); background: var(--bg-surface-elevated); border: 1px dashed var(--border-subtle); border-radius: var(--radius-xl);">
+        <i class="fas fa-cube" style="font-size: 2.2rem; color: var(--color-accent); margin-bottom: 12px; opacity: 0.6;"></i>
+        <p style="margin: 0; font-size: 0.92rem;"><%= __('pages.portfolio_empty') %></p>
+      </div>
+    <% } %>
+  </div>
+
+  <% if (page.content) { %>
+    <div class="post-article-card" style="margin-top: 48px;">
+      <div class="markdown-body font-serif">
+        <%- page.content %>
+      </div>
+    </div>
+  <% } %>
+
+</div>
+
+<!-- 客户端 GitHub 动态拉取脚本 (无服务端环境也可开箱即用) -->
+<% if (ghUsername && portfolioSource !== 'local') { %>
+  <%- js('js/portfolio.js') %>
+<% } %>

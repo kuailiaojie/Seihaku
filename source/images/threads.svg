@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1000" fill="none" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="silkGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#dd996e" stop-opacity="0.6"/>
+      <stop offset="50%" stop-color="#aa5e26" stop-opacity="0.3"/>
+      <stop offset="100%" stop-color="#e88b9a" stop-opacity="0.5"/>
+    </linearGradient>
+    <linearGradient id="silkGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#aa5e26" stop-opacity="0.4"/>
+      <stop offset="60%" stop-color="#dd996e" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.1"/>
+    </linearGradient>
+    <linearGradient id="silkGrad3" x1="0%" y1="50%" x2="100%" y2="50%">
+      <stop offset="0%" stop-color="#e28743" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#dd996e" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 宣纸桑皮经纬细丝 (Japanese Washi Silk Fibers) -->
+  <g stroke-linecap="round" stroke-linejoin="round">
+    <!-- 主贯穿曲线群 -->
+    <path d="M-50,180 C260,90 480,280 820,160 S1240,40 1650,220" stroke="url(#silkGrad1)" stroke-width="1.2" opacity="0.85"/>
+    <path d="M-80,420 C320,310 590,560 940,380 S1380,290 1680,480" stroke="url(#silkGrad2)" stroke-width="1.0" opacity="0.75"/>
+    <path d="M-40,720 C280,840 680,620 1040,780 S1420,890 1660,690" stroke="url(#silkGrad1)" stroke-width="1.1" opacity="0.8"/>
+    <path d="M120,-60 C240,320 540,480 780,820 S1120,980 1340,1080" stroke="url(#silkGrad2)" stroke-width="0.9" opacity="0.7"/>
+
+    <!-- 柔和交织次级纤维 -->
+    <path d="M-20,310 C380,240 720,440 1120,290 S1500,340 1640,260" stroke="url(#silkGrad3)" stroke-width="0.75" opacity="0.6"/>
+    <path d="M1400,-80 C1280,290 1020,540 840,860 S680,990 520,1090" stroke="url(#silkGrad1)" stroke-width="0.85" opacity="0.65"/>
+    <path d="M-60,860 C360,680 740,910 1160,740 S1490,780 1670,880" stroke="url(#silkGrad2)" stroke-width="0.9" opacity="0.7"/>
+    <path d="M380,-50 C490,260 760,420 890,720 S1080,940 1190,1060" stroke="url(#silkGrad3)" stroke-width="0.65" opacity="0.5"/>
+  </g>
+</svg>

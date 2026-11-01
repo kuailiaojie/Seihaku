@@ -1,0 +1,198 @@
+# ==============================================================================
+# 🍃 栖白 (Theme Seihaku) - 简体中文语言包 (zh-CN)
+# ==============================================================================
+
+# 核心全局导航
+nav:
+  home: "首页"
+  writing: "文稿"
+  notes: "手记"
+  timeline: "时光"
+  thinking: "思考"
+  more: "更多"
+  explore: "探索"
+  portfolio: "精选项目"
+  categories: "分类专栏"
+  tags: "标签画廊"
+  docs: "文档中心"
+  bangumis: "追番记录"
+  equipments: "我的装备"
+  photos: "光影图库"
+  steam: "Steam 展馆"
+  friends: "友邻聚落"
+  friendcircle: "朋友圈子"
+  guestbook: "访客留言"
+  about: "关于栖白"
+  about_short: "关于"
+  menu: "导航"
+
+# 顶栏及通用交互
+header:
+  search: "全站搜索 (⌘K / Ctrl+K)"
+  theme_toggle: "切换浅色与深色外观"
+  online: "在线"
+
+hero:
+  greeting: "Hi, I'm"
+  stats_posts: "篇"
+  stats_words: "万字"
+  stats_days: "天"
+
+# 首页双流
+stream:
+  recent_writing: "近期笔墨"
+  recent_writing_sub: "RECENT WRITING"
+  musings: "碎念"
+  musings_sub: "MUSINGS"
+  minutes_read: "分钟阅读"
+  read_more_notes: "阅读更多手记"
+  empty_writing: "暂无笔墨记录。"
+  empty_musings: "暂无碎念记录。"
+
+# 文章阅读及元数据
+post:
+  reading_progress: "阅读进度"
+  word_count: "字"
+  read_time_prefix: "约"
+  read_time_suffix: "分钟"
+  toc: "目录"
+  ai_summary: "AI 智析摘要"
+  ai_refresh: "外部 AI 智析"
+  ai_copy: "复制"
+  ai_copied: "已复制 ✓"
+  ai_loading: "正在连接外部 AI API 解析文稿核心观点..."
+  like: "点亮微光"
+  liked: "已点亮微光"
+  share: "分享"
+  share_copied: "已成功复制文章链接"
+  reward: "赞赏支持"
+  reward_title: "感谢你的赞赏与微光支持 🍃"
+  reward_wechat: "微信赞赏"
+  reward_alipay: "支付宝"
+  copyright_title: "文章版权"
+  copyright_author: "文章作者："
+  copyright_link: "本文链接："
+  copyright_notice: "版权声明："
+  copyright_desc: "本博客所有文章除特别声明外，均采用 %s 许可协议。转载请注明出处！"
+  prev_post: "上一篇"
+  next_post: "下一篇"
+  sticky: "置顶"
+  untitled: "无题"
+  read_more: "继续阅读"
+  comments_title: "留言与回响"
+  comments_desc: "留白处自有回声。欢迎留下你的思考、探讨或微光印记。"
+  back_to_top: "回到顶部"
+  updated: "最后更新"
+  pageviews: "阅读量"
+  outdate_notice: "本文最后更新于 %s 天前，文中部分依赖版本或接口设计可能已发生演进，请注意参考核实。"
+  related_posts: "相关文稿推荐"
+
+# 关于页面与作者交互
+about:
+  copy_email: "复制邮箱"
+
+# 代码块与交互
+code:
+  copy: "复制"
+  copied: "已复制"
+  expand: "展开全部代码"
+  collapse: "收起代码"
+  wrap: "自动换行"
+  unwrap: "取消换行"
+  zoom: "放大"
+
+portfolio:
+  live_demo: "访问项目"
+  github_repo: "源码仓库"
+
+# 全站检索
+search:
+  title: "搜索"
+  placeholder: "搜索文稿、手记、分类或标签关键词..."
+  esc: "ESC"
+  empty_hint: "输入关键词检索全站文稿与留白手记"
+  no_results: "未找到与「%s」相关的笔墨记录"
+
+# 页脚
+footer:
+  running_days: "站点已安稳运行"
+  days: "天"
+  powered_by: "由 %s 强力驱动"
+  theme: "主题"
+  all_rights_reserved: "保留所有权利"
+
+# 各特色专栏页面
+pages:
+  hitokoto_tag: "一言 · HITOKOTO"
+  hitokoto_quote: "万物皆有裂痕，那是光照进来的地方。"
+  hitokoto_from: "莱昂纳德·科恩"
+  hitokoto_refresh: "点击刷新一言"
+
+  notes_title: "微语手记"
+  notes_sub: "杂志级沉浸手记名录。记录散落于时光长河中的心流灵光与即时思考。"
+  notes_column: "手记专栏"
+  notes_search: "搜索手记标题..."
+  notes_empty: "暂无手记记录。可在 source/_data/notes.yml 中补充您的随笔手记。"
+  notes_topic_all: "全部专栏"
+  
+  bangumis_title: "二次元追番录"
+  bangumis_sub: "跨越光年与时空的思念。记录那些感动、治愈与沉思的动画作品。"
+  bangumis_sync_badge: "已通过 Bilibili API 自动同步追番记录"
+  bangumis_total_tracked: "共追踪 %s 部"
+  bangumis_all: "全部"
+  bangumis_watching: "追番中"
+  bangumis_finished: "已看完"
+  bangumis_wish: "想看"
+  bangumis_empty: "暂无追番数据。请在 _config.yml 中配置 platforms.bilibili 或在 source/_data/bangumis.yml 中添加数据。"
+  
+  portfolio_title: "精选项目与造物展厅"
+  portfolio_sub: "心之所向，素履以往。将想法、代码与设计打磨成独立作品与系统。"
+  portfolio_empty: "暂无项目展出。可在 source/_data/portfolio.yml 中配置精选项目。"
+  
+  equipments_title: "数字与生产力装备"
+  equipments_sub: "工欲善其事，必先利其器。记录日常陪伴创作与思考的数码、桌面与摄影器材。"
+  equipments_empty: "暂无装备库数据。可在 source/_data/equipments.yml 中添加设备清单。"
+  
+  photos_title: "光影画廊"
+  photos_sub: "定格天地苍茫与微小刹那。以快门雕刻时间，以留白容纳无垠。"
+  photos_empty: "暂无图库作品记录。可在 source/_data/photos.yml 中添加照片。"
+  
+  steam_title: "Steam 游戏展馆"
+  steam_sub: "游戏是第九艺术。在数字虚拟世界中的沉浸探索与心流体验。"
+  steam_empty: "暂无 Steam 游戏库数据。可在 source/_data/steam.yml 中添加游戏记录。"
+  
+  docs_title: "知识文档中心"
+  docs_sub: "系统性知识脉络与工程设计手册。以结构化专栏沉淀深度认知与实战经验。"
+  docs_read: "阅读专栏"
+  docs_count: "篇专栏文档"
+  docs_empty: "暂无专栏文档配置。可在 source/_data/docs.yml 中配置文档专栏。"
+  
+  friends_title: "友邻聚落"
+  friends_sub: "海内存知己，天涯若比邻。在浩瀚的互联网海洋中，记录彼此交汇的微光。"
+  friends_empty: "暂无友链记录。可在 source/_data/friends.yml 中添加友邻。"
+  friends_apply: "交换友链指南"
+  
+  friendcircle_title: "友邻朋友圈"
+  friendcircle_sub: "去中心化 RSS 动态聚合流。实时探访友邻博主的最新笔墨与灵感。"
+  friendcircle_sync_badge: "友邻 RSS 实时动态聚合"
+  friendcircle_empty: "暂无朋友圈动态。可在 _config.seihaku.yml 的 friendcircle.sources 中配置友邻 RSS 订阅源，系统将自动实时抓取。"
+  
+  guestbook_title: "访客留言"
+  guestbook_sub: "留下你的回响与微光印记。与本站和漫步于此的行者相逢交谈。"
+  
+  thinking_title: "深度思考与心流漫步"
+  thinking_sub: "沉淀本质思考，拒绝信息噪音。记录对世界底层规律的探索。"
+  
+  timeline_title: "时光足迹"
+  timeline_sub: "流年暗中偷换，以文字记录生命旅程中的每一个路标。"
+  
+  archive_title: "文稿归档"
+  archive_sub: "字句流转，岁月成篇。全站历史文稿索引。"
+  
+  categories_title: "分类专栏"
+  tags_title: "标签画廊"
+  
+  not_found_title: "云深不知处，此页已留白"
+  not_found_desc: "你所寻访的笔墨轨迹似乎已随微风散入山海，或迁移至新的坐标。不妨回到庭院首页，或唤起全站检索寻找线索。"
+  back_to_home: "返回栖白首页"
+  browse_archives: "浏览文稿归档"

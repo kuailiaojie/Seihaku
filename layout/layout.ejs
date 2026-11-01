@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="<%= config.language || 'zh-CN' %>">
+<head>
+  <%- partial('partial/head') %>
+</head>
+<body>
+<%
+  var feat = theme.features || {};
+  var preloaderEnabled = !feat.preloader || feat.preloader.enable !== false;
+  var threadsEnabled = feat.silk_threads && feat.silk_threads.enable !== false;
+  var grainEnabled = feat.grain_texture && feat.grain_texture.enable !== false;
+  var readingProgressEnabled = feat.reading_progress && (feat.reading_progress === true || feat.reading_progress.enable !== false);
+  var petalEnabled = feat.petal_breeze && feat.petal_breeze.enable !== false;
+  var searchEnabled = !feat.search || feat.search.enable !== false;
+
+  function resolveNavTitle(name) {
+    var keyMap = {
+      '首页': 'nav.home', 'Home': 'nav.home', 'ホーム': 'nav.home',
+      '文稿': 'nav.writing', 'Writing': 'nav.writing', '記事': 'nav.writing',
+      '手记': 'nav.notes', 'Notes': 'nav.notes', '手記': 'nav.notes',
+      '项目': 'nav.portfolio', 'Portfolio': 'nav.portfolio', '作品': 'nav.portfolio',
+      '时光': 'nav.timeline', 'Timeline': 'nav.timeline', '年表': 'nav.timeline',
+      '友邻': 'nav.friends', 'Friends': 'nav.friends',
+      '关于': 'nav.about_short', 'About': 'nav.about_short',
+      '探索': 'nav.explore', 'Explore': 'nav.explore',
+      '更多': 'nav.more', 'More': 'nav.more', 'その他': 'nav.more'
+    };
+    if (keyMap[name]) return __(keyMap[name]);
+    if (name && name.startsWith('nav.')) return __(name);
+    return name;
+  }
+
+  // 解析移动端底部导航菜单项（与顶栏保持同一配置源）
+  var mobileNavMenu = typeof seihaku_nav_menu === 'function' ? seihaku_nav_menu() : [];
+%>
+  <!-- 青白静谧禅意预加载遮罩 (Seihaku Tranquil Preloader) -->
+  <% if (preloaderEnabled) { %>
+  <div id="seihaku-preloader" class="seihaku-preloader" aria-hidden="true">
+    <div class="preloader-inner">
+      <div class="preloader-symbol-box preloader-zen-symbol">
+        <div class="zen-ring-outer"></div>
+        <div class="zen-ring-inner"></div>
+        <span class="preloader-leaf-icon zen-petal-center">🍃</span>
+      </div>
+      <div class="preloader-brand-title font-serif"><%= config.title || "栖白" %></div>
+      <div class="preloader-slogan-text preloader-quote-text font-serif"><%= (theme.slogan && theme.slogan.primary) ? theme.slogan.primary : "于方寸留白处，栖息万物微光" %></div>
+      <div class="preloader-progress-track">
+        <div class="preloader-progress-bar" id="seihaku-preloader-bar"></div>
+      </div>
+    </div>
+  </div>
+  <% } %>
+
+  <!-- 和风丝缕微纹理背景 (Washi Silk Thread Layer) -->
+  <% if (threadsEnabled) { %>
+    <div class="seihaku-threads-overlay" aria-hidden="true" style="background-image: url('<%- url_for('/images/threads.svg') %>');"></div>
+  <% } %>
+
+  <!-- 宣纸微质感噪点 (Paper Grain Layer) -->
+  <% if (grainEnabled) { %>
+    <div class="seihaku-grain-overlay" aria-hidden="true" style="background-image: url('<%- url_for('/images/grain.svg') %>'); opacity: <%= (feat.grain_texture && feat.grain_texture.opacity) || 0.035 %>;"></div>
+  <% } %>
+
+  <!-- 顶部阅读进度指示条 -->
+  <% if (readingProgressEnabled) { %>
+    <div id="reading-progress" aria-hidden="true"></div>
+  <% } %>
+
+  <!-- 微风落樱交互避让粒子画布 -->
+  <% if (petalEnabled) { %>
+    <canvas id="petal-canvas" aria-hidden="true"></canvas>
+  <% } %>
+
+  <!-- 顶部导航栏 -->
+  <%- partial('partial/header') %>
+
+  <!-- 主体内容承载区 (黄金阅读比例与舒朗留白) -->
+  <main class="seihaku-main-container" id="content">
+    <%- body %>
+  </main>
+
+  <!-- 极简静谧居中页脚 -->
+  <%- partial('partial/footer') %>
+
+  <!-- 移动端 Apple HIG 悬浮触控底栏 (小于 768px 显示 · 配置驱动) -->
+  <nav class="seihaku-mobile-dock" aria-label="<%= __('nav.home') %>">
+    <div class="mobile-dock-inner">
+      <% mobileNavMenu.slice(0, 4).forEach(function(item) { %>
+        <%
+          var mTitle = resolveNavTitle(item.name);
+          var targetUrl = item.url || (item.children && item.children.length ? item.children[0].url : '/');
+        %>
+        <a href="<%- url_for(targetUrl) %>" class="mobile-dock-item <%= item.isActive ? 'active' : '' %>" aria-label="<%= mTitle %>">
+          <i class="<%= item.icon || 'fas fa-compass' %>"></i>
+          <span><%= mTitle %></span>
+        </a>
+      <% }); %>
+      <button id="mobile-more-trigger" class="mobile-dock-item" type="button" aria-label="<%= __('nav.explore') %>" aria-haspopup="dialog" aria-expanded="false" style="background:transparent; border:none; cursor:pointer;">
+        <i class="fas fa-compass"></i>
+        <span><%= __('nav.explore') %></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- 移动端更多专栏与全站导航抽屉面板 -->
+  <%- partial('partial/mobile_sheet') %>
+
+  <!-- 全站即时检索面板 (⌘K / Ctrl+K) -->
+  <% if (searchEnabled) { %>
+    <%- partial('partial/search_modal') %>
+  <% } %>
+
+  <!-- 主题全局特性参数与国际化注入 -->
+  <script>
+    window.__SEIHAKU_FEATURES__ = <%- JSON.stringify({
+      root: config.root || '/',
+      searchUrl: url_for('/search.json'),
+      hitokoto: {
+        enable: !theme.hitokoto || theme.hitokoto.enable !== false,
+        auto_refresh: !theme.hitokoto || theme.hitokoto.auto_refresh !== false,
+        interval: (theme.hitokoto && theme.hitokoto.interval) ? theme.hitokoto.interval : 8500
+      },
+      petal_breeze: {
+        petal_count: (feat.petal_breeze && feat.petal_breeze.petal_count) ? feat.petal_breeze.petal_count : 14,
+        mouse_repel: !feat.petal_breeze || feat.petal_breeze.mouse_repel !== false
+      },
+      code_block: {
+        mac_dots: !feat.code_block || feat.code_block.mac_dots !== false,
+        copy_button: !feat.code_block || feat.code_block.copy_button !== false,
+        word_wrap: !feat.code_block || feat.code_block.word_wrap !== false,
+        height_limit: (feat.code_block && typeof feat.code_block.height_limit === 'number') ? feat.code_block.height_limit : 380
+      }
+    }) %>;
+    window.__SEIHAKU_I18N__ = <%- JSON.stringify({
+      copied: __('post.share_copied'),
+      emailCopied: __('post.ai_copied'),
+      liked: __('post.liked'),
+      likePrompt: __('post.like'),
+      searchEmpty: __('search.empty_hint'),
+      searchNoResult: __('search.no_results', '%s'),
+      minutesRead: __('stream.minutes_read'),
+      codeCopy: __('code.copy'),
+      codeCopied: __('code.copied'),
+      codeExpand: __('code.expand'),
+      codeCollapse: __('code.collapse') || '收起代码',
+      codeWrap: __('code.wrap') || '自动换行',
+      codeUnwrap: __('code.unwrap') || '取消换行',
+      codeZoom: __('code.zoom'),
+      liveDemo: __('portfolio.live_demo')
+    }) %>;
+  </script>
+
+  <!-- GSAP 流体动画引擎（Apple HIG 弹簧物理缓动与代码块动效） -->
+  <script src="<%- seihaku_cdn('gsap_js') %>"></script>
+
+  <!-- 核心交互与动效模块化脚本 -->
+  <%- js('js/theme.js') %>
+  <% if (preloaderEnabled) { %>
+    <%- js('js/preloader.js') %>
+  <% } %>
+  <% if (petalEnabled) { %>
+    <%- js('js/petal-breeze.js') %>
+  <% } %>
+  <%- js('js/code-block.js') %>
+  <%- js('js/toc.js') %>
+  <% if (!theme.hitokoto || theme.hitokoto.enable !== false) { %>
+    <%- js('js/hitokoto.js') %>
+  <% } %>
+  <%- js('js/link-card.js') %>
+  <%- js('js/lightbox.js') %>
+  <%- js('js/docs.js') %>
+  <%- js('js/main.js') %>
+
+  <!-- 全站即时搜索离线数据包 (file:// 协议优雅加载，HTTP 环境按需 Fetch 零初始阻塞) -->
+  <% if (searchEnabled) { %>
+    <script>
+      if (window.location.protocol === 'file:') {
+        var s = document.createElement('script');
+        s.src = '<%- url_for('js/search-data.js') %>';
+        document.body.appendChild(s);
+      }
+    </script>
+  <% } %>
+
+  <!-- LaTeX KaTeX 与 Mermaid 智能按需与 PJAX 动态载入机制 -->
+  <%
+    var contentStr = (page && page.content) ? page.content : '';
+    var isMathPage = feat.math && feat.math.enable && (page.math === true || contentStr.includes('$') || contentStr.includes('\\('));
+    var isMermaidPage = feat.mermaid && feat.mermaid.enable && (page.mermaid === true || contentStr.includes('class="mermaid"') || contentStr.includes('language-mermaid'));
+  %>
+  <script>
+    window.renderSeihakuMath = function () {
+      if (window.renderMathInElement) {
+        window.renderMathInElement(document.body, {
+          delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}],
+          ignoredClasses: ['no-math', 'token', 'hljs', 'yohaku-nav-list'],
+          throwOnError: false
+        });
+      } else {
+        if (!document.querySelector('link[href*="katex"]')) {
+          var kCss = document.createElement('link');
+          kCss.rel = 'stylesheet';
+          kCss.href = '<%- seihaku_cdn('katex_css') %>';
+          document.head.appendChild(kCss);
+        }
+        var kJs = document.createElement('script');
+        kJs.src = '<%- seihaku_cdn('katex_js') %>';
+        kJs.onload = function () {
+          var kAuto = document.createElement('script');
+          kAuto.src = '<%- seihaku_cdn('katex_auto_render') %>';
+          kAuto.onload = function () {
+            if (window.renderMathInElement) {
+              window.renderMathInElement(document.body, {
+                delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}],
+                ignoredClasses: ['no-math', 'token', 'hljs', 'yohaku-nav-list'],
+                throwOnError: false
+              });
+            }
+          };
+          document.body.appendChild(kAuto);
+        };
+        document.body.appendChild(kJs);
+      }
+    };
+
+    window.renderSeihakuMermaid = function () {
+      if (window.mermaid) {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        window.mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'neutral' });
+        window.mermaid.run();
+      } else {
+        import('<%- seihaku_cdn('mermaid_esm') %>').then(function (mod) {
+          window.mermaid = mod.default || mod;
+          var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+          window.mermaid.initialize({ startOnLoad: false, theme: isDark ? 'dark' : 'neutral' });
+          window.mermaid.run();
+        });
+      }
+    };
+  </script>
+
+  <% if (isMathPage) { %>
+    <script>window.renderSeihakuMath();</script>
+  <% } %>
+
+  <% if (isMermaidPage) { %>
+    <script type="module">window.renderSeihakuMermaid();</script>
+  <% } %>
+
+  <!-- PJAX 丝滑无刷新页面流转 (统一 CDN 管理，本地 file:// 协议优雅放行原生流转) -->
+  <% if (feat.pjax && feat.pjax.enable) { %>
+    <script src="<%- seihaku_cdn('pjax_js') %>"></script>
+    <script>
+      (function() {
+        if (window.location.protocol === 'file:') return;
+        try {
+          const pjaxInstance = new Pjax({
+            elements: 'a[href]:not([target="_blank"]):not([href^="#"]):not([href^="javascript:"]):not([href^="mailto:"]):not([download])',
+            selectors: [
+              'title',
+              '#site-header',
+              '#content',
+              '#reading-progress',
+              '#comments',
+              '.seihaku-mobile-dock'
+            ],
+            cacheBust: false
+          });
+
+          document.addEventListener('pjax:send', function() {
+            const bar = document.getElementById('reading-progress');
+            if (bar) {
+              bar.style.transition = 'width 0.2s ease';
+              bar.style.width = '35%';
+            }
+          });
+
+          document.addEventListener('pjax:complete', function() {
+            const bar = document.getElementById('reading-progress');
+            if (bar) {
+              bar.style.width = '100%';
+              setTimeout(() => { bar.style.width = '0%'; }, 250);
+            }
+
+            if (window.updateSeihakuThemeIcons) {
+              window.updateSeihakuThemeIcons(document.documentElement.getAttribute('data-theme') || 'light');
+            }
+            if (window.initSeihakuComments) window.initSeihakuComments();
+            if (window.initSeihakuTOC) window.initSeihakuTOC();
+            if (window.initSeihakuPostAI && document.getElementById('post-ai-summary-card')) window.initSeihakuPostAI();
+            if (window.initSeihakuNotes && document.getElementById('yohaku-reader-main')) window.initSeihakuNotes();
+            if (window.initSeihakuPortfolio && document.getElementById('portfolio-grid')) window.initSeihakuPortfolio();
+            if (window.initSeihakuCodeBlocks) window.initSeihakuCodeBlocks(document);
+            if (window.initSeihakuLightbox) window.initSeihakuLightbox();
+            if (window.initSeihakuDocs && document.querySelector('.seihaku-docs-workstation')) window.initSeihakuDocs();
+            if (window.initSeihakuAlerts) window.initSeihakuAlerts();
+            if (window.initSeihakuTables) window.initSeihakuTables(document);
+            if (window.initSeihakuTabs) window.initSeihakuTabs(document);
+            if (document.body && (document.body.innerText.includes('$') || document.body.innerText.includes('\\('))) {
+              if (window.renderSeihakuMath) window.renderSeihakuMath();
+            }
+            if (document.querySelector('.mermaid, pre code.language-mermaid')) {
+              if (window.renderSeihakuMermaid) window.renderSeihakuMermaid();
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        } catch (e) {
+          console.warn('[Seihaku PJAX]', e);
+        }
+      })();
+    </script>
+  <% } %>
+</body>
+</html>

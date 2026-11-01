@@ -1,0 +1,129 @@
+/* ==============================================================================
+   🍃 栖白 (Theme Seihaku) - 禅意预加载动画遮罩 (Seihaku Tranquil Preloader)
+   准则：如雾消融 · 物理缓动 · 绝不阻滞极速交互
+   ============================================================================== */
+
+#seihaku-preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--bg-surface);
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  pointer-events: all;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.45s ease;
+}
+
+#seihaku-preloader.fade-out,
+#seihaku-preloader.preloader-fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.preloader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  text-align: center;
+  padding: 24px;
+}
+
+/* 禅意留白双重光环 */
+.preloader-zen-symbol,
+.preloader-symbol-box {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zen-ring-outer,
+.preloader-ripple-halo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-subtle);
+  border-top-color: var(--color-accent);
+  animation: preloaderSpin 2.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.zen-ring-inner {
+  position: absolute;
+  width: 72%;
+  height: 72%;
+  border-radius: 50%;
+  border: 1px dashed var(--color-accent);
+  opacity: 0.5;
+  animation: preloaderSpinReverse 4.8s linear infinite;
+}
+
+.zen-petal-center,
+.preloader-leaf-icon {
+  font-size: 1.4rem;
+  animation: preloaderPulse 2.4s ease-in-out infinite;
+  display: inline-block;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes preloaderSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes preloaderSpinReverse {
+  0% { transform: rotate(360deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes preloaderPulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.8; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+/* 预加载微言与标题 */
+.preloader-brand-title {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  color: var(--text-primary);
+  margin: 4px 0 0 0;
+}
+
+.preloader-quote-text,
+.preloader-slogan-text {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+/* 进度指示条 */
+.preloader-progress-track {
+  width: 140px;
+  height: 2px;
+  background: var(--border-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.preloader-progress-bar {
+  width: 25%;
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: var(--radius-full);
+  transition: width 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}

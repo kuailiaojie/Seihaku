@@ -1,0 +1,24 @@
+# ==============================================================================
+# 🍃 友链数据配置 (Links Data)
+# 包含本站交换友链时的名片信息，以及可选的分类友链列表
+# ==============================================================================
+site_info:
+  title: "栖白 · Seihaku"
+  url: "https://example.com"
+  avatar: "/images/avatar.svg"
+  desc: "浮生偷闲，以白为度。落樱成诗，微澜生辉。"
+  theme_color: "#e11d48"
+
+# 分类友链（默认空，填入即可按分组呈现）：
+# 示例结构：
+# categories:
+#   - name: "灵感挚友"
+#     desc: "在数字世界里共鸣的思想者与创作者"
+#     links:
+#       - name: "余白居"
+#         url: "https://example.com/yohaku"
+#         avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+#         desc: "于空灵处见精神，写意代码与诗篇。"
+#         tag: "设计 / 诗意"
+#         rss: "https://example.com/yohaku/atom.xml"
+categories: []

@@ -1,0 +1,145 @@
+<%
+  var footerCfg = theme.footer || {};
+  var authorName = config.author || (theme.author && theme.author.name) || '栖白';
+  var siteStats = typeof seihaku_site_stats === 'function' ? seihaku_site_stats() : { postCount: site.posts.length, wordsInWan: '0.0', diffDays: 1, yearDisplay: new Date().getFullYear() };
+  var yearDisplay = siteStats.yearDisplay;
+  var wordsInWan = siteStats.wordsInWan;
+  var diffDays = siteStats.diffDays;
+
+  // 默认栏目兜底
+  var defaultColumns = [
+    {
+      title: "NAVIGATION / " + __('nav.writing'),
+      links: [
+        { name: __('nav.home'), url: "/" },
+        { name: __('nav.writing'), url: "/archives" },
+        { name: __('nav.notes'), url: "/notes" },
+        { name: __('nav.timeline'), url: "/timeline" },
+        { name: __('nav.about'), url: "/about" }
+      ]
+    },
+    {
+      title: "EXPLORE / " + __('nav.more'),
+      links: [
+        { name: __('nav.bangumis'), url: "/bangumis" },
+        { name: __('nav.equipments'), url: "/equipments" },
+        { name: __('nav.categories'), url: "/categories" },
+        { name: __('nav.photos'), url: "/photos" },
+        { name: __('nav.steam'), url: "/steam" }
+      ]
+    },
+    {
+      title: "RESOURCES / " + __('nav.docs'),
+      links: [
+        { name: __('nav.docs'), url: "/docs" },
+        { name: __('nav.portfolio'), url: "/portfolio" },
+        { name: __('nav.friendcircle'), url: "/friendcircle" },
+        { name: __('nav.guestbook'), url: "/guestbook" }
+      ]
+    },
+    {
+      title: "CONNECT / " + __('nav.friends'),
+      social: true
+    }
+  ];
+
+  var columns = (footerCfg.columns && footerCfg.columns.length) ? footerCfg.columns : defaultColumns;
+%>
+
+<footer class="seihaku-footer-root" role="contentinfo">
+  <div class="seihaku-footer-container">
+    
+    <!-- 顶层：品牌哲学与运行统计 -->
+    <div class="footer-top-brand-strip">
+      <div class="footer-brand-meta">
+        <a href="<%- url_for('/') %>" class="footer-brand-link font-serif">
+          <span class="brand-flower">🍃</span>
+          <span class="brand-text"><%= config.title || authorName %></span>
+        </a>
+        <span class="footer-slogan-text">
+          <%= footerCfg.custom_text || (theme.slogan && theme.slogan.primary) || '浮生偷闲，以白为度。落樱成诗，微澜生辉。' %>
+        </span>
+      </div>
+
+      <div class="footer-stats-badges">
+        <div class="footer-stat-pill" title="<%= __('footer.running_days') %>">
+          <span class="stat-pulse-dot"></span>
+          <span><%= __('footer.running_days') %> <strong><%= diffDays %></strong> <%= __('footer.days') %></span>
+        </div>
+        <div class="footer-stat-pill" title="Creative Stats">
+          <i class="far fa-edit"></i>
+          <span><strong><%= site.posts.length %></strong> <%= __('hero.stats_posts') %> · <strong><%= wordsInWan %></strong> <%= __('hero.stats_words') %></span>
+        </div>
+        <% if (theme.analytics && theme.analytics.busuanzi && theme.analytics.busuanzi.enable !== false) { %>
+          <div class="footer-stat-pill" title="全站访客与浏览量统计">
+            <i class="far fa-eye" style="margin-right: 4px;"></i>
+            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_site_pv">--</span> PV</span>
+            <span style="opacity: 0.35; margin: 0 4px;">·</span>
+            <span id="busuanzi_container_site_uv"><span id="busuanzi_value_site_uv">--</span> UV</span>
+          </div>
+          <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+        <% } %>
+      </div>
+    </div>
+
+    <!-- 中层：多栏索引与生态导引 (完全由配置驱动) -->
+    <div class="footer-columns-grid">
+      <% columns.forEach(function(col) { %>
+        <div class="footer-col">
+          <h4 class="footer-col-title font-mono"><%= col.title %></h4>
+          <ul class="footer-link-list">
+            <% if (col.social) { %>
+              <% if (theme.hero && theme.hero.social) { %>
+                <% theme.hero.social.slice(0, 5).forEach(function(item) { %>
+                  <li>
+                    <a href="<%- item.link %>" target="_blank" rel="noopener noreferrer">
+                      <i class="<%= item.icon %>" style="margin-right: 6px; font-size: 0.88em;"></i>
+                      <%= item.name %>
+                    </a>
+                  </li>
+                <% }); %>
+              <% } else { %>
+                <li><a href="https://github.com" target="_blank" rel="noopener"><i class="fab fa-github"></i> GitHub</a></li>
+                <li><a href="https://x.com" target="_blank" rel="noopener"><i class="fab fa-x-twitter"></i> X (Twitter)</a></li>
+              <% } %>
+            <% } else if (col.links) { %>
+              <% col.links.forEach(function(lnk) { %>
+                <li>
+                  <a href="<%- url_for(lnk.url) %>" <%= lnk.target ? 'target="' + lnk.target + '" rel="noopener noreferrer"' : '' %>>
+                    <% if (lnk.icon) { %><i class="<%= lnk.icon %>" style="margin-right: 6px;"></i><% } %>
+                    <%= lnk.name %>
+                  </a>
+                </li>
+              <% }); %>
+            <% } %>
+          </ul>
+        </div>
+      <% }); %>
+    </div>
+
+    <!-- 底栏：版权、备案与平滑返回顶部 -->
+    <div class="footer-bottom-bar">
+      <div class="footer-copyright-text">
+        <span>&copy; <%= yearDisplay %> <strong><%= authorName %></strong>.</span>
+        <span class="footer-divider-dot">·</span>
+        <span>Crafted with tranquility & typography.</span>
+        
+        <% if (footerCfg.icp) { %>
+          <span class="footer-divider-dot">·</span>
+          <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer" class="footer-icp-link">
+            <%= footerCfg.icp %>
+          </a>
+        <% } %>
+      </div>
+
+      <!-- 快捷平滑返回顶部胶囊按钮 -->
+      <button id="footer-back-to-top" class="footer-top-btn" type="button" aria-label="<%= __('post.back_to_top') %>" title="<%= __('post.back_to_top') %>">
+        <span>TOP</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+      </button>
+    </div>
+
+  </div>
+</footer>

@@ -1,0 +1,84 @@
+<%
+  var friendsData = (site.data && site.data.friends) ? site.data.friends : (theme.friends ? theme.friends.list : []);
+  var linksData = (site.data && site.data.links) ? site.data.links : null;
+  
+  var siteInfo = (linksData && linksData.site_info) ? linksData.site_info : {
+    title: config.title || "栖白",
+    url: config.url || "https://example.com",
+    avatar: (theme.author && theme.author.avatar) || "/images/avatar.svg",
+    desc: (theme.slogan && theme.slogan.primary) || "于方寸留白处，栖息万物微光。"
+  };
+%>
+
+<div class="seihaku-page-container">
+  
+  <div class="page-header-block">
+    <span class="page-eyebrow font-mono">FRIENDS / <%= __('nav.friends') %></span>
+    <h1 class="page-title font-serif"><%= __('pages.friends_title') %></h1>
+    <p class="page-subtitle"><%= __('pages.friends_sub') %></p>
+  </div>
+
+  <!-- 分类友链或常规友链展示 -->
+  <% if (linksData && linksData.categories && linksData.categories.length > 0) { %>
+    <% linksData.categories.forEach(function(cat) { %>
+      <div class="links-category-section">
+        <div class="links-category-title">
+          <i class="fas fa-bookmark" style="color: var(--color-accent); font-size: 0.9em;"></i>
+          <span><%= cat.name %></span>
+          <% if (cat.desc) { %>
+            <span style="font-size: 0.76rem; color: var(--text-tertiary); font-weight: normal; margin-left: 8px;">— <%= cat.desc %></span>
+          <% } %>
+        </div>
+
+        <div class="links-grid">
+          <% cat.links.forEach(function(link) { %>
+            <a href="<%- link.url %>" target="_blank" rel="noopener noreferrer" class="link-card">
+              <img src="<%- link.avatar %>" alt="<%= link.name %>" class="link-avatar" onerror="this.src='/images/avatar.svg'">
+              <div class="link-info">
+                <div class="link-name"><%= link.name %></div>
+                <div class="link-desc"><%= link.desc %></div>
+              </div>
+            </a>
+          <% }); %>
+        </div>
+      </div>
+    <% }); %>
+  <% } else if (friendsData && friendsData.length > 0) { %>
+    <div class="links-grid">
+      <% friendsData.forEach(function(item) { %>
+        <a href="<%- item.link || item.url %>" target="_blank" rel="noopener noreferrer" class="link-card">
+          <img src="<%- item.avatar %>" alt="<%= item.name %>" class="link-avatar" onerror="this.src='/images/avatar.svg'">
+          <div class="link-info">
+            <div class="link-name"><%= item.name %></div>
+            <div class="link-desc"><%= item.desc %></div>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+  <% } else { %>
+    <div style="text-align: center; padding: 48px 24px; color: var(--text-tertiary); background: var(--bg-surface-elevated); border: 1px dashed var(--border-subtle); border-radius: var(--radius-xl);">
+      <i class="far fa-handshake" style="font-size: 2.2rem; color: var(--color-accent); margin-bottom: 12px; opacity: 0.6;"></i>
+      <p style="margin: 0; font-size: 0.92rem;"><%= __('pages.friends_empty') %></p>
+    </div>
+  <% } %>
+
+  <!-- 本站信息与在线申请指南 -->
+  <div class="links-apply-box" style="margin-top: 40px;">
+    <h3><i class="fas fa-exchange-alt" style="color: var(--color-accent); margin-right: 8px;"></i> <%= __('pages.friends_apply') %></h3>
+    <div class="site-info-preset">
+title: <%= siteInfo.title %><br>
+url: <%= siteInfo.url %><br>
+avatar: <%= siteInfo.avatar %><br>
+desc: <%= siteInfo.desc %>
+    </div>
+  </div>
+
+  <% if (page.content) { %>
+    <div class="post-article-card" style="margin-top: 36px;">
+      <div class="markdown-body font-serif">
+        <%- page.content %>
+      </div>
+    </div>
+  <% } %>
+
+</div>

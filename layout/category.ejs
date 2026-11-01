@@ -1,0 +1,42 @@
+<div class="seihaku-page-container">
+  <div class="page-header-block">
+    <span class="page-eyebrow font-mono">CATEGORY / <%= __('nav.categories') %></span>
+    <h1 class="page-title font-serif">
+      <span style="color: var(--color-accent); margin-right: 6px;"><i class="far fa-folder"></i></span>
+      <span><%= page.category %></span>
+    </h1>
+    <p class="page-subtitle">
+      <%= page.category %> · <strong><%= page.posts.length %></strong> <%= __('hero.stats_posts') %>
+    </p>
+  </div>
+
+  <div class="archives-library-wrapper">
+    <div class="archives-articles-stack">
+      <% page.posts.sort('date', -1).forEach(function(post) { %>
+        <%
+          var pStats = typeof seihaku_post_stats === 'function' ? seihaku_post_stats(post) : { wordCount: 0, readTime: 1 };
+        %>
+        <a href="<%- url_for(post.path) %>" class="archive-entry-card">
+          <div style="flex: 1; min-width: 0; padding-right: 16px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px;">
+              <span class="musing-tag-pill" style="font-size: 0.7rem;"><%= page.category %></span>
+              <time datetime="<%= date_xml(post.date) %>" style="font-family: var(--font-mono); font-size: 0.76rem; color: var(--text-tertiary);">
+                <%= date(post.date, 'YYYY-MM-DD') %>
+              </time>
+            </div>
+            <div class="archive-entry-title font-serif"><%= post.title || __('post.untitled') || '无题' %></div>
+          </div>
+
+          <div class="archive-entry-meta font-mono">
+            <span><%= pStats.readTime %> <%= __('post.read_time_suffix') %></span>
+            <span>·</span>
+            <span><%= pStats.wordCount %> <%= __('post.word_count') %></span>
+          </div>
+        </a>
+      <% }); %>
+    </div>
+
+    <!-- 分页导航 -->
+    <%- partial('partial/pagination') %>
+  </div>
+</div>

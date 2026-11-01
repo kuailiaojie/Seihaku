@@ -1,0 +1,198 @@
+<%
+  var platformsCfg = theme.platforms || {};
+  var biliCfg = platformsCfg.bilibili || {};
+  var biliVmid = (biliCfg && biliCfg.vmid) ? String(biliCfg.vmid).trim() : '';
+
+  var bangumisList = (site.data && (site.data.bangumis || site.data.bangumi) && (site.data.bangumis || site.data.bangumi).length > 0)
+    ? (site.data.bangumis || site.data.bangumi)
+    : ((theme.bangumis && theme.bangumis.list) ? theme.bangumis.list : []);
+
+  var watchingCount = 0;
+  var finishedCount = 0;
+  var wishCount = 0;
+
+  bangumisList.forEach(function(item) {
+    if (item.status === 'watching') watchingCount++;
+    else if (item.status === 'wish') wishCount++;
+    else finishedCount++;
+  });
+%>
+
+<div class="seihaku-page-container">
+  
+  <div class="page-header-block">
+    <span class="page-eyebrow font-mono">BANGUMIS / <%= __('nav.bangumis') %></span>
+    <h1 class="page-title font-serif"><%= __('pages.bangumis_title') %></h1>
+    <p class="page-subtitle"><%= __('pages.bangumis_sub') %></p>
+
+    <!-- Bilibili 平台 API 数据接入指示条 -->
+    <% if (biliCfg.enable && biliVmid) { %>
+      <div class="bangumi-platform-badge-bar">
+        <a href="https://space.bilibili.com/<%= biliVmid %>" target="_blank" rel="noopener noreferrer" class="bangumi-bili-badge" title="前往 Bilibili 个人主页查看全部动态">
+          <i class="fab fa-bilibili" style="color: #00aeec; font-size: 1.1em;"></i>
+          <span><%= __('pages.bangumis_sync_badge') %> (UID: <%= biliVmid %>)</span>
+          <span class="bili-badge-total"><%= __('pages.bangumis_total_tracked', bangumisList.length) %></span>
+          <i class="fas fa-external-link-alt" style="font-size: 0.75em; opacity: 0.6; margin-left: 2px;"></i>
+        </a>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- 交互筛选与搜索工具条 -->
+  <div class="bangumi-controls-wrapper">
+    <!-- 状态筛选 Tab -->
+    <div class="bangumi-filter-bar" id="bangumi-filter-bar">
+      <button type="button" class="bangumi-filter-btn active" data-filter="all">
+        <span><%= __('pages.bangumis_all') %></span>
+        <span class="filter-count"><%= bangumisList.length %></span>
+      </button>
+      <% if (watchingCount > 0) { %>
+        <button type="button" class="bangumi-filter-btn" data-filter="watching">
+          <span><%= __('pages.bangumis_watching') %></span>
+          <span class="filter-count"><%= watchingCount %></span>
+        </button>
+      <% } %>
+      <button type="button" class="bangumi-filter-btn" data-filter="finished">
+        <span><%= __('pages.bangumis_finished') %></span>
+        <span class="filter-count"><%= finishedCount %></span>
+      </button>
+      <% if (wishCount > 0) { %>
+        <button type="button" class="bangumi-filter-btn" data-filter="wish">
+          <span><%= __('pages.bangumis_wish') %></span>
+          <span class="filter-count"><%= wishCount %></span>
+        </button>
+      <% } %>
+    </div>
+
+    <!-- 实时搜索输入框 -->
+    <div class="bangumi-search-box">
+      <i class="fas fa-search search-icon"></i>
+      <input type="text" id="bangumi-search-input" placeholder="<%= __('search.placeholder') %>" autocomplete="off">
+    </div>
+  </div>
+
+  <!-- 番剧网格列表 -->
+  <div class="bangumis-grid" id="bangumis-grid">
+    <% if (bangumisList && bangumisList.length > 0) { %>
+      <% bangumisList.forEach(function(item) { %>
+        <%
+          var statusMap = {
+            'watching': __('pages.bangumis_watching'),
+            'finished': __('pages.bangumis_finished'),
+            'wish': __('pages.bangumis_wish')
+          };
+          var statusText = statusMap[item.status] || __('pages.bangumis_finished');
+          var percent = (item.total_eps && item.current_ep) 
+            ? Math.min(100, Math.round((item.current_ep / item.total_eps) * 100)) 
+            : 100;
+        %>
+        <div class="bangumi-card" data-status="<%= item.status || 'finished' %>" data-title="<%= (item.title || '').toLowerCase() %>" data-type="<%= (item.type || '').toLowerCase() %>">
+          <div class="bangumi-cover-box">
+            <!-- referrerpolicy="no-referrer" 防止防盗链返回 403 -->
+            <img src="<%- item.cover %>" alt="<%= item.title %>" referrerpolicy="no-referrer" loading="lazy">
+            <span class="bangumi-status-badge <%= item.status || 'finished' %>"><%= statusText %></span>
+            <% if (item.badge) { %>
+              <span class="bangumi-corner-badge"><%= item.badge %></span>
+            <% } %>
+          </div>
+
+          <div class="bangumi-info-body">
+            <h3 class="bangumi-title font-serif">
+              <a href="<%- item.url || (biliVmid ? 'https://space.bilibili.com/' + biliVmid : '#') %>" target="_blank" rel="noopener noreferrer" title="<%= item.title %>">
+                <%= item.title %>
+              </a>
+            </h3>
+            
+            <div class="bangumi-rating-row">
+              <i class="fas fa-star" style="color: #f59e0b;"></i>
+              <span><strong><%= item.rating || 9.5 %></strong> / 10</span>
+              <% if (item.year) { %>
+                <span class="bangumi-year-text">(<%= item.year %>)</span>
+              <% } %>
+            </div>
+
+            <div class="bangumi-progress-track">
+              <div class="bangumi-progress-fill" style="width: <%= percent %>%;"></div>
+            </div>
+
+            <div class="bangumi-progress-text">
+              <span><%= item.progress_text || (item.current_ep + ' / ' + item.total_eps) %></span>
+              <span><%= percent %>%</span>
+            </div>
+
+            <% if (item.type) { %>
+              <div class="bangumi-type-row">
+                <% item.type.split('/').forEach(function(t) { %>
+                  <span class="bangumi-tag-pill"><%= t.trim() %></span>
+                <% }); %>
+              </div>
+            <% } %>
+
+            <p class="bangumi-summary">
+              <%= item.summary || '' %>
+            </p>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="bangumi-empty-box" style="grid-column: 1 / -1; padding: 48px 24px; text-align: center; color: var(--text-tertiary); background: var(--bg-surface-elevated); border: 1px dashed var(--border-subtle); border-radius: var(--radius-xl);">
+        <i class="fab fa-bilibili" style="font-size: 2.5rem; color: var(--color-accent); margin-bottom: 12px; opacity: 0.6;"></i>
+        <p style="margin: 0; font-size: 0.92rem;"><%= __('pages.bangumis_empty') %></p>
+      </div>
+    <% } %>
+  </div>
+
+  <% if (page.content) { %>
+    <div class="post-article-card" style="margin-top: 48px;">
+      <div class="markdown-body font-serif">
+        <%- page.content %>
+      </div>
+    </div>
+  <% } %>
+
+</div>
+
+<!-- 客户端即时筛选与检索逻辑 -->
+<script>
+  (function () {
+    const filterBtns = document.querySelectorAll('.bangumi-filter-btn');
+    const searchInput = document.getElementById('bangumi-search-input');
+    const cards = document.querySelectorAll('.bangumi-card');
+
+    let currentFilter = 'all';
+    let currentKeyword = '';
+
+    function applyFilter() {
+      cards.forEach(card => {
+        const status = card.getAttribute('data-status');
+        const title = card.getAttribute('data-title') || '';
+        const type = card.getAttribute('data-type') || '';
+
+        const statusMatch = (currentFilter === 'all') || (status === currentFilter);
+        const searchMatch = !currentKeyword || title.includes(currentKeyword) || type.includes(currentKeyword);
+
+        if (statusMatch && searchMatch) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        applyFilter();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        currentKeyword = e.target.value.trim().toLowerCase();
+        applyFilter();
+      });
+    }
+  })();
+</script>

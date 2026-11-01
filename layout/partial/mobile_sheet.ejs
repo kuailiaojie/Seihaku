@@ -1,0 +1,124 @@
+<%
+  function resolveNavTitle(name) {
+    var keyMap = {
+      '首页': 'nav.home', 'Home': 'nav.home', 'ホーム': 'nav.home',
+      '文稿': 'nav.writing', 'Writing': 'nav.writing', '記事': 'nav.writing',
+      '笔墨': 'nav.writing',
+      '手记': 'nav.notes', 'Notes': 'nav.notes', '手記': 'nav.notes',
+      '项目': 'nav.portfolio', 'Portfolio': 'nav.portfolio', '作品': 'nav.portfolio',
+      '时光': 'nav.timeline', 'Timeline': 'nav.timeline', '年表': 'nav.timeline',
+      '友邻': 'nav.friends', 'Friends': 'nav.friends', '知己': 'nav.friends',
+      '关于': 'nav.about_short', 'About': 'nav.about_short',
+      '探索': 'nav.explore', 'Explore': 'nav.explore',
+      '更多': 'nav.more', 'More': 'nav.more', 'その他': 'nav.more'
+    };
+    if (keyMap[name]) return __(keyMap[name]);
+    if (name && name.startsWith('nav.')) return __(name);
+    return name;
+  }
+
+  function resolveSubTitle(name) {
+    var keyMap = {
+      '全部文稿': 'nav.writing',
+      '文稿归档': 'nav.writing',
+      '随笔手记': 'nav.notes',
+      '精选项目': 'nav.portfolio', 'Portfolio': 'nav.portfolio',
+      '分类专栏': 'nav.categories', 'Categories': 'nav.categories',
+      '标签画廊': 'nav.tags', 'Tags': 'nav.tags',
+      '时光足迹': 'nav.timeline', '时光': 'nav.timeline', 'Timeline': 'nav.timeline',
+      '文档中心': 'nav.docs', 'Docs': 'nav.docs',
+      '追番记录': 'nav.bangumis', 'Bangumi': 'nav.bangumis',
+      '我的装备': 'nav.equipments', 'Equipments': 'nav.equipments',
+      '光影图库': 'nav.photos', '光影画廊': 'nav.photos', 'Gallery': 'nav.photos',
+      'Steam 展馆': 'nav.steam', 'Steam 游戏': 'nav.steam', 'Steam': 'nav.steam',
+      '友邻聚落': 'nav.friends', 'Friends': 'nav.friends',
+      '朋友圈子': 'nav.friendcircle', 'Friend Circle': 'nav.friendcircle',
+      '访客留言': 'nav.guestbook', 'Guestbook': 'nav.guestbook',
+      '关于栖白': 'nav.about', '关于本站': 'nav.about', 'About': 'nav.about'
+    };
+    if (keyMap[name]) return __(keyMap[name]);
+    if (name && name.startsWith('nav.')) return __(name);
+    return name;
+  }
+
+  var navMenu = typeof seihaku_nav_menu === 'function' ? seihaku_nav_menu() : [];
+  var accordionGroups = navMenu.filter(function(item) {
+    return item.children && item.children.length > 0;
+  });
+%>
+<div id="mobile-more-sheet-backdrop" class="mobile-sheet-backdrop" aria-hidden="true"></div>
+<aside id="mobile-more-sheet" class="mobile-more-sheet" aria-modal="true" role="dialog" aria-label="<%= __('nav.explore') %>">
+  <div class="mobile-sheet-handle-bar">
+    <div class="mobile-sheet-drag-handle"></div>
+  </div>
+  <div class="mobile-sheet-header">
+    <div class="mobile-sheet-title-group">
+      <div class="mobile-sheet-title font-serif"><%= __('nav.explore') %> · 全站导航</div>
+      <div class="mobile-sheet-subtitle font-mono">ALL PILLARS & SECTIONS</div>
+    </div>
+    <div class="mobile-sheet-actions">
+      <% if (!theme.features || !theme.features.search || theme.features.search.enable !== false) { %>
+        <button id="mobile-sheet-search-btn" class="mobile-sheet-action-pill" type="button" aria-label="<%= __('header.search') %>">
+          <i class="fas fa-search"></i>
+          <span><%= __('search.title') || '搜索' %></span>
+        </button>
+      <% } %>
+      <button id="mobile-sheet-theme-btn" class="mobile-sheet-action-pill" type="button" aria-label="<%= __('header.theme_toggle') %>">
+        <i class="fas fa-moon"></i>
+        <span><%= __('header.theme_toggle') %></span>
+      </button>
+      <button type="button" class="mobile-sheet-close-btn" id="mobile-sheet-close-btn" aria-label="<%= __('search.esc') %>">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-sheet-body">
+    <!-- 折叠手风琴群组 (Collapsible Accordion Groups) -->
+    <% accordionGroups.forEach(function(group, gIdx) { %>
+      <%
+        var isGroupExpanded = group.isActive || gIdx === 0;
+        var groupLabel = resolveNavTitle(group.name);
+      %>
+      <div class="mobile-sheet-section mobile-accordion-section <%= isGroupExpanded ? 'is-expanded' : '' %>" data-group-index="<%= gIdx %>">
+        <button type="button" class="mobile-accordion-header" aria-expanded="<%= isGroupExpanded ? 'true' : 'false' %>">
+          <div class="accordion-header-left">
+            <span class="sheet-sparkle">✦</span>
+            <span class="accordion-group-name font-mono"><%= groupLabel %></span>
+            <% if (group.desc) { %>
+              <span class="accordion-group-desc font-mono">/ <%= group.desc %></span>
+            <% } %>
+            <span class="accordion-count-badge font-mono"><%= group.children.length %></span>
+          </div>
+          <div class="accordion-header-right">
+            <svg class="accordion-chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+        </button>
+        <div class="mobile-accordion-body">
+          <div class="mobile-sheet-grid">
+            <% (group.children || []).forEach(function(subItem) { %>
+              <%
+                var subLabel = resolveSubTitle(subItem.name);
+              %>
+              <a href="<%- url_for(subItem.url) %>" class="mobile-sheet-item-card <%= subItem.isActive ? 'active' : '' %>">
+                <div class="sheet-item-icon">
+                  <i class="<%= subItem.icon || 'fas fa-compass' %>"></i>
+                </div>
+                <div class="sheet-item-info">
+                  <div class="sheet-item-name font-serif"><%= subLabel %></div>
+                  <% if (subItem.desc) { %>
+                    <div class="sheet-item-desc"><%= subItem.desc %></div>
+                  <% } %>
+                </div>
+              </a>
+            <% }); %>
+          </div>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+</aside>

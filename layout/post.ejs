@@ -1,0 +1,556 @@
+<%
+  var postCfg = theme.post || {};
+  var showToc = postCfg.show_toc !== false && page.toc !== false;
+  var tocContent = showToc ? toc(page.content, { class: 'seihaku-toc', list_number: false, max_depth: postCfg.toc_depth || 3 }) : '';
+  var hasToc = tocContent && tocContent.trim().length > 0;
+  var coverImg = page.cover || (page.photos && page.photos.length ? page.photos[0] : null);
+%>
+
+<div class="post-page-wrapper">
+  <div class="post-layout-grid <%= hasToc ? 'has-floating-toc' : 'single-col-layout' %>">
+    
+    <!-- 文章主体排版区 (纯净无框 · 720px 黄金呼吸视界) -->
+    <article class="post-content-container">
+      
+      <!-- 文章头部元数据与标题 -->
+      <header class="post-header">
+        <div class="post-meta-strip font-mono">
+          <time datetime="<%= date_xml(page.date) %>" class="post-meta-item">
+            <i class="far fa-calendar-alt"></i>
+            <span><%= date(page.date, 'YYYY-MM-DD') %></span>
+          </time>
+
+          <% if (page.categories && page.categories.length) { %>
+            <span class="meta-dot">·</span>
+            <a href="<%- url_for(page.categories.data[0].path) %>" class="post-meta-item post-meta-category">
+              <i class="far fa-folder"></i>
+              <span><%= page.categories.data[0].name %></span>
+            </a>
+          <% } %>
+
+          <% if (page.updated && date(page.updated, 'YYYY-MM-DD') !== date(page.date, 'YYYY-MM-DD')) { %>
+            <%
+              var updatedTitle = __('post.updated');
+              if (!updatedTitle || updatedTitle === 'post.updated') updatedTitle = '最后更新';
+            %>
+            <span class="meta-dot">·</span>
+            <time datetime="<%= date_xml(page.updated) %>" class="post-meta-item" title="<%= updatedTitle %>">
+              <i class="fas fa-history"></i>
+              <span><%= date(page.updated, 'YYYY-MM-DD') %></span>
+            </time>
+          <% } %>
+
+          <% if (postCfg.word_count !== false) { %>
+            <% var pStats = typeof seihaku_post_stats === 'function' ? seihaku_post_stats(page) : { wordCount: strip_html(page.content).length, readTime: Math.max(1, Math.round(strip_html(page.content).length / 350)) }; %>
+            <span class="meta-dot">·</span>
+            <span class="post-meta-item">
+              <i class="far fa-file-alt"></i>
+              <span><%= pStats.wordCount %> <%= __('post.word_count') %></span>
+            </span>
+          <% } %>
+
+          <% if (postCfg.read_time !== false) { %>
+            <% var pReadStats = typeof seihaku_post_stats === 'function' ? seihaku_post_stats(page) : { readTime: Math.max(1, Math.round(strip_html(page.content).length / 350)) }; %>
+            <span class="meta-dot">·</span>
+            <span class="post-meta-item">
+              <i class="far fa-clock"></i>
+              <span><%= __('post.read_time_prefix') %> <%= pReadStats.readTime %> <%= __('post.read_time_suffix') %></span>
+            </span>
+          <% } %>
+
+          <% if (theme.comment && theme.comment.enable && theme.comment.type === 'waline' && theme.comment.waline && theme.comment.waline.pageview !== false) { %>
+            <%
+              var pageviewsTitle = __('post.pageviews');
+              if (!pageviewsTitle || pageviewsTitle === 'post.pageviews') pageviewsTitle = '阅读量';
+            %>
+            <span class="meta-dot">·</span>
+            <span class="post-meta-item" title="<%= pageviewsTitle %>">
+              <i class="far fa-eye"></i>
+              <span class="waline-pageview-count" data-path="<%- url_for(page.path) %>">0</span>
+            </span>
+          <% } %>
+
+          <% if (hasToc) { %>
+            <span class="meta-dot mobile-only-meta">·</span>
+            <button type="button" class="post-meta-item post-meta-toc-btn font-mono" id="post-meta-toc-trigger" title="<%= __('post.toc') %>">
+              <i class="fas fa-list-ul"></i>
+              <span><%= __('post.toc') %></span>
+            </button>
+          <% } %>
+        </div>
+
+        <h1 class="post-title font-serif">
+          <%= page.title %>
+        </h1>
+      </header>
+
+      <!-- 文章宽幅封面图 (与 760px 正文视界同宽 · 居中圆角微光插图) -->
+      <% if (coverImg) { %>
+        <div class="post-cover-wrapper">
+          <img src="<%- url_for(coverImg) %>" alt="<%= page.title %>" class="post-cover-image" loading="lazy">
+        </div>
+      <% } %>
+
+      <!-- 连载专栏合集 (Post Series) -->
+      <% var seriesData = typeof seihaku_post_series === 'function' ? seihaku_post_series(page) : null; %>
+      <% if (seriesData) { %>
+        <div class="seihaku-series-card">
+          <div class="series-header">
+            <span class="series-badge font-mono"><i class="fas fa-layer-group"></i> 连载专栏</span>
+            <span class="series-title font-serif"><%= seriesData.name %></span>
+            <span class="series-counter font-mono">(第 <%= seriesData.currentIndex %> / <%= seriesData.total %> 篇)</span>
+          </div>
+          <div class="series-list">
+            <% seriesData.posts.forEach(function(sp, idx) { %>
+              <a href="<%- url_for(sp.path) %>" class="series-item<%= sp._id === page._id ? ' is-active' : '' %>">
+                <span class="series-index font-mono"><%= idx + 1 %>.</span>
+                <span class="series-item-title"><%= sp.title %></span>
+                <% if (sp._id === page._id) { %>
+                  <span class="series-current-pill font-mono">正在阅读</span>
+                <% } %>
+              </a>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- AI 智析摘要卡片 (支持文章 Front-matter 本地摘要与外部 AI API 实时解析) -->
+      <%
+        var aiSummaryCfg = theme.ai_summary || {};
+        var postSummary = page.summary || page.description || (page.content ? strip_html(page.content).slice(0, 180).trim() + '...' : '');
+      %>
+      <% if (aiSummaryCfg.enable !== false && postSummary) { %>
+        <div class="seihaku-ai-summary-card post-ai-summary-card" id="post-ai-summary-card">
+          <div class="ai-summary-header">
+            <div class="ai-summary-badge">
+              <span class="ai-sparkle-icon">✨</span>
+              <span class="ai-badge-title font-serif"><%= __('post.ai_summary') %></span>
+              <span class="ai-model-tag font-mono"><%= aiSummaryCfg.model_label || 'AI' %></span>
+            </div>
+            
+            <div class="ai-summary-actions">
+              <% if (aiSummaryCfg.allow_refresh !== false) { %>
+                <button type="button" class="ai-action-btn" id="post-ai-refresh-btn" title="<%= __('post.ai_refresh') %>" aria-label="<%= __('post.ai_refresh') %>">
+                  <i class="fas fa-sync-alt ai-refresh-icon"></i>
+                  <span><%= __('post.ai_refresh') %></span>
+                </button>
+              <% } %>
+              <button type="button" class="ai-action-btn" id="post-ai-copy-btn" title="<%= __('post.ai_copy') %>" aria-label="<%= __('post.ai_copy') %>">
+                <i class="far fa-copy"></i>
+                <span><%= __('post.ai_copy') %></span>
+              </button>
+            </div>
+          </div>
+
+          <div class="ai-summary-body">
+            <p class="ai-summary-text" id="post-ai-summary-text">
+              <%= postSummary %>
+            </p>
+          </div>
+
+          <div class="ai-summary-loading-overlay" id="post-ai-loading" style="display: none;">
+            <div class="ai-loading-spinner"></div>
+            <span class="ai-loading-text font-mono"><%= __('post.ai_loading') %></span>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- 文章时效性/过期提醒 (Outdate Notice) -->
+      <%
+        var outdateCfg = postCfg.outdate_notice || {};
+        var outdateDays = typeof outdateCfg.days === 'number' ? outdateCfg.days : 180;
+        var postUpdateTime = page.updated ? new Date(page.updated).getTime() : new Date(page.date).getTime();
+        var daysPast = Math.floor((Date.now() - postUpdateTime) / (1000 * 60 * 60 * 24));
+        var showOutdateNotice = (outdateCfg.enable === true || (outdateCfg.enable !== false && page.outdate === true)) && (daysPast >= outdateDays);
+      %>
+      <% if (showOutdateNotice) { %>
+        <%
+          var outdateText = __('post.outdate_notice', daysPast);
+          if (!outdateText || outdateText === 'post.outdate_notice') outdateText = `本文最后更新于 ${daysPast} 天前，文中部分依赖版本或接口设计可能已发生演进，请注意参考核实。`;
+        %>
+        <div class="seihaku-outdate-notice">
+          <i class="fas fa-history outdate-icon"></i>
+          <span><%= outdateText %></span>
+        </div>
+      <% } %>
+
+      <!-- 文章正文主体 (1.92 舒适行距与人文墨韵) -->
+      <div class="markdown-body" id="article-body">
+        <% if (page.password) { %>
+          <div class="seihaku-protected-post" id="post-protected-box" data-cipher="<%- Buffer.from(page.content).toString('base64') %>" data-salt="<%- page.password %>">
+            <div class="protected-lock-icon"><i class="fas fa-lock"></i></div>
+            <h3 class="protected-title font-serif">该文稿受余白密码保护</h3>
+            <p class="protected-desc">此文稿包含私密手记或未公开草稿，请输入访问密码以解锁完整阅读视界。</p>
+            <form class="protected-form" onsubmit="window.unlockSeihakuPost(event)">
+              <input type="password" id="post-unlock-pwd" placeholder="请输入访问密码..." class="protected-input font-mono" required autocomplete="off">
+              <button type="submit" class="protected-submit-btn font-mono">解密阅读</button>
+            </form>
+          </div>
+        <% } else { %>
+          <%- page.content %>
+        <% } %>
+      </div>
+
+      <!-- 文章底部交互栏 (点亮微光与分享) -->
+      <div class="post-action-bar">
+        <% if (postCfg.like_button && postCfg.like_button.enable !== false) { %>
+          <button id="post-like-btn" class="post-like-btn" aria-label="<%= __('post.like') %>" title="<%= __('post.like') %>">
+            <i class="far fa-heart heart-icon"></i>
+            <span class="like-btn-text"><%= postCfg.like_button.text || __('post.like') %></span>
+          </button>
+        <% } %>
+
+        <% if (postCfg.reward && postCfg.reward.enable && (postCfg.reward.wechat || postCfg.reward.alipay)) { %>
+          <button id="post-reward-btn" class="post-like-btn" aria-label="<%= __('post.reward') %>">
+            <i class="fas fa-coffee"></i>
+            <span><%= __('post.reward') %></span>
+          </button>
+        <% } %>
+
+        <button id="post-share-btn" class="post-share-btn" aria-label="<%= __('post.share') %>" title="<%= __('post.share') %>">
+          <i class="fas fa-share-alt"></i>
+          <span><%= __('post.share') %></span>
+        </button>
+      </div>
+
+      <% if (postCfg.reward && postCfg.reward.enable && (postCfg.reward.wechat || postCfg.reward.alipay)) { %>
+        <div id="post-reward-modal" class="post-reward-modal" style="display: none; margin: 16px 0 28px; padding: 20px; background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl); text-align: center;">
+          <div class="font-serif" style="font-size: 0.92rem; color: var(--text-secondary); margin-bottom: 16px;"><%= __('post.reward_title') %></div>
+          <div style="display: flex; justify-content: center; gap: 24px; flex-wrap: wrap;">
+            <% if (postCfg.reward.wechat) { %>
+              <div>
+                <img src="<%- url_for(postCfg.reward.wechat) %>" alt="<%= __('post.reward_wechat') %>" style="width: 148px; height: 148px; object-fit: contain; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                <div class="font-mono" style="font-size: 0.75rem; color: var(--text-tertiary); margin-top: 6px;"><%= __('post.reward_wechat') %></div>
+              </div>
+            <% } %>
+            <% if (postCfg.reward.alipay) { %>
+              <div>
+                <img src="<%- url_for(postCfg.reward.alipay) %>" alt="<%= __('post.reward_alipay') %>" style="width: 148px; height: 148px; object-fit: contain; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                <div class="font-mono" style="font-size: 0.75rem; color: var(--text-tertiary); margin-top: 6px;"><%= __('post.reward_alipay') %></div>
+              </div>
+            <% } %>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- 标签列表 -->
+      <% if (page.tags && page.tags.length) { %>
+        <div class="post-tags-row">
+          <% page.tags.forEach(function(tag) { %>
+            <a href="<%- url_for(tag.path) %>" class="post-tag-item">
+              <span class="tag-hash">#</span>
+              <span><%= tag.name %></span>
+            </a>
+          <% }); %>
+        </div>
+      <% } %>
+
+      <!-- 原创版权声明卡片 (柔和融入背景) -->
+      <% if (postCfg.copyright && postCfg.copyright.enable !== false) { %>
+        <div class="post-copyright-card">
+          <div class="copyright-title font-serif">《<%= page.title %>》</div>
+          <div class="copyright-item">
+            <span class="copyright-label"><%= __('post.copyright_author') %></span>
+            <span class="copyright-val"><%= config.author || (theme.author && theme.author.name) %></span>
+          </div>
+          <div class="copyright-item">
+            <span class="copyright-label"><%= __('post.copyright_link') %></span>
+            <a href="<%- page.permalink || url %>" class="copyright-link"><%- page.permalink || url %></a>
+          </div>
+          <div class="copyright-item">
+            <span class="copyright-label"><%= __('post.copyright_notice') %></span>
+            <span><%- __('post.copyright_desc', `<a href="${postCfg.copyright.license_url || 'https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh'}" target="_blank" rel="noopener">${postCfg.copyright.license || 'CC BY-NC-SA 4.0'}</a>`) %></span>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- 上下篇导航卡片 -->
+      <% if (postCfg.prev_next !== false && (page.prev || page.next)) { %>
+        <nav class="post-nav-wrapper">
+          <% if (page.prev) { %>
+            <a href="<%- url_for(page.prev.path) %>" class="post-nav-card nav-prev">
+              <span class="nav-direction font-mono"><i class="fas fa-arrow-left"></i> <%= __('post.prev_post') %></span>
+              <span class="nav-post-title font-serif"><%= page.prev.title %></span>
+            </a>
+          <% } else { %>
+            <div class="nav-empty-placeholder"></div>
+          <% } %>
+
+          <% if (page.next) { %>
+            <a href="<%- url_for(page.next.path) %>" class="post-nav-card nav-next">
+              <span class="nav-direction font-mono"><%= __('post.next_post') %> <i class="fas fa-arrow-right"></i></span>
+              <span class="nav-post-title font-serif"><%= page.next.title %></span>
+            </a>
+          <% } %>
+        </nav>
+      <% } %>
+
+      <!-- 智能相关文章推荐 (Related Posts) -->
+      <%
+        var relatedList = typeof seihaku_related_posts === 'function' ? seihaku_related_posts(page, 3) : [];
+      %>
+      <% if (relatedList && relatedList.length) { %>
+        <%
+          var relatedTitle = __('post.related_posts');
+          if (!relatedTitle || relatedTitle === 'post.related_posts') relatedTitle = '相关文稿推荐';
+        %>
+        <div class="post-related-wrapper">
+          <div class="related-header">
+            <h3 class="related-title font-serif">
+              <i class="fas fa-compass" style="color: var(--color-accent); margin-right: 8px;"></i>
+              <span><%= relatedTitle %></span>
+            </h3>
+          </div>
+          <div class="related-posts-grid">
+            <% relatedList.forEach(function(rp) { %>
+              <%
+                var rpCover = rp.cover || rp.banner || postCfg.default_cover;
+                var rpSummary = rp.summary || rp.description || (rp.content ? strip_html(rp.content).slice(0, 68).trim() + '...' : '');
+              %>
+              <a href="<%- url_for(rp.path) %>" class="related-post-card">
+                <% if (rpCover) { %>
+                  <div class="related-card-cover">
+                    <img src="<%- url_for(rpCover) %>" alt="<%= rp.title %>" loading="lazy">
+                  </div>
+                <% } %>
+                <div class="related-card-body">
+                  <div class="related-card-meta font-mono">
+                    <time><%= date(rp.date, 'YYYY-MM-DD') %></time>
+                    <% if (rp.categories && rp.categories.length) { %>
+                      <span>·</span>
+                      <span><%= rp.categories.data[0].name %></span>
+                    <% } %>
+                  </div>
+                  <h4 class="related-card-title font-serif"><%= rp.title %></h4>
+                  <p class="related-card-desc"><%= rpSummary %></p>
+                </div>
+              </a>
+            <% }); %>
+          </div>
+        </div>
+      <% } %>
+
+      <!-- 评论与互动表态区域 (支持 Waline / Twikoo / Giscus) -->
+      <% if (theme.comment && theme.comment.enable) { %>
+        <div class="post-comments-wrapper" style="margin-top: 48px;">
+          <%- partial('partial/comments') %>
+        </div>
+      <% } %>
+
+    </article>
+
+    <!-- 栖白极简通透悬浮随动目录 (Seihaku Floating TOC) -->
+    <% if (hasToc) { %>
+      <aside class="post-toc-column" id="post-toc-sidebar">
+        <div class="seihaku-floating-toc">
+          
+          <!-- 目录树导航区 -->
+          <nav class="floating-toc-nav" id="seihaku-toc-nav" aria-label="<%= __('post.toc') %>">
+            <div class="toc-indicator-track" aria-hidden="true">
+              <div class="toc-indicator-thumb" id="toc-indicator-thumb"></div>
+            </div>
+            <div class="toc-tree-content">
+              <%- tocContent %>
+            </div>
+          </nav>
+
+          <!-- 手绘自然波浪微动分割线 -->
+          <div class="floating-toc-divider" aria-hidden="true">
+            <svg class="toc-wave-svg" width="72" height="8" viewBox="0 0 72 8" fill="none">
+              <path d="M1.5 4 C 8 1.5, 14 6.5, 22 4 S 34 2, 42 4 S 54 6.5, 62 4 S 69 2.5, 70.5 4" stroke="var(--color-accent)" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+
+          <!-- 环形阅读进度与操作按钮栏 -->
+          <div class="floating-toc-dock">
+            <!-- 环形进度 -->
+            <div class="toc-progress-pill" id="seihaku-toc-progress" title="<%= __('post.reading_progress') %>">
+              <svg class="progress-ring-svg" width="18" height="18" viewBox="0 0 24 24">
+                <circle class="ring-bg" cx="12" cy="12" r="9" fill="none" stroke-width="2.2" />
+                <circle class="ring-fill" id="toc-progress-val" cx="12" cy="12" r="9" fill="none" stroke-width="2.2" stroke-linecap="round" />
+              </svg>
+              <span class="progress-text font-mono" id="toc-progress-text">0%</span>
+            </div>
+
+            <!-- 操作按钮组 -->
+            <div class="toc-actions-cluster">
+              <% if (postCfg.like_button && postCfg.like_button.enable !== false) { %>
+                <button class="toc-icon-btn like-btn-trigger" id="toc-like-btn" aria-label="<%= __('post.like') %>" title="<%= __('post.like') %>">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                  </svg>
+                </button>
+              <% } %>
+
+              <% if (theme.comment && theme.comment.enable) { %>
+                <button class="toc-icon-btn" id="toc-comments-btn" aria-label="<%= __('post.comments_title') %>" title="<%= __('post.comments_title') %>" onclick="document.getElementById('comments')?.scrollIntoView({behavior:'smooth'})">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                  </svg>
+                </button>
+              <% } %>
+
+              <button class="toc-icon-btn" id="toc-share-btn" aria-label="<%= __('post.share') %>" title="<%= __('post.share') %>">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="18" cy="5" r="3"></circle>
+                  <circle cx="6" cy="12" r="3"></circle>
+                  <circle cx="18" cy="19" r="3"></circle>
+                  <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                  <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                </svg>
+              </button>
+
+              <button class="toc-icon-btn" id="toc-top-btn" aria-label="<%= __('post.back_to_top') %>" title="<%= __('post.back_to_top') %>">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- 移动端悬浮目录胶囊入口 (Mobile Floating TOC FAB) -->
+      <button class="mobile-toc-fab" id="mobile-toc-fab" type="button" aria-label="<%= __('post.toc') %>" title="<%= __('post.toc') %>">
+        <div class="mobile-toc-fab-icon-wrap">
+          <svg class="mobile-toc-fab-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="4" y1="6" x2="20" y2="6"></line>
+            <line x1="4" y1="12" x2="14" y2="12"></line>
+            <line x1="4" y1="18" x2="18" y2="18"></line>
+          </svg>
+        </div>
+        <span class="mobile-toc-fab-label font-serif"><%= __('post.toc') %></span>
+        <span class="mobile-toc-fab-badge font-mono" id="mobile-toc-fab-percent">0%</span>
+      </button>
+
+      <!-- 移动端 Apple HIG 优雅抽屉式目录面板 (Mobile TOC Sliding Sheet) -->
+      <div class="mobile-toc-backdrop" id="mobile-toc-backdrop" aria-hidden="true"></div>
+      <aside class="mobile-toc-sheet" id="mobile-toc-sheet" role="dialog" aria-modal="true" aria-label="<%= __('post.toc') %>">
+        <div class="mobile-sheet-handle-bar">
+          <div class="mobile-sheet-drag-handle"></div>
+        </div>
+        
+        <div class="mobile-sheet-header">
+          <div class="mobile-sheet-title-group">
+            <div class="mobile-sheet-title font-serif"><%= __('post.toc') %></div>
+            <div class="mobile-sheet-subtitle font-mono">
+              <span><%= __('post.reading_progress') %></span> · <span id="mobile-toc-sheet-percent">0%</span>
+            </div>
+          </div>
+          
+          <div class="mobile-sheet-actions">
+            <button type="button" class="mobile-sheet-action-pill" id="mobile-toc-to-top" title="<%= __('post.back_to_top') %>">
+              <i class="fas fa-arrow-up"></i>
+              <span><%= __('post.back_to_top') %></span>
+            </button>
+            <button type="button" class="mobile-sheet-close-btn" id="mobile-toc-close-btn" aria-label="<%= __('search.esc') %>">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="mobile-toc-sheet-body">
+          <nav class="mobile-toc-nav" id="mobile-toc-nav" aria-label="<%= __('post.toc') %>">
+            <%- tocContent %>
+          </nav>
+        </div>
+      </aside>
+    <% } %>
+
+  </div>
+</div>
+
+<!-- 文章端 AI 摘要外部 API 交互脚本 -->
+<script>
+  (function() {
+    function initPostAI() {
+      var copyBtn = document.getElementById('post-ai-copy-btn');
+      var refreshBtn = document.getElementById('post-ai-refresh-btn');
+      var summaryTextEl = document.getElementById('post-ai-summary-text');
+      var loadingOverlay = document.getElementById('post-ai-loading');
+      
+      if (copyBtn && summaryTextEl) {
+        copyBtn.onclick = function() {
+          if (navigator.clipboard) {
+            navigator.clipboard.writeText(summaryTextEl.textContent.trim()).then(function() {
+              var span = copyBtn.querySelector('span');
+              var orig = span.textContent;
+              span.textContent = '<%= __('post.ai_copied') %>';
+              setTimeout(function() { span.textContent = orig; }, 1800);
+            });
+          }
+        };
+      }
+
+    if (refreshBtn && summaryTextEl) {
+      refreshBtn.addEventListener('click', function() {
+        var aiCfg = <%- JSON.stringify({
+          provider: (theme.ai_summary && theme.ai_summary.provider) || 'gemini',
+          api_url: (theme.ai_summary && theme.ai_summary.api_url) || '',
+          model: (theme.ai_summary && theme.ai_summary.model) || 'gemini-1.5-flash',
+          prompt: (theme.ai_summary && theme.ai_summary.prompt) || '请用简练精辟的2-3句话总结以下长文的核心观点：'
+        }) %>;
+        if (!aiCfg.api_url) {
+          if (window.showSeihakuToast) {
+            window.showSeihakuToast('当前使用本地静态智析摘要（可在 _config.yml 配置安全代理端点 api_url）');
+          }
+          return;
+        }
+
+        if (loadingOverlay) loadingOverlay.style.display = 'flex';
+        refreshBtn.classList.add('refreshing');
+
+        var articleBody = document.getElementById('article-body');
+        var articleText = (articleBody ? articleBody.innerText : '').slice(0, 4000);
+        var promptPrefix = aiCfg.prompt || '请用简练精辟的2-3句话总结以下长文的核心观点：';
+
+        var callPromise;
+        if (aiCfg.provider === 'gemini') {
+          callPromise = fetch(aiCfg.api_url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: promptPrefix + '\n\n' + articleText }] }] })
+          }).then(function(r) { return r.json(); }).then(function(d) {
+            return d.candidates && d.candidates[0] && d.candidates[0].content && d.candidates[0].content.parts && d.candidates[0].content.parts[0].text;
+          });
+        } else {
+          callPromise = fetch(aiCfg.api_url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              model: aiCfg.model || 'gpt-4o-mini',
+              messages: [{ role: 'system', content: promptPrefix }, { role: 'user', content: articleText }]
+            })
+          }).then(function(r) { return r.json(); }).then(function(d) {
+            return d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content;
+          });
+        }
+
+        callPromise.then(function(result) {
+          if (result) {
+            summaryTextEl.textContent = result.trim();
+            if (window.showSeihakuToast) window.showSeihakuToast('AI 智析摘要已刷新 ✨');
+          } else {
+            throw new Error('未获取到返回内容');
+          }
+        }).catch(function(err) {
+          console.error('[AI Summary Error]', err);
+          if (window.showSeihakuToast) {
+            window.showSeihakuToast('调用外部 AI 代理端点失败，请检查网络连接');
+          }
+        }).finally(function() {
+          if (loadingOverlay) loadingOverlay.style.display = 'none';
+          refreshBtn.classList.remove('refreshing');
+        });
+      });
+    }
+  }
+
+  window.initSeihakuPostAI = initPostAI;
+  initPostAI();
+})();
+</script>

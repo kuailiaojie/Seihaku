@@ -1,0 +1,45 @@
+{
+  "name": "hexo-theme-seihaku",
+  "version": "0.1.0",
+  "description": "🍃 栖白 (Seihaku) - 于方寸留白处，栖息万物微光。融合极简留白、落樱微风交互与苹果 HIG 流体质感的高雅 Hexo 博客主题。支持中/英/日三语国际化。",
+  "main": "index.js",
+  "keywords": [
+    "hexo",
+    "theme",
+    "hexo-theme",
+    "seihaku",
+    "yohaku",
+    "minimalism",
+    "apple-hig",
+    "typography",
+    "i18n",
+    "bilibili-sync"
+  ],
+  "files": [
+    "default_data",
+    "languages",
+    "layout",
+    "scripts",
+    "source",
+    "assets",
+    "_config.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kuailiaojie/Seihaku.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kuailiaojie/Seihaku/issues"
+  },
+  "homepage": "https://github.com/kuailiaojie/Seihaku#readme",
+  "author": "kuailiaojie",
+  "license": "MIT",
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  },
+  "peerDependencies": {
+    "hexo": ">=7.0.0"
+  }
+}
