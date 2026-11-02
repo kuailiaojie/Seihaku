@@ -1,5 +1,5 @@
 {
-  "name": "hexo-theme-seihaku",
+  "name": "@kuailiaojie/hexo-theme-seihaku",
   "version": "0.1.0",
   "description": "🍃 栖白 (Seihaku) - 于方寸留白处，栖息万物微光。融合极简留白、落樱微风交互与苹果 HIG 流体质感的高雅 Hexo 博客主题。支持中/英/日三语国际化。",
   "main": "index.js",
